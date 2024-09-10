@@ -1,13 +1,13 @@
-import * as React from 'react';  
-import { View, Text } from 'react-native';
-    
-export default function HairSalonHeader() {
-    return (
-      <View style={{ flex: 0.2, backgroundColor: '#F4CE14' }}>
-        <Text style={{ padding: 40, fontSize: 30, color: 'black' }}>
-          Welcome to hair harmony
-        </Text>
-      </View>
+import * as React from 'react';
+import { Appbar } from 'react-native-paper';
 
-    );
+export default function HairSalonHeader() {
+  return (
+    <Appbar.Header style={{ backgroundColor: '#f2a550' }}>
+      <Appbar.Content 
+        title="Hair Harmony" 
+        titleStyle={{ fontSize: 28, fontWeight: 'bold', color: 'black' }}
+      />
+    </Appbar.Header>
+  );
 }
