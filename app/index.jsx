@@ -9,11 +9,11 @@ export default function App() {
       <View
         style={{
           flex: 1,
-          backgroundColor: '#495E57',
+          backgroundColor: '#eeecfe',
         }}>
         <HairSalonHeader />
       </View>
-      <View style={{ backgroundColor: '#495E57' }}>
+      <View style={{ backgroundColor: '#eeecfe' }}>
         <HairSalonFooter />
       </View>
     </>

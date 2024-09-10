@@ -1,22 +1,26 @@
-import * as React from 'react';  
-import { View, Text } from 'react-native';
- 
+import * as React from 'react';
+import { Text } from 'react-native';
+import { Surface } from 'react-native-paper';
+
 export default function HairSalonFooter() {
   return (
-    <View
+    <Surface
       style={{
-        backgroundColor: '#F4CE14',
-        marginBottom: 10,
-      }}>
+        backgroundColor: '#f2a550', // Changed color for contrast
+        paddingVertical: 10,
+        elevation: 4, // Adds a subtle shadow to elevate the footer
+      }}
+    >
       <Text
         style={{
-          fontSize: 18,
-          color: 'black',
+          fontSize: 16,
+          color: '#040215', // Consistent with header color
           textAlign: 'center',
-        }}>
-        All rights reserved by hair harmony
+          fontWeight: '500',
+        }}
+      >
+        © 2024 Hair Harmony. All rights reserved.
       </Text>
-    </View>
-
+    </Surface>
   );
 }
