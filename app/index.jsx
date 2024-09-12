@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View } from 'react-native';
 import HairSalonHeader from '../components/Header';
 import HairSalonFooter from '../components/Footer';
-
+import MenuItems from '../assets/menuItem';
 export default function App() {
   return (
     <>
@@ -12,6 +12,7 @@ export default function App() {
           backgroundColor: '#eeecfe',
         }}>
         <HairSalonHeader />
+        <MenuItems/>
       </View>
       <View style={{ backgroundColor: '#eeecfe' }}>
         <HairSalonFooter />
