@@ -1,68 +1,45 @@
+// auth/LoginScreen.jsx
 import React, { useState } from "react";
-import {
-	View,
-	Text,
-	TextInput,
-	Button,
-	TouchableOpacity,
-	StyleSheet,
-} from "react-native";
+import { View, Text, TextInput, Button } from "react-native";
 
-export default function LoginScreen({ navigation }) {
+const LoginScreen = ({ navigation }) => {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 
+	const handleLogin = () => {
+		console.log("Navigating to Login");
+		navigation.navigate("Home");
+	};
+
 	return (
-		<View style={styles.container}>
-			<Text style={styles.title}>Đăng nhập</Text>
+		<View
+			style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+		>
+			<Text>Đăng Nhập</Text>
 			<TextInput
-				style={styles.input}
-				placeholder="Username"
+				placeholder="Tên người dùng"
 				value={username}
 				onChangeText={setUsername}
+				style={{ borderWidth: 1, width: "80%", marginBottom: 10 }}
 			/>
 			<TextInput
-				style={styles.input}
-				placeholder="Password"
+				placeholder="Mật khẩu"
+				secureTextEntry
 				value={password}
 				onChangeText={setPassword}
-				secureTextEntry
+				style={{ borderWidth: 1, width: "80%", marginBottom: 10 }}
 			/>
-			<Button
-				title="Đăng nhập"
-				onPress={() => navigation.replace("HomeScreen")}
-			/>
-
-			<View style={styles.socialContainer}>
-				<Button
-					title="Đăng nhập bằng Google"
-					onPress={() => {
-						/* Đăng nhập Google */
-					}}
-				/>
-				<Button
-					title="Đăng nhập bằng Facebook"
-					onPress={() => {
-						/* Đăng nhập Facebook */
-					}}
-				/>
-			</View>
-
-			<TouchableOpacity
-				onPress={() => navigation.navigate("RegisterScreen")}
+			<Button title="Đăng Nhập" onPress={handleLogin} />
+			<Button title="Đăng Nhập bằng Gmail" onPress={() => {}} />
+			<Button title="Đăng Nhập bằng Facebook" onPress={() => {}} />
+			<Text
+				onPress={() => navigation.navigate("Signup")}
+				style={{ marginTop: 10, color: "blue" }}
 			>
-				<Text style={styles.registerText}>
-					Chưa có tài khoản? Đăng ký ngay
-				</Text>
-			</TouchableOpacity>
+				Chưa có tài khoản? Đăng ký
+			</Text>
 		</View>
 	);
-}
+};
 
-const styles = StyleSheet.create({
-	container: { flex: 1, justifyContent: "center", padding: 20 },
-	title: { fontSize: 24, marginBottom: 20, textAlign: "center" },
-	input: { borderWidth: 1, marginBottom: 10, padding: 8, borderRadius: 5 },
-	socialContainer: { marginTop: 20 },
-	registerText: { marginTop: 20, textAlign: "center", color: "blue" },
-});
+export default LoginScreen;

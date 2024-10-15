@@ -1,23 +1,22 @@
 import React from "react";
-import { View, Text, Button, StyleSheet } from "react-native";
+import { View, Text, Button } from "react-native";
 
-export default function IntroScreen({ navigation }) {
+const AuthIntroScreen = ({ navigation }) => {
 	return (
-		<View style={styles.container}>
-			<Text style={styles.title}>Welcome to Hair Salon App</Text>
+		<View
+			style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+		>
+			<Text>Chào mừng đến với Hair Salon Booking!</Text>
 			<Button
-				title="Đăng nhập"
-				onPress={() => navigation.navigate("LoginScreen")}
+				title="Đăng Nhập"
+				onPress={() => navigation.navigate("Login")}
 			/>
 			<Button
-				title="Đăng ký"
-				onPress={() => navigation.navigate("SignupScreen")}
+				title="Đăng Ký"
+				onPress={() => navigation.navigate("Signup")}
 			/>
 		</View>
 	);
-}
+};
 
-const styles = StyleSheet.create({
-	container: { flex: 1, justifyContent: "center", alignItems: "center" },
-	title: { fontSize: 24, marginBottom: 20 },
-});
+export default AuthIntroScreen;

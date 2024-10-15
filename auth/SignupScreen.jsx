@@ -1,70 +1,102 @@
-// screens/RegisterScreen.jsx
+// auth/SignupScreen.jsx
 import React, { useState } from "react";
-import {
-	View,
-	Text,
-	TextInput,
-	Button,
-	CheckBox,
-	StyleSheet,
-} from "react-native";
+import { View, Text, TextInput, Button, CheckBox } from "react-native";
 
-export default function RegisterScreen({ navigation }) {
-	const [fullname, setFullname] = useState("");
+const SignupScreen = ({ navigation }) => {
+	const [fullName, setFullName] = useState("");
 	const [email, setEmail] = useState("");
+	const [gender, setGender] = useState("");
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
-	const [isChecked, setIsChecked] = useState(false);
+	const [policyConfirmed, setPolicyConfirmed] = useState(false);
+
+	const handleSignup = () => {
+		console.log("Navigating to Signup");
+		navigation.navigate("Home");
+	};
+
+	const isPasswordValid = (password) => {
+		// Kiểm tra mật khẩu có chữ viết hoa, chữ thường, số, ký tự đặc biệt
+		const regex =
+			/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+		return regex.test(password);
+	};
 
 	return (
-		<View style={styles.container}>
-			<Text style={styles.title}>Đăng ký</Text>
+		<View
+			style={{
+				flex: 1,
+				justifyContent: "center",
+				alignItems: "center",
+				padding: 20,
+			}}
+		>
+			<Text>Đăng Ký</Text>
 			<TextInput
-				style={styles.input}
-				placeholder="Fullname"
-				value={fullname}
-				onChangeText={setFullname}
+				placeholder="Họ và tên"
+				value={fullName}
+				onChangeText={setFullName}
+				style={{ borderWidth: 1, width: "100%", marginBottom: 10 }}
 			/>
 			<TextInput
-				style={styles.input}
 				placeholder="Email"
 				value={email}
 				onChangeText={setEmail}
+				style={{ borderWidth: 1, width: "100%", marginBottom: 10 }}
 			/>
 			<TextInput
-				style={styles.input}
-				placeholder="Password"
+				placeholder="Giới tính"
+				value={gender}
+				onChangeText={setGender}
+				style={{ borderWidth: 1, width: "100%", marginBottom: 10 }}
+			/>
+			<TextInput
+				placeholder="Mật khẩu"
+				secureTextEntry
 				value={password}
 				onChangeText={setPassword}
-				secureTextEntry
+				style={{ borderWidth: 1, width: "100%", marginBottom: 10 }}
 			/>
 			<TextInput
-				style={styles.input}
-				placeholder="Confirm Password"
+				placeholder="Xác nhận mật khẩu"
+				secureTextEntry
 				value={confirmPassword}
 				onChangeText={setConfirmPassword}
-				secureTextEntry
+				style={{ borderWidth: 1, width: "100%", marginBottom: 10 }}
 			/>
-			<View style={styles.checkboxContainer}>
-				<CheckBox value={isChecked} onValueChange={setIsChecked} />
-				<Text>Tôi đồng ý với điều khoản sử dụng</Text>
+
+			<View
+				style={{
+					flexDirection: "row",
+					alignItems: "center",
+					marginBottom: 10,
+				}}
+			>
+				<CheckBox
+					value={policyConfirmed}
+					onValueChange={() => setPolicyConfirmed(!policyConfirmed)}
+				/>
+				<Text>Tôi đồng ý với chính sách</Text>
 			</View>
+
 			<Button
-				title="Đăng ký"
-				onPress={() => navigation.replace("HomeScreen")}
-				disabled={!isChecked || password !== confirmPassword}
+				title="Đăng Ký"
+				onPress={handleSignup}
+				disabled={
+					!policyConfirmed ||
+					password !== confirmPassword ||
+					!isPasswordValid(password)
+				}
 			/>
+
+			<Text
+				onPress={() => navigation.navigate("Login")}
+				style={{ marginTop: 10, color: "blue" }}
+			>
+				Nếu bạn đã có tài khoản, hãy đăng nhập
+			</Text>
 		</View>
 	);
-}
+};
 
-const styles = StyleSheet.create({
-	container: { flex: 1, justifyContent: "center", padding: 20 },
-	title: { fontSize: 24, marginBottom: 20, textAlign: "center" },
-	input: { borderWidth: 1, marginBottom: 10, padding: 8, borderRadius: 5 },
-	checkboxContainer: {
-		flexDirection: "row",
-		alignItems: "center",
-		marginBottom: 10,
-	},
-});
+export default SignupScreen;
