@@ -15,13 +15,19 @@ const LoginScreen = ({ navigation }) => {
 	const [password, setPassword] = useState("");
 	const [secureTextEntry, setSecureTextEntry] = useState(true); // Để kiểm soát việc hiển thị mật khẩu
 	const [rememberMe, setRememberMe] = useState(false); // Kiểm soát trạng thái checkbox
-
+	const isLoginDisabled = !username || !password || !rememberMe; // Kiểm tra xem nút đăng nhập có bị vô hiệu hóa không
 	const handleLogin = () => {
-		if (rememberMe) {
-			navigation.navigate("Home");
-		} else {
-			alert("Please check 'Remember Me' to log in.");
+		if (!username || !password) {
+			alert("Please enter both username and password.");
+			return;
 		}
+
+		if (!rememberMe) {
+			alert("Please check 'Remember Me' to log in.");
+			return;
+		}
+
+		navigation.navigate("Home");
 	};
 
 	const toggleSecureTextEntry = () => {
@@ -111,10 +117,13 @@ const LoginScreen = ({ navigation }) => {
 					{
 						backgroundColor: pressed
 							? "rgb(97, 70, 59)" // Background color when pressed
-							: "rgb(245, 243, 227)",
+							: isLoginDisabled
+							? "#ccc" // Background color when disabled
+							: "rgb(245, 243, 227)", // Normal background color
 					},
 				]}
 				onPress={handleLogin}
+				disabled={isLoginDisabled} // Disable the button when the form is incomplete
 			>
 				{({ pressed }) => (
 					<Text
