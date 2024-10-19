@@ -1,5 +1,12 @@
 import React from "react";
-import { View, Text, Button, ImageBackground, StyleSheet } from "react-native";
+import {
+	View,
+	Text,
+	ImageBackground,
+	StyleSheet,
+	Dimensions,
+	TouchableOpacity,
+} from "react-native";
 
 const AuthIntroScreen = ({ navigation }) => {
 	return (
@@ -9,17 +16,22 @@ const AuthIntroScreen = ({ navigation }) => {
 			}} // Replace with your image URL or local image
 			style={styles.background}
 		>
-			<View style={styles.overlay}>
+			<View style={styles.overlay} />
+			<View style={styles.content}>
 				<Text style={styles.title}>Hair Harmony</Text>
-				<Button
-					title="Đăng Nhập"
+				<TouchableOpacity
+					style={styles.button}
 					onPress={() => navigation.navigate("Login")}
-				/>
+				>
+					<Text style={styles.buttonText}>Đăng Nhập</Text>
+				</TouchableOpacity>
 				<View style={styles.spacing} />
-				<Button
-					title="Đăng Ký"
+				<TouchableOpacity
+					style={styles.button}
 					onPress={() => navigation.navigate("Signup")}
-				/>
+				>
+					<Text style={styles.buttonText}>Đăng Ký</Text>
+				</TouchableOpacity>
 			</View>
 		</ImageBackground>
 	);
@@ -32,19 +44,43 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 	},
 	overlay: {
-		flex: 1,
-		justifyContent: "center",
+		position: "absolute",
+		top: 0,
+		left: 0,
+		right: 0,
+		bottom: 0,
+		backgroundColor: "rgba(255, 255, 255, 0.65)", // Semi-transparent white
+	},
+	content: {
+		position: "absolute",
+		bottom: "33%",
+		width: "80%",
 		alignItems: "center",
-		backgroundColor: "rgba(255, 255, 255, 0.8)", // Optional: Add a semi-transparent background to improve text readability
-		padding: 20,
+		paddingBottom: 20,
 	},
 	title: {
-		fontSize: 24,
+		fontSize: 35,
 		fontWeight: "bold",
 		marginBottom: 20,
+		color: "rgb(97, 70,59)", // Ensure the text is visible on the white overlay
 	},
 	spacing: {
 		height: 10, // Add spacing between buttons
+	},
+	button: {
+		width: "50%",
+		backgroundColor: "rgb(245, 243,227)",
+		paddingVertical: 10,
+		paddingHorizontal: 12,
+		borderRadius: 25,
+		alignItems: "center",
+		marginBottom: 5, // Add margin to separate buttons
+	},
+	buttonText: {
+		color: "black",
+		fontSize: 18,
+		fontWeight: "bold",
+		textAlign: "center",
 	},
 });
 
