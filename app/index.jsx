@@ -1,11 +1,11 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import AuthIntroScreen from "../auth/AuthIntroScreen";
-import LoginScreen from "../auth/LoginScreen";
-import SignupScreen from "../auth/SignupScreen";
-import HomeScreen from "../screens/HomeScreen";
-import BottomTabNavigator from "../navigation/BottomTabNavigator";
+import AuthIntroScreen from "../src/auth/AuthIntroScreen";
+import LoginScreen from "../src/auth/LoginScreen";
+import SignupScreen from "../src/auth/SignupScreen";
+import HomeScreen from "../src/screens/HomeScreen";
+import BottomTabNavigator from "../src/navigation/BottomTabNavigator";
 
 const Stack = createStackNavigator();
 
