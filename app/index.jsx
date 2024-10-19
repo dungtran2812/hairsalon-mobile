@@ -23,7 +23,11 @@ export default function App() {
 					component={LoginScreen}
 					options={{ headerShown: false }}
 				/>
-				<Stack.Screen name="Signup" component={SignupScreen} />
+				<Stack.Screen
+					name="Signup"
+					component={SignupScreen}
+					options={{ headerShown: false }}
+				/>
 				<Stack.Screen
 					name="HomeScreen"
 					component={BottomTabNavigator} // Điều hướng tới BottomTabNavigator
