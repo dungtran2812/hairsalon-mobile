@@ -18,6 +18,7 @@ const LoginScreen = ({ navigation }) => {
 	const isLoginDisabled = !username || !password || !rememberMe; // Kiểm tra xem nút đăng nhập có bị vô hiệu hóa không
 	const handleLogin = () => {
 		if (!username || !password) {
+			console.log('first')
 			alert("Please enter both username and password.");
 			return;
 		}
