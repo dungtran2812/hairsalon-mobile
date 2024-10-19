@@ -5,7 +5,7 @@ import {
 	ImageBackground,
 	StyleSheet,
 	Dimensions,
-	TouchableOpacity,
+	Pressable,
 } from "react-native";
 
 const AuthIntroScreen = ({ navigation }) => {
@@ -13,25 +13,61 @@ const AuthIntroScreen = ({ navigation }) => {
 		<ImageBackground
 			source={{
 				uri: "https://i.pinimg.com/enabled_hi/564x/f7/3d/4c/f73d4c5c8638212b4f86699b1b026c44.jpg",
-			}} // Replace with your image URL or local image
+			}}
 			style={styles.background}
 		>
 			<View style={styles.overlay} />
 			<View style={styles.content}>
 				<Text style={styles.title}>Hair Harmony</Text>
-				<TouchableOpacity
-					style={styles.button}
+				<Pressable
+					style={({ pressed }) => [
+						styles.button,
+						{
+							backgroundColor: pressed
+								? "rgb(97, 70, 59)" // Màu nền khi nhấn
+								: "rgb(245, 243, 227)",
+						},
+					]}
 					onPress={() => navigation.navigate("Login")}
 				>
-					<Text style={styles.buttonText}>Đăng Nhập</Text>
-				</TouchableOpacity>
+					{({ pressed }) => (
+						<Text
+							style={[
+								styles.buttonText,
+								{
+									color: pressed ? "white" : "black", // Màu chữ khi nhấn
+								},
+							]}
+						>
+							Đăng Nhập
+						</Text>
+					)}
+				</Pressable>
 				<View style={styles.spacing} />
-				<TouchableOpacity
-					style={styles.button}
+				<Pressable
+					style={({ pressed }) => [
+						styles.button,
+						{
+							backgroundColor: pressed
+								? "rgb(97, 70, 59)" // Màu nền khi nhấn
+								: "rgb(245, 243, 227)",
+						},
+					]}
 					onPress={() => navigation.navigate("Signup")}
 				>
-					<Text style={styles.buttonText}>Đăng Ký</Text>
-				</TouchableOpacity>
+					{({ pressed }) => (
+						<Text
+							style={[
+								styles.buttonText,
+								{
+									color: pressed ? "white" : "black", // Màu chữ khi nhấn
+								},
+							]}
+						>
+							Đăng Ký
+						</Text>
+					)}
+				</Pressable>
 			</View>
 		</ImageBackground>
 	);
@@ -49,7 +85,7 @@ const styles = StyleSheet.create({
 		left: 0,
 		right: 0,
 		bottom: 0,
-		backgroundColor: "rgba(255, 255, 255, 0.65)", // Semi-transparent white
+		backgroundColor: "rgba(255, 255, 255, 0.7)", // Màu trắng bán trong suốt
 	},
 	content: {
 		position: "absolute",
@@ -62,24 +98,23 @@ const styles = StyleSheet.create({
 		fontSize: 35,
 		fontWeight: "bold",
 		marginBottom: 20,
-		color: "rgb(97, 70,59)", // Ensure the text is visible on the white overlay
+		color: "rgb(97, 70, 59)", // Màu chữ tiêu đề
 	},
 	spacing: {
-		height: 10, // Add spacing between buttons
+		height: 10, // Khoảng cách giữa các nút
 	},
 	button: {
 		width: "50%",
-		backgroundColor: "rgb(245, 243,227)",
+		backgroundColor: "rgb(245, 243, 227)",
 		paddingVertical: 10,
-		paddingHorizontal: 12,
+		paddingHorizontal: 20,
 		borderRadius: 25,
 		alignItems: "center",
-		marginBottom: 5, // Add margin to separate buttons
+		marginBottom: 10, // Khoảng cách giữa các nút
 	},
 	buttonText: {
-		color: "black",
-		fontSize: 18,
-		fontWeight: "bold",
+		fontSize: 18, // Kích thước chữ
+		fontWeight: "bold", // Độ đậm chữ
 		textAlign: "center",
 	},
 });
