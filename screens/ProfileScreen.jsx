@@ -1,10 +1,10 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 
-const HomeScreen = () => {
+const ProfileScreen = () => {
 	return (
 		<View style={styles.container}>
-			<Text style={styles.text}>Welcome to the Home Screen</Text>
+			<Text style={styles.text}>Welcome to the Profile Screen</Text>
 		</View>
 	);
 };
@@ -22,4 +22,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default HomeScreen;
+export default ProfileScreen;

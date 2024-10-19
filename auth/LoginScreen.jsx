@@ -27,7 +27,7 @@ const LoginScreen = ({ navigation }) => {
 			return;
 		}
 
-		navigation.navigate("Home");
+		navigation.navigate("HomeScreen");
 	};
 
 	const toggleSecureTextEntry = () => {
