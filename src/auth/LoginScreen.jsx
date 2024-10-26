@@ -1,35 +1,56 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
 	View,
 	Text,
 	TextInput,
-	Button,
 	TouchableOpacity,
 	Image,
 	StyleSheet,
 	Pressable,
 } from "react-native";
+import { loginUser, setRole } from "../feature/authentication";
+import { useDispatch, useSelector } from "react-redux";
+import { useLoginMutation } from "../services/hairsalon.service";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { store } from "../store/store";
 
 const LoginScreen = ({ navigation }) => {
+	const dispatch = useDispatch();
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [secureTextEntry, setSecureTextEntry] = useState(true); // Để kiểm soát việc hiển thị mật khẩu
 	const [rememberMe, setRememberMe] = useState(false); // Kiểm soát trạng thái checkbox
-	const isLoginDisabled = !username || !password || !rememberMe; // Kiểm tra xem nút đăng nhập có bị vô hiệu hóa không
-	const handleLogin = () => {
+	const isLoginDisabled = !username || !password; // Kiểm tra xem nút đăng nhập có bị vô hiệu hóa không
+	const userRole = useSelector((state) => state?.rootReducer?.user?.role);
+	const [login, { isLoading, error }] = useLoginMutation()
+	const handleLogin = async () => {
 		if (!username || !password) {
-			console.log('first')
 			alert("Please enter both username and password.");
 			return;
 		}
-
-		if (!rememberMe) {
-			alert("Please check 'Remember Me' to log in.");
-			return;
+	
+		try {
+			// Call login mutation and unwrap response
+			const userData = await login({ username, password }).unwrap();
+	
+			// Dispatch role to the store
+			await dispatch(setRole(userData.user.role[0]));
+	
+			// Navigate immediately based on role in userData
+			if (userData.user.role.includes("stylist")) {
+				navigation.navigate("StylistDashboard"); // Example stylist screen
+			} else if (userData.user.role.includes("customer")) {
+				navigation.navigate("HomeScreen");
+			} else {
+				alert("This role cannot log in on Mobile App");
+				navigation.navigate("Login");
+			}
+		} catch (loginError) {
+			console.error("Login error:", loginError);
+			alert(loginError.data?.message || "Login failed. Please try again.");
 		}
-
-		navigation.navigate("HomeScreen");
 	};
+	
 
 	const toggleSecureTextEntry = () => {
 		setSecureTextEntry((prev) => !prev);
@@ -96,20 +117,23 @@ const LoginScreen = ({ navigation }) => {
 			</View>
 
 			<View style={styles.checkboxContainer}>
-				<TouchableOpacity
-					onPress={toggleRememberMe}
-					style={styles.checkbox}
-				>
+			<TouchableOpacity
+				onPress={toggleRememberMe}
+				style={styles.checkboxContainer}
+			>
+				<View style={styles.checkbox}>
 					{rememberMe && <View style={styles.checkedCheckbox} />}
-				</TouchableOpacity>
+				</View>
 				<Text style={styles.checkboxText}>Remember Me</Text>
-				<TouchableOpacity
+			</TouchableOpacity>
+				{/* <TouchableOpacity
 					onPress={() => navigation.navigate("ForgetPassword")}
+					style={styles.checkboxContainer}
 				>
 					<Text style={styles.forgotPasswordText}>
 						Forgot Password?
 					</Text>
-				</TouchableOpacity>
+				</TouchableOpacity> */}
 			</View>
 
 			<Pressable
@@ -248,7 +272,7 @@ const styles = StyleSheet.create({
 	},
 	forgotPasswordText: {
 		color: "blue",
-		marginRight: 15,
+		marginRight: 50,
 	},
 	button: {
 		width: "50%",

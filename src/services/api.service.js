@@ -3,7 +3,7 @@ import axiosRetry from "axios-retry";
 import { setOnLineStatus } from "../feature/app";
 
 // Axios instance setup
-const url = import.meta.env.VITE_SERVER_URL;
+const url = process.env.EXPO_PUBLIC_SERVER_URL;
 
 export const axiosInstance = axios.create({
   baseURL: url,
@@ -14,6 +14,28 @@ export const axiosInstance = axios.create({
   timeout: 300000,
   timeoutErrorMessage: "Connection is timeout exceeded",
 });
+
+export const axiosBaseQuery =
+  ({ baseUrl } = { baseUrl: '' }) =>
+  async ({ url, method, data, params }) => {
+    try {
+      const result = await axiosInstance({
+        url: baseUrl + url,
+        method,
+        data,
+        params,
+      });
+      return { data: result.data };
+    } catch (axiosError) {
+      let err = axiosError.response?.data || axiosError;
+      return {
+        error: {
+          status: axiosError.response?.status || 500,
+          data: err,
+        },
+      };
+    }
+  };
 
 // Set up interceptors
 const setUpInterceptor = (store) => {
