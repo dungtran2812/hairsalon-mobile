@@ -8,6 +8,7 @@ import ProfileScreen from "../screens/ProfileScreen";
 import Icon from "react-native-vector-icons/Ionicons";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { NavigationContainer } from "@react-navigation/native";
+import ProfileStack from "./stack/ProfileStack";
 
 const Tab = createBottomTabNavigator();
 
@@ -49,7 +50,11 @@ export default function BottomTabNavigator() {
 				<Tab.Screen name="Stylist" component={StylistScreen} />
 				<Tab.Screen name="Booking" component={BookingScreen} />
 				<Tab.Screen name="Voucher" component={VoucherScreen} />
-				<Tab.Screen name="Profile" component={ProfileScreen} />
+				<Tab.Screen
+					name="Profile"
+					component={ProfileStack}
+					options={{ headerShown: false }}
+				/>
 			</Tab.Navigator>
 		</SafeAreaProvider>
 	);

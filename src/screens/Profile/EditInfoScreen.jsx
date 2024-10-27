@@ -2,7 +2,7 @@
 import React from "react";
 import { View, Text } from "react-native";
 
-const FavoriteServicesScreen = () => {
+const EditInfoScreen = () => {
 	return (
 		<View>
 			<Text>Account Information</Text>
@@ -10,4 +10,4 @@ const FavoriteServicesScreen = () => {
 	);
 };
 
-export default FavoriteServicesScreen;
+export default EditInfoScreen;
