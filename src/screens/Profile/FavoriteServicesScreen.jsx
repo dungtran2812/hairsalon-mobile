@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 
 const FavoriteServicesScreen = () => {
 	const services = [
@@ -7,19 +7,19 @@ const FavoriteServicesScreen = () => {
 			name: "Cắt",
 			price: "200.000 VNĐ",
 			loyaltyPoints: 20,
-			image: "https://example.com/image-cutting.jpg", // replace with actual image URL
+			image: "https://i.pinimg.com/564x/2e/8f/b7/2e8fb73b998bd3a099fcecc012b493b0.jpg", // replace with actual image URL
 		},
 		{
 			name: "Duỗi",
 			price: "300.000 VNĐ",
 			loyaltyPoints: 30,
-			image: "https://example.com/image-straightening.jpg", // replace with actual image URL
+			image: "https://i.pinimg.com/564x/7a/55/89/7a5589c3232c01bb132ad57d39cc5a5b.jpg", // replace with actual image URL
 		},
 		{
 			name: "Nhuộm",
 			price: "250.000 VNĐ",
 			loyaltyPoints: 25,
-			image: "https://example.com/image-dyeing.jpg", // replace with actual image URL
+			image: "https://i.pinimg.com/564x/c3/e9/69/c3e9698616b9146df2663f9caecf6362.jpg", // replace with actual image URL
 		},
 	];
 
@@ -39,10 +39,14 @@ const FavoriteServicesScreen = () => {
 						<Text style={styles.loyaltyPoints}>
 							{service.loyaltyPoints} Loyalty Points
 						</Text>
-						<TouchableOpacity style={styles.favoriteIcon}>
-							<Text style={styles.heart}>❤️</Text>{" "}
-							{/* Heart icon for favorite */}
-						</TouchableOpacity>
+						<Pressable
+							style={({ pressed }) => [
+								styles.favoriteIcon,
+								{ opacity: pressed ? 0.5 : 1 },
+							]}
+						>
+							<Text style={styles.heart}>❤️</Text>
+						</Pressable>
 					</View>
 				</View>
 			))}
@@ -80,8 +84,8 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 	},
 	serviceName: {
-		color: "#FFF",
-		fontSize: 18,
+		color: "#FFf",
+		fontSize: 30,
 		fontWeight: "bold",
 		position: "absolute",
 		top: 10,
@@ -89,7 +93,7 @@ const styles = StyleSheet.create({
 	},
 	servicePrice: {
 		color: "#FFF",
-		fontSize: 16,
+		fontSize: 20,
 		position: "absolute",
 		bottom: 30,
 		left: 10,
