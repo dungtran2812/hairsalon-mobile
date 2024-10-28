@@ -4,6 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import AuthIntroScreen from "../src/auth/AuthIntroScreen";
 import LoginScreen from "../src/auth/LoginScreen";
 import SignupScreen from "../src/auth/SignupScreen";
+import StylistScreen from "../src/screens/StylistScreen";
 import BottomTabNavigator from "../src/navigation/BottomTabNavigator";
 import { PersistGate } from "redux-persist/lib/integration/react";
 import { persistor, store } from "../src/store/store";
@@ -38,7 +39,7 @@ export default function App() {
 							options={{ headerShown: false }}
 						/>
 						<Stack.Screen
-							name="HomeScreen"
+							name="ServiceScreen"
 							component={BottomTabNavigator} // Điều hướng tới BottomTabNavigator
 							options={{ headerShown: false }}
 						/>

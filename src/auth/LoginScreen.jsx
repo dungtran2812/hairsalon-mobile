@@ -22,6 +22,7 @@ const LoginScreen = ({ navigation }) => {
   const isLoginDisabled = !username || !password;
   const [login, { isLoading }] = useLoginMutation();
 
+
   const handleLogin = async () => {
     if (!username || !password) {
       alert("Please enter both username and password.");
@@ -37,7 +38,7 @@ const LoginScreen = ({ navigation }) => {
       if (userData.user.role.includes("stylist")) {
         navigation.navigate("StylistDashboard");
       } else if (userData.user.role.includes("customer")) {
-        navigation.navigate("HomeScreen");
+        navigation.navigate("ServiceScreen");
       } else {
         alert("This role cannot log in on Mobile App");
         navigation.navigate("Login");
