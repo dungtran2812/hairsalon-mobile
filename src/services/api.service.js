@@ -68,10 +68,10 @@ const setUpInterceptor = (store) => {
   // Request interceptor
   axiosInstance.interceptors.request.use(
     async (config) => {
-      const appState = await store.getState();
-      const accessToken = await appState?.user?.accessToken;
+      const appState = await store.getState();   
+      const accessToken = await appState?.rootReducer?.user?.accessToken;
       if (accessToken) {
-        config.headers["Authorization"] = `Bearer ${accessToken}`;
+        config.headers["authorization"] = `Bearer ${accessToken}`;
       }
       return config;
     },

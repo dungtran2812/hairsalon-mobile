@@ -7,7 +7,6 @@ import VoucherScreen from "../screens/VoucherScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import Icon from "react-native-vector-icons/Ionicons"; // Dùng Ionicons từ react-native-vector-icons
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { NavigationContainer } from "@react-navigation/native";
 
 const Tab = createBottomTabNavigator();
 
