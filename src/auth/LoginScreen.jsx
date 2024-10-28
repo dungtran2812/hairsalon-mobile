@@ -22,35 +22,36 @@ const LoginScreen = ({ navigation }) => {
 	const [rememberMe, setRememberMe] = useState(false); // Kiểm soát trạng thái checkbox
 	const isLoginDisabled = !username || !password; // Kiểm tra xem nút đăng nhập có bị vô hiệu hóa không
 	const userRole = useSelector((state) => state?.rootReducer?.user?.role);
-	const [login, { isLoading, error }] = useLoginMutation()
+	const [login, { isLoading, error }] = useLoginMutation();
 	const handleLogin = async () => {
 		if (!username || !password) {
 			alert("Please enter both username and password.");
 			return;
 		}
-	
+
 		try {
 			// Call login mutation and unwrap response
 			const userData = await login({ username, password }).unwrap();
-	
+
 			// Dispatch role to the store
 			await dispatch(setRole(userData.user.role[0]));
-	
+
 			// Navigate immediately based on role in userData
 			if (userData.user.role.includes("stylist")) {
 				navigation.navigate("StylistDashboard"); // Example stylist screen
 			} else if (userData.user.role.includes("customer")) {
-				navigation.navigate("HomeScreen");
+				navigation.navigate("ServiceScreen");
 			} else {
 				alert("This role cannot log in on Mobile App");
 				navigation.navigate("Login");
 			}
 		} catch (loginError) {
 			console.error("Login error:", loginError);
-			alert(loginError.data?.message || "Login failed. Please try again.");
+			alert(
+				loginError.data?.message || "Login failed. Please try again."
+			);
 		}
 	};
-	
 
 	const toggleSecureTextEntry = () => {
 		setSecureTextEntry((prev) => !prev);
@@ -117,15 +118,15 @@ const LoginScreen = ({ navigation }) => {
 			</View>
 
 			<View style={styles.checkboxContainer}>
-			<TouchableOpacity
-				onPress={toggleRememberMe}
-				style={styles.checkboxContainer}
-			>
-				<View style={styles.checkbox}>
-					{rememberMe && <View style={styles.checkedCheckbox} />}
-				</View>
-				<Text style={styles.checkboxText}>Remember Me</Text>
-			</TouchableOpacity>
+				<TouchableOpacity
+					onPress={toggleRememberMe}
+					style={styles.checkboxContainer}
+				>
+					<View style={styles.checkbox}>
+						{rememberMe && <View style={styles.checkedCheckbox} />}
+					</View>
+					<Text style={styles.checkboxText}>Remember Me</Text>
+				</TouchableOpacity>
 				{/* <TouchableOpacity
 					onPress={() => navigation.navigate("ForgetPassword")}
 					style={styles.checkboxContainer}
