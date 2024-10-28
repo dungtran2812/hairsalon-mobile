@@ -1,199 +1,178 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
-	View,
-	Text,
-	TextInput,
-	TouchableOpacity,
-	Image,
-	StyleSheet,
-	Pressable,
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+  Pressable,
+  ActivityIndicator, // Import ActivityIndicator for loading UI
 } from "react-native";
-import { loginUser, setRole } from "../feature/authentication";
-import { useDispatch, useSelector } from "react-redux";
+import { setAccessToken, setRole, setUsername } from "../feature/authentication";
+import { useDispatch } from "react-redux";
 import { useLoginMutation } from "../services/hairsalon.service";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { store } from "../store/store";
 
 const LoginScreen = ({ navigation }) => {
-	const dispatch = useDispatch();
-	const [username, setUsername] = useState("");
-	const [password, setPassword] = useState("");
-	const [secureTextEntry, setSecureTextEntry] = useState(true); // Để kiểm soát việc hiển thị mật khẩu
-	const [rememberMe, setRememberMe] = useState(false); // Kiểm soát trạng thái checkbox
-	const isLoginDisabled = !username || !password; // Kiểm tra xem nút đăng nhập có bị vô hiệu hóa không
-	const userRole = useSelector((state) => state?.rootReducer?.user?.role);
-	const [login, { isLoading, error }] = useLoginMutation();
-	const handleLogin = async () => {
-		if (!username || !password) {
-			alert("Please enter both username and password.");
-			return;
-		}
+  const dispatch = useDispatch();
+  const [username, changeUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [secureTextEntry, setSecureTextEntry] = useState(true);
+  const [rememberMe, setRememberMe] = useState(false);
+  const isLoginDisabled = !username || !password;
+  const [login, { isLoading }] = useLoginMutation();
 
-		try {
-			// Call login mutation and unwrap response
-			const userData = await login({ username, password }).unwrap();
 
-			// Dispatch role to the store
-			await dispatch(setRole(userData.user.role[0]));
+  const handleLogin = async () => {
+    if (!username || !password) {
+      alert("Please enter both username and password.");
+      return;
+    }
 
-			// Navigate immediately based on role in userData
-			if (userData.user.role.includes("stylist")) {
-				navigation.navigate("StylistDashboard"); // Example stylist screen
-			} else if (userData.user.role.includes("customer")) {
-				navigation.navigate("ServiceScreen");
-			} else {
-				alert("This role cannot log in on Mobile App");
-				navigation.navigate("Login");
-			}
-		} catch (loginError) {
-			console.error("Login error:", loginError);
-			alert(
-				loginError.data?.message || "Login failed. Please try again."
-			);
-		}
-	};
+    try {
+      const userData = await login({ username, password }).unwrap();
+      dispatch(setAccessToken(userData?.access_token));
+      dispatch(setRole(userData?.user?.role[0]));
+      dispatch(setUsername(userData?.user?.username));
 
-	const toggleSecureTextEntry = () => {
-		setSecureTextEntry((prev) => !prev);
-	};
+      if (userData.user.role.includes("stylist")) {
+        navigation.navigate("StylistDashboard");
+      } else if (userData.user.role.includes("customer")) {
+        navigation.navigate("ServiceScreen");
+      } else {
+        alert("This role cannot log in on Mobile App");
+        navigation.navigate("Login");
+      }
+    } catch (loginError) {
+      console.error("Login error:", loginError);
+      alert(loginError.data?.message || "Login failed. Please try again.");
+    }
+  };
 
-	const toggleRememberMe = () => {
-		setRememberMe((prev) => !prev);
-	};
+  const toggleSecureTextEntry = () => {
+    setSecureTextEntry((prev) => !prev);
+  };
 
-	return (
-		<View style={styles.container}>
-			<View style={styles.logoContainer}>
-				<Image
-					source={{
-						uri: "https://img.icons8.com/ios-filled/50/000000/hair-care.png",
-					}} // Logo tạm thời
-					style={styles.logo}
-				/>
-			</View>
-			<Text style={styles.welcomeText}>Welcome</Text>
-			<Text style={styles.subtitleText}>
-				Access your account and start to take care your hair
-			</Text>
+  const toggleRememberMe = () => {
+    setRememberMe((prev) => !prev);
+  };
 
-			<View style={styles.inputContainer}>
-				<Image
-					source={{
-						uri: "https://img.icons8.com/material-outlined/24/000000/user.png",
-					}} // Biểu tượng người dùng
-					style={styles.icon}
-				/>
-				<TextInput
-					placeholder="Username"
-					value={username}
-					onChangeText={setUsername}
-					style={styles.input}
-				/>
-			</View>
+  return (
+    <View style={styles.container}>
+      <View style={styles.logoContainer}>
+        <Image
+          source={{
+            uri: "https://img.icons8.com/ios-filled/50/000000/hair-care.png",
+          }}
+          style={styles.logo}
+        />
+      </View>
+      <Text style={styles.welcomeText}>Welcome</Text>
+      <Text style={styles.subtitleText}>
+        Access your account and start to take care your hair
+      </Text>
 
-			<View style={styles.inputContainer}>
-				<Image
-					source={{
-						uri: "https://img.icons8.com/material-outlined/24/000000/lock-2.png",
-					}} // Biểu tượng mật khẩu
-					style={styles.icon}
-				/>
-				<TextInput
-					placeholder="Password"
-					secureTextEntry={secureTextEntry}
-					value={password}
-					onChangeText={setPassword}
-					style={styles.input}
-				/>
-				<TouchableOpacity onPress={toggleSecureTextEntry}>
-					<Image
-						source={{
-							uri: secureTextEntry
-								? "https://img.icons8.com/material-outlined/24/000000/invisible.png" // Biểu tượng mắt đóng
-								: "https://img.icons8.com/material-outlined/24/000000/visible.png", // Biểu tượng mắt mở
-						}}
-						style={styles.eyeIcon}
-					/>
-				</TouchableOpacity>
-			</View>
+      <View style={styles.inputContainer}>
+        <Image
+          source={{
+            uri: "https://img.icons8.com/material-outlined/24/000000/user.png",
+          }}
+          style={styles.icon}
+        />
+        <TextInput
+          placeholder="Username"
+          value={username}
+          onChangeText={changeUsername}
+          style={styles.input}
+        />
+      </View>
 
-			<View style={styles.checkboxContainer}>
-				<TouchableOpacity
-					onPress={toggleRememberMe}
-					style={styles.checkboxContainer}
-				>
-					<View style={styles.checkbox}>
-						{rememberMe && <View style={styles.checkedCheckbox} />}
-					</View>
-					<Text style={styles.checkboxText}>Remember Me</Text>
-				</TouchableOpacity>
-				{/* <TouchableOpacity
-					onPress={() => navigation.navigate("ForgetPassword")}
-					style={styles.checkboxContainer}
-				>
-					<Text style={styles.forgotPasswordText}>
-						Forgot Password?
-					</Text>
-				</TouchableOpacity> */}
-			</View>
+      <View style={styles.inputContainer}>
+        <Image
+          source={{
+            uri: "https://img.icons8.com/material-outlined/24/000000/lock-2.png",
+          }}
+          style={styles.icon}
+        />
+        <TextInput
+          placeholder="Password"
+          secureTextEntry={secureTextEntry}
+          value={password}
+          onChangeText={setPassword}
+          style={styles.input}
+        />
+        <TouchableOpacity onPress={toggleSecureTextEntry}>
+          <Image
+            source={{
+              uri: secureTextEntry
+                ? "https://img.icons8.com/material-outlined/24/000000/invisible.png"
+                : "https://img.icons8.com/material-outlined/24/000000/visible.png",
+            }}
+            style={styles.eyeIcon}
+          />
+        </TouchableOpacity>
+      </View>
 
-			<Pressable
-				style={({ pressed }) => [
+      <View style={styles.checkboxContainer}>
+        <TouchableOpacity
+          onPress={toggleRememberMe}
+          style={styles.checkboxContainer}
+        >
+          <View style={styles.checkbox}>
+            {rememberMe && <View style={styles.checkedCheckbox} />}
+          </View>
+          <Text style={styles.checkboxText}>Remember Me</Text>
+        </TouchableOpacity>
+      </View>
+
+      <Pressable
+				style={[
 					styles.button,
 					{
-						backgroundColor: pressed
-							? "rgb(97, 70, 59)" // Background color when pressed
-							: isLoginDisabled
-							? "#ccc" // Background color when disabled
-							: "rgb(245, 243, 227)", // Normal background color
+						backgroundColor: isLoginDisabled
+							? "#ccc"
+							: "rgb(245, 243, 227)",
 					},
 				]}
 				onPress={handleLogin}
-				disabled={isLoginDisabled} // Disable the button when the form is incomplete
+				disabled={isLoginDisabled || isLoading} // Disable button if loading
 			>
-				{({ pressed }) => (
-					<Text
-						style={[
-							styles.buttonText,
-							{
-								color: pressed ? "white" : "black", // Text color when pressed
-							},
-						]}
-					>
-						Đăng Nhập
-					</Text>
+				{isLoading ? (
+					<ActivityIndicator color="black" />
+				) : (
+					<Text style={styles.buttonText}>Đăng Nhập</Text>
 				)}
 			</Pressable>
 
-			<Text style={styles.signupPrompt}>
-				Bạn chưa có tài khoản?{" "}
-				<TouchableOpacity onPress={() => navigation.navigate("Signup")}>
-					<Text style={styles.signupText}>Đăng ký</Text>
-				</TouchableOpacity>
-			</Text>
+      <Text style={styles.signupPrompt}>
+        Bạn chưa có tài khoản?{" "}
+        <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
+          <Text style={styles.signupText}>Đăng ký</Text>
+        </TouchableOpacity>
+      </Text>
 
-			<Text style={styles.orText}>Hoặc đăng ký qua</Text>
+      <Text style={styles.orText}>Hoặc đăng ký qua</Text>
 
-			<View style={styles.socialContainer}>
-				<TouchableOpacity>
-					<Image
-						source={{
-							uri: "https://img.icons8.com/color/48/000000/google-logo.png",
-						}} // Biểu tượng Google
-						style={styles.socialIcon}
-					/>
-				</TouchableOpacity>
-				<TouchableOpacity>
-					<Image
-						source={{
-							uri: "https://img.icons8.com/color/48/000000/facebook.png",
-						}} // Biểu tượng Facebook
-						style={styles.socialIcon}
-					/>
-				</TouchableOpacity>
-			</View>
-		</View>
-	);
+      <View style={styles.socialContainer}>
+        <TouchableOpacity>
+          <Image
+            source={{
+              uri: "https://img.icons8.com/color/48/000000/google-logo.png",
+            }}
+            style={styles.socialIcon}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Image
+            source={{
+              uri: "https://img.icons8.com/color/48/000000/facebook.png",
+            }}
+            style={styles.socialIcon}
+          />
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({

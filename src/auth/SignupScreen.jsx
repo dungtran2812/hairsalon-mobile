@@ -42,6 +42,7 @@ const SignupScreen = ({ navigation }) => {
 		}
 
 		// Xử lý logic tạo tài khoản ở đây (gọi API, v.v.)
+
 		navigation.navigate("ServiceScreen");
 	};
 

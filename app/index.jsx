@@ -10,10 +10,14 @@ import { PersistGate } from "redux-persist/lib/integration/react";
 import { persistor, store } from "../src/store/store";
 import { Provider } from "react-redux";
 import ServiceChoosing from "../src/screens/BookingDetails/ServiceChoosing";
+import setUpInterceptor from "../src/services/api.service";
+import VoucherChoosing from "../src/screens/BookingDetails/VoucherChoosing";
+import { Pressable, Text } from "react-native";
 
 const Stack = createStackNavigator();
 
 export default function App() {
+	setUpInterceptor(store)
 	return (
 		<Provider store={store}>
 			<PersistGate loading={null} persistor={persistor}>
@@ -40,9 +44,13 @@ export default function App() {
 							options={{ headerShown: false }}
 						/>
 						<Stack.Screen
-							name="ServiceChoosing"
-							component={ServiceChoosing} // Điều hướng tới BottomTabNavigator
-							options={{ headerShown: false }}
+							name="VoucherChoosing"
+							component={VoucherChoosing}
+							options={{
+								headerShown: true, // Ensure the header is displayed
+								headerBackTitle: 'Custom Back',
+								headerBackTitleStyle: { fontSize: 30 },
+							}}
 						/>
 					</Stack.Navigator>
 				</NavigationContainer>
