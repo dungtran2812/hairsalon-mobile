@@ -84,8 +84,8 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 	},
 	serviceName: {
-		color: "#FFf",
-		fontSize: 30,
+		color: "#FFF",
+		fontSize: 18,
 		fontWeight: "bold",
 		position: "absolute",
 		top: 10,
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
 	},
 	servicePrice: {
 		color: "#FFF",
-		fontSize: 20,
+		fontSize: 16,
 		position: "absolute",
 		bottom: 30,
 		left: 10,
