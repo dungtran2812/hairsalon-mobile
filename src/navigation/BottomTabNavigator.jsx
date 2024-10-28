@@ -4,11 +4,10 @@ import ServiceScreen from "../screens/ServiceScreen";
 import StylistScreen from "../screens/StylistScreen"; // Thêm màn hình Stylist
 import BookingScreen from "../screens/BookingScreen";
 import VoucherScreen from "../screens/VoucherScreen";
-import ProfileScreen from "../screens/ProfileScreen";
 import Icon from "react-native-vector-icons/Ionicons";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { NavigationContainer } from "@react-navigation/native";
 import ProfileStack from "./stack/ProfileStack";
+import BookingStack from "./stack/BookingStack";
 
 const Tab = createBottomTabNavigator();
 
@@ -48,7 +47,7 @@ export default function BottomTabNavigator() {
 			>
 				<Tab.Screen name="Service" component={ServiceScreen} />
 				<Tab.Screen name="Stylist" component={StylistScreen} />
-				<Tab.Screen name="Booking" component={BookingScreen} />
+				<Tab.Screen name="Booking" component={BookingStack} />
 				<Tab.Screen name="Voucher" component={VoucherScreen} />
 				<Tab.Screen
 					name="Profile"

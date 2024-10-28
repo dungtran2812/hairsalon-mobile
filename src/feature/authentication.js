@@ -6,6 +6,7 @@ const initialState = {
   accessToken: "",
   username: "",
   role: "",
+  accessTokenExpired: false
 };
 
 const userSlice = createSlice({
@@ -30,16 +31,15 @@ const userSlice = createSlice({
     setLoading(state, action) {
       state.isLoading = action.payload;
     },
+    setAccessTokenExpired(state, action) {
+      state.accessToken = action.payload;
+    },
     signout(state) {
-      state.ok = false;
       state.isLoggedIn = false;
       state.isFirstLogin = false;
-      state.errorMessage = "";
       state.accessToken = "";
       state.username = "";
       state.role = [];
-      state.isLoading = false;
-      state.accessTokenExpired = false;
     },
   },
 });
@@ -51,6 +51,7 @@ export const {
   setUsername,
   setRole,
   signout,
+  setAccessTokenExpired
 } = userSlice.actions;
 
 export default userSlice.reducer;
