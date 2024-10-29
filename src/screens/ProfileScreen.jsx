@@ -1,23 +1,39 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import {
+	View,
+	Text,
+	StyleSheet,
+	TouchableOpacity,
+	Image,
+	ScrollView,
+	Pressable,
+} from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
+import { useDispatch } from "react-redux";
+import { signout } from "../feature/authentication";
+import { ScrollView } from "react-native";
 
 const ProfileScreen = ({ navigation }) => {
+	const dispatch = useDispatch();
+	const handleSignOut = () => {
+		navigation.navigate("AuthIntroScreen");
+		dispatch(signout());
+	};
 	return (
-		<View style={styles.container}>
+		<ScrollView style={styles.container}>
 			{/* Avatar và thông tin khách hàng */}
 			<View style={styles.header}>
 				<View style={styles.statusTag}>
 					<Text style={styles.statusText}>Khách hàng</Text>
 				</View>
-				<TouchableOpacity style={styles.avatarContainer}>
+				<Pressable style={styles.avatarContainer}>
 					<Image
 						source={{
 							uri: "https://i.pinimg.com/564x/7c/b3/c1/7cb3c1b6a018d656fe61cd4f26f6842f.jpg",
 						}}
 						style={styles.avatar}
 					/>
-				</TouchableOpacity>
+				</Pressable>
 				<View style={styles.userInfo}>
 					<Text style={styles.userName}>Neko</Text>
 					<View style={styles.loyaltyTag}>
@@ -31,7 +47,7 @@ const ProfileScreen = ({ navigation }) => {
 
 			{/* Danh sách các mục điều hướng */}
 			<View style={styles.menuContainer}>
-				<TouchableOpacity
+				<Pressable
 					style={styles.menuItem}
 					onPress={() => navigation.navigate("EditInfo")}
 				>
@@ -41,29 +57,36 @@ const ProfileScreen = ({ navigation }) => {
 						color="#4A4A4A"
 					/>
 					<Text style={styles.menuText}>Chỉnh sửa thông tin</Text>
-				</TouchableOpacity>
-				<TouchableOpacity
+				</Pressable>
+				<Pressable
 					style={styles.menuItem}
 					onPress={() => navigation.navigate("FavoriteServices")}
 				>
 					<Icon name="heart-outline" size={24} color="#4A4A4A" />
 					<Text style={styles.menuText}>Dịch vụ yêu thích</Text>
-				</TouchableOpacity>
-				<TouchableOpacity
+				</Pressable>
+				<Pressable
 					style={styles.menuItem}
 					onPress={() => navigation.navigate("FavoriteStylist")}
 				>
 					<Icon name="cut-outline" size={24} color="#4A4A4A" />
 					<Text style={styles.menuText}>Nhà tạo mẫu yêu thích</Text>
-				</TouchableOpacity>
-				<TouchableOpacity
+				</Pressable>
+				<Pressable
+					style={styles.menuItem}
+					onPress={() => navigation.navigate("Voucher")}
+				>
+					<Icon name="gift-outline" size={24} color="#4A4A4A" />
+					<Text style={styles.menuText}>Voucher của bạn</Text>
+				</Pressable>
+				<Pressable
 					style={styles.menuItem}
 					onPress={() => navigation.navigate("ServiceHistory")}
 				>
 					<Icon name="time-outline" size={24} color="#4A4A4A" />
 					<Text style={styles.menuText}>Lịch sử sử dụng dịch vụ</Text>
-				</TouchableOpacity>
-				<TouchableOpacity
+				</Pressable>
+				<Pressable
 					style={styles.menuItem}
 					onPress={() => navigation.navigate("CustomerSupport")}
 				>
@@ -75,17 +98,18 @@ const ProfileScreen = ({ navigation }) => {
 					<Text style={styles.menuText}>
 						Thông tin hỗ trợ khách hàng
 					</Text>
-				</TouchableOpacity>
-				<TouchableOpacity
+				</Pressable>
+				<Pressable
 					style={[styles.menuItem, styles.logoutButton]}
+					onPress={() => handleSignOut()}
 				>
 					<Icon name="log-out-outline" size={24} color="#E74C3C" />
 					<Text style={[styles.menuText, styles.logoutText]}>
 						Đăng xuất
 					</Text>
-				</TouchableOpacity>
+				</Pressable>
 			</View>
-		</View>
+		</ScrollView>
 	);
 };
 
