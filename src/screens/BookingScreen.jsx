@@ -3,6 +3,9 @@ import { Text, StyleSheet, Button, ScrollView, View, Alert } from "react-native"
 import StepIndicator from 'react-native-step-indicator';
 import UserInfo from "./BookingDetails/UserInfo";
 import ServiceChoosing from "./BookingDetails/ServiceChoosing";
+import { useSelector } from "react-redux";
+import StylistChoosing from "./BookingDetails/StylistChoosing";
+import TimeSlotChoosing from "./BookingDetails/TimeSlotChoosing";
 
 const steps = [
     { title: 'Your info' },
@@ -14,10 +17,12 @@ const steps = [
 ];
 
 const BookingScreen = ({ navigation }) => {
+    const customerName = useSelector((state) => state?.rootReducer?.user?.username)
+    const customerPhone = useSelector((state) => state?.rootReducer?.user?.phoneNumber)
     const [currentStep, setCurrentStep] = useState(0);
     const [formBooking, setFormBooking] = useState({
-        customerName: "",
-        customerPhone: "",
+        customerName: customerName,
+        customerPhone: customerPhone,
         selectedServices: [],
         selectedStylist: {},
         selectedDay: "",
@@ -103,16 +108,13 @@ const BookingScreen = ({ navigation }) => {
 
             {currentStep === 2 && (
                 <View style={styles.stepContainer}>
-                    <Text style={styles.label}>Step 3: Choose a Stylist</Text>
-                    <Button title="Choose a Stylist" onPress={() => {
-                        handleNextStep();
-                    }} />
+                    <StylistChoosing formBooking={formBooking} setFormBooking={setFormBooking} />
                 </View>
             )}
 
             {currentStep === 3 && (
                 <View>
-                    <Text style={styles.label}>Choose a Time Slot:</Text>
+                    <TimeSlotChoosing formBooking={formBooking} setFormBooking={setFormBooking} />
                 </View>
             )}
 

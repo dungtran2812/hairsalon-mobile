@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, Pressable } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useDispatch } from "react-redux";
 import { signout } from "../feature/authentication";
+import { ScrollView } from "react-native";
 
 const ProfileScreen = ({ navigation }) => {
 	const dispatch = useDispatch()
@@ -12,7 +13,7 @@ const ProfileScreen = ({ navigation }) => {
 		dispatch(signout())
 	}
 	return (
-		<View style={styles.container}>
+		<ScrollView style={styles.container}>
 			{/* Avatar và thông tin khách hàng */}
 			<View style={styles.header}>
 				<View style={styles.statusTag}>
@@ -94,7 +95,7 @@ const ProfileScreen = ({ navigation }) => {
 					</Text>
 				</Pressable>
 			</View>
-		</View>
+		</ScrollView>
 	);
 };
 

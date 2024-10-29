@@ -5,6 +5,7 @@ const initialState = {
   isFirstLogin: false,
   accessToken: "",
   username: "",
+  phoneNumber: "",
   role: "",
   accessTokenExpired: false
 };
@@ -24,6 +25,9 @@ const userSlice = createSlice({
     },
     setUsername(state, action) {
       state.username = action.payload;
+    },
+    setPhoneNumber(state, action) {
+      state.phoneNumber = action.payload;
     },
     setRole(state, action) {
       state.role = action.payload;
@@ -49,6 +53,7 @@ export const {
   setFirstLogin,
   setAccessToken,
   setUsername,
+  setPhoneNumber,
   setRole,
   signout,
   setAccessTokenExpired
