@@ -6,7 +6,7 @@ import {
 	TouchableOpacity,
 	Image,
 	ScrollView,
-  Pressable
+	Pressable,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useDispatch } from "react-redux";
@@ -14,11 +14,11 @@ import { signout } from "../feature/authentication";
 import { ScrollView } from "react-native";
 
 const ProfileScreen = ({ navigation }) => {
-	const dispatch = useDispatch()
+	const dispatch = useDispatch();
 	const handleSignOut = () => {
-		navigation.navigate('AuthIntroScreen')
-		dispatch(signout())
-	}
+		navigation.navigate("AuthIntroScreen");
+		dispatch(signout());
+	};
 	return (
 		<ScrollView style={styles.container}>
 			{/* Avatar và thông tin khách hàng */}
@@ -78,8 +78,8 @@ const ProfileScreen = ({ navigation }) => {
 				>
 					<Icon name="gift-outline" size={24} color="#4A4A4A" />
 					<Text style={styles.menuText}>Voucher của bạn</Text>
-				</TouchableOpacity>
-				<TouchableOpacity
+				</Pressable>
+				<Pressable
 					style={styles.menuItem}
 					onPress={() => navigation.navigate("ServiceHistory")}
 				>
