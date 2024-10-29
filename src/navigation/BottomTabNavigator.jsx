@@ -1,6 +1,6 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import HomeScreen from "../screens/HomeScreen";
+import HomeScreen from "../screens/Home/HomeScreen";
 import ServiceScreen from "../screens/ServiceScreen";
 import BookingScreen from "../screens/BookingScreen";
 import VoucherScreen from "../screens/VoucherScreen";
@@ -38,7 +38,7 @@ export default function BottomTabNavigator() {
 						tabBarInactiveTintColor: "gray", // Màu icon khi không được chọn
 					})}
 				>
-					<Tab.Screen name="Home" component={HomeScreen} />
+					<Tab.Screen name="Home" component={HomeScreen} options={{headerShown: false}}/>
 					<Tab.Screen name="Service" component={ServiceScreen} />
 					<Tab.Screen name="Booking" component={BookingScreen} />
 					<Tab.Screen name="Voucher" component={VoucherScreen} />
