@@ -1,10 +1,17 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import {
+	View,
+	Text,
+	StyleSheet,
+	TouchableOpacity,
+	Image,
+	ScrollView,
+} from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 
 const ProfileScreen = ({ navigation }) => {
 	return (
-		<View style={styles.container}>
+		<ScrollView style={styles.container}>
 			{/* Avatar và thông tin khách hàng */}
 			<View style={styles.header}>
 				<View style={styles.statusTag}>
@@ -58,6 +65,13 @@ const ProfileScreen = ({ navigation }) => {
 				</TouchableOpacity>
 				<TouchableOpacity
 					style={styles.menuItem}
+					onPress={() => navigation.navigate("Voucher")}
+				>
+					<Icon name="gift-outline" size={24} color="#4A4A4A" />
+					<Text style={styles.menuText}>Voucher của bạn</Text>
+				</TouchableOpacity>
+				<TouchableOpacity
+					style={styles.menuItem}
 					onPress={() => navigation.navigate("ServiceHistory")}
 				>
 					<Icon name="time-outline" size={24} color="#4A4A4A" />
@@ -85,7 +99,7 @@ const ProfileScreen = ({ navigation }) => {
 					</Text>
 				</TouchableOpacity>
 			</View>
-		</View>
+		</ScrollView>
 	);
 };
 
