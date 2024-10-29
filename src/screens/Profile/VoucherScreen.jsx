@@ -1,22 +1,26 @@
-// VoucherScreen.js
 import React from "react";
-import { View, Text, StyleSheet, FlatList, Image } from "react-native";
+import {
+	View,
+	Text,
+	StyleSheet,
+	FlatList,
+	TouchableOpacity,
+} from "react-native";
+import Icon from "react-native-vector-icons/Ionicons";
 
-const VoucherScreen = () => {
+const VoucherScreen = ({ navigation }) => {
 	const vouchers = [
 		{
 			id: 1,
-			image: "https://example.com/voucher1.jpg", // Thay thế bằng URL hình ảnh thật
 			code: "VOUCHER10",
 			discount: "10%",
 			description: "Giảm giá 10% cho đơn hàng trên 100.000 VNĐ",
 			expiryDate: "Hết hạn: 31/12/2024",
 			isActive: true,
-			type: "discount", // Loại voucher
+			type: "discount",
 		},
 		{
 			id: 2,
-			image: "https://example.com/voucher2.jpg",
 			code: "VOUCHER50K",
 			discount: "50.000",
 			description: "Giảm giá 50.000 VNĐ cho đơn hàng từ 200.000 VNĐ",
@@ -26,22 +30,21 @@ const VoucherScreen = () => {
 		},
 		{
 			id: 3,
-			image: "https://example.com/voucher3.jpg",
 			code: "BIRTHDAYGIFT",
-			discount: "100.000 VNĐ",
+			discount: "100.000",
 			description: "Voucher sinh nhật đặc biệt",
 			expiryDate: "Hết hạn: 20/10/2024",
 			isActive: true,
-			type: "birthday", // Loại voucher
+			type: "birthday",
 		},
 	];
 
 	const getBackgroundColor = (type) => {
 		switch (type) {
 			case "discount":
-				return "#E0F7FA"; // Màu cho voucher giảm giá
+				return "#99FFCC"; // Màu cho voucher giảm giá
 			case "birthday":
-				return "#FFF3E0"; // Màu cho voucher sinh nhật
+				return "#FFE0B2"; // Màu cho voucher sinh nhật
 			default:
 				return "#FFF"; // Mặc định
 		}
@@ -61,9 +64,11 @@ const VoucherScreen = () => {
 					>
 						<View style={styles.cardContent}>
 							<View style={styles.leftSection}>
-								<Image
-									source={{ uri: item.image }}
-									style={styles.image}
+								<Icon
+									name="card-outline"
+									size={40}
+									color="#FF6B6B"
+									style={styles.icon}
 								/>
 								<View style={styles.info}>
 									<Text style={styles.code}>{item.code}</Text>
@@ -80,18 +85,29 @@ const VoucherScreen = () => {
 								<Text style={styles.expiryDate}>
 									{item.expiryDate}
 								</Text>
-								<Text
+								{!item.isActive && (
+									<Text style={styles.expiredLabel}>
+										Hết hạn
+									</Text>
+								)}
+								<TouchableOpacity
 									style={[
-										styles.status,
-										item.isActive
-											? styles.active
-											: styles.expired,
+										styles.applyButton,
+										!item.isActive && styles.disabledButton,
 									]}
+									onPress={() => {
+										if (item.isActive) {
+											navigation.navigate("Booking", {
+												voucher: item,
+											});
+										}
+									}}
+									disabled={!item.isActive}
 								>
-									{item.isActive
-										? "Còn hiệu lực"
-										: "Đã hết hạn"}
-								</Text>
+									<Text style={styles.applyButtonText}>
+										Áp dụng
+									</Text>
+								</TouchableOpacity>
 							</View>
 						</View>
 					</View>
@@ -104,7 +120,7 @@ const VoucherScreen = () => {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: "#F5F5F5",
+		backgroundColor: "#FFFFFF",
 		padding: 20,
 	},
 	card: {
@@ -114,7 +130,6 @@ const styles = StyleSheet.create({
 		shadowColor: "#000",
 		shadowOffset: { width: 0, height: 1 },
 		shadowOpacity: 0.1,
-		shadowRadius: 5,
 	},
 	cardContent: {
 		flexDirection: "row",
@@ -122,11 +137,9 @@ const styles = StyleSheet.create({
 	leftSection: {
 		flex: 1,
 		flexDirection: "row",
+		alignItems: "center",
 	},
-	image: {
-		width: 60,
-		height: 60,
-		borderRadius: 5,
+	icon: {
 		marginRight: 10,
 	},
 	info: {
@@ -142,8 +155,8 @@ const styles = StyleSheet.create({
 		color: "#666",
 	},
 	divider: {
-		width: 1,
-		backgroundColor: "#FFF", // Đường kẻ trắng
+		width: 2,
+		backgroundColor: "#fff", // Đường kẻ thẳng
 		marginHorizontal: 10,
 	},
 	rightSection: {
@@ -160,15 +173,24 @@ const styles = StyleSheet.create({
 		color: "#888",
 		marginVertical: 5,
 	},
-	status: {
+	expiredLabel: {
 		fontSize: 12,
+		color: "#DC3545", // màu đỏ cho nhãn "Hết hạn"
 		fontWeight: "bold",
 	},
-	active: {
-		color: "#28A745", // xanh cho voucher còn hiệu lực
+	applyButton: {
+		backgroundColor: "#FF6B6B",
+		paddingVertical: 8,
+		paddingHorizontal: 15,
+		borderRadius: 20,
+		marginTop: 10,
 	},
-	expired: {
-		color: "#DC3545", // đỏ cho voucher đã hết hạn
+	disabledButton: {
+		backgroundColor: "#D3D3D3", // Màu cho nút khi vô hiệu hóa
+	},
+	applyButtonText: {
+		color: "#FFF",
+		fontWeight: "bold",
 	},
 });
 
