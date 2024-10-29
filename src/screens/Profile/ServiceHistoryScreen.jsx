@@ -9,7 +9,7 @@ import {
 } from "react-native";
 
 const ServiceHistoryScreen = ({ navigation }) => {
-	const services = [
+	const appointments = [
 		{
 			id: 1,
 			month: "October 2024",
@@ -48,9 +48,9 @@ const ServiceHistoryScreen = ({ navigation }) => {
 		},
 	];
 
-	const groupedServices = services.reduce((acc, service) => {
-		if (!acc[service.month]) acc[service.month] = [];
-		acc[service.month].push(service);
+	const groupedAppointments = appointments.reduce((acc, appointment) => {
+		if (!acc[appointment.month]) acc[appointment.month] = [];
+		acc[appointment.month].push(appointment);
 		return acc;
 	}, {});
 
@@ -71,45 +71,45 @@ const ServiceHistoryScreen = ({ navigation }) => {
 		<View style={styles.container}>
 			<View style={styles.timelineLine} />
 			<FlatList
-				data={Object.entries(groupedServices)}
+				data={Object.entries(groupedAppointments)}
 				keyExtractor={([month]) => month}
-				renderItem={({ item: [month, monthServices] }) => (
+				renderItem={({ item: [month, monthAppointments] }) => (
 					<View style={styles.monthSection}>
 						<View style={styles.monthHeaderContainer}>
 							<Text style={styles.monthHeader}>{month}</Text>
 						</View>
-						{monthServices.map((service) => (
-							<View key={service.id} style={styles.card}>
+						{monthAppointments.map((appointment) => (
+							<View key={appointment.id} style={styles.card}>
 								<View style={styles.dateTimeStatusContainer}>
 									<Text style={styles.dateTime}>
-										{service.date} - {service.time}
+										{appointment.date} - {appointment.time}
 									</Text>
 									<Text
 										style={[
 											styles.status,
-											getStatusStyle(service.status),
+											getStatusStyle(appointment.status),
 										]}
 									>
-										{service.status.toUpperCase()}
+										{appointment.status.toUpperCase()}
 									</Text>
 								</View>
 								<View style={styles.serviceDetails}>
 									<Image
-										source={{ uri: service.image }}
+										source={{ uri: appointment.image }}
 										style={styles.image}
 									/>
 									<View style={styles.info}>
 										<Text style={styles.serviceName}>
-											{service.name}
+											{appointment.name}
 										</Text>
 										<Text style={styles.stylist}>
-											Stylist: {service.stylist}
+											Stylist: {appointment.stylist}
 										</Text>
 										<Text style={styles.price}>
-											{service.price}
+											{appointment.price}
 										</Text>
 										<Text style={styles.loyaltyPoints}>
-											+{service.loyaltyPoints} điểm
+											+{appointment.loyaltyPoints} điểm
 										</Text>
 									</View>
 								</View>
@@ -120,7 +120,7 @@ const ServiceHistoryScreen = ({ navigation }) => {
 											navigation.navigate(
 												"BookingScreen",
 												{
-													serviceId: service.id,
+													serviceId: appointment.id,
 												}
 											)
 										}
@@ -134,7 +134,7 @@ const ServiceHistoryScreen = ({ navigation }) => {
 										onPress={() =>
 											navigation.navigate(
 												"FeedbackScreen",
-												{ serviceId: service.id }
+												{ serviceId: appointment.id }
 											)
 										}
 									>

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 
 const CustomerSupportScreen = () => {
-	const [expandedIndex, setExpandedIndex] = useState(null);
+	const [isExpended, setIsExpended] = useState(null);
 
 	const faqs = [
 		{
@@ -20,7 +20,7 @@ const CustomerSupportScreen = () => {
 	];
 
 	const toggleExpand = (index) => {
-		setExpandedIndex(expandedIndex === index ? null : index);
+		setIsExpended(isExpended === index ? null : index);
 	};
 
 	return (
@@ -34,7 +34,7 @@ const CustomerSupportScreen = () => {
 					>
 						<Text style={styles.question}>{item.question}</Text>
 					</Pressable>
-					{expandedIndex === index && (
+					{isExpended === index && (
 						<Text style={styles.answer}>{item.answer}</Text>
 					)}
 				</View>
