@@ -5,7 +5,6 @@ import {
 	StyleSheet,
 	FlatList,
 	TouchableOpacity,
-	ScrollView,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 
@@ -33,6 +32,15 @@ const VoucherScreen = ({ navigation }) => {
 			id: 3,
 			code: "BIRTHDAYGIFT",
 			discount: "100.000",
+			description: "Voucher sinh nhật đặc biệt",
+			expiryDate: "Hết hạn: 20/10/2024",
+			isActive: true,
+			type: "birthday",
+		},
+		{
+			id: 4,
+			code: "BIRTHDAYGIFT",
+			discount: "200.000",
 			description: "Voucher sinh nhật đặc biệt",
 			expiryDate: "Hết hạn: 20/10/2024",
 			isActive: true,
@@ -107,7 +115,7 @@ const VoucherScreen = ({ navigation }) => {
 	);
 
 	return (
-		<ScrollView style={styles.container}>
+		<View style={styles.container}>
 			<FlatList
 				data={activeVouchers}
 				keyExtractor={(item) => item.id.toString()}
@@ -120,7 +128,7 @@ const VoucherScreen = ({ navigation }) => {
 				keyExtractor={(item) => item.id.toString()}
 				renderItem={({ item }) => renderVoucher(item)}
 			/>
-		</ScrollView>
+		</View>
 	);
 };
 
