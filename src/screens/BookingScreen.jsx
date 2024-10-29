@@ -6,14 +6,15 @@ import ServiceChoosing from "./BookingDetails/ServiceChoosing";
 import { useSelector } from "react-redux";
 import StylistChoosing from "./BookingDetails/StylistChoosing";
 import TimeSlotChoosing from "./BookingDetails/TimeSlotChoosing";
+import ConfirmationChoosing from "./BookingDetails/ConfirmationChoosing";
 
 const steps = [
     { title: 'Your info' },
     { title: 'Service' },
     { title: 'Stylist' },
     { title: 'Time Slot' },
-    { title: 'Payment' },
     { title: 'Confirm' },
+    { title: 'Payment' },
 ];
 
 const BookingScreen = ({ navigation }) => {
@@ -48,13 +49,13 @@ const BookingScreen = ({ navigation }) => {
         } else if (currentStep === 2) {
             // Step 3: Stylist
             if (!formBooking.selectedStylist.name) {
-                alert("Error", "Please select a stylist.");
+                alert("Please select a stylist.");
                 return;
             }
         } else if (currentStep === 3) {
             // Step 4: Time Slot
             if (!formBooking.selectedDay || !formBooking.selectedSlot) {
-                alert("Error", "Please select a day and time slot.");
+                alert("Please select a day and time slot.");
                 return;
             }
         } else if (currentStep === 4) {
@@ -119,15 +120,16 @@ const BookingScreen = ({ navigation }) => {
             )}
 
             {currentStep === 4 && (
-                <View>
-                    <Text style={styles.label}>Choose a Payment Method:</Text>
-                    <Button title="Next" onPress={handleNextStep} />
+                <View style={styles.stepContainer}>
+                    <ConfirmationChoosing formBooking={formBooking} setFormBooking={setFormBooking} />
                 </View>
+
             )}
 
             {currentStep === 5 && (
-                <View style={styles.stepContainer}>
-                    <Button title="Confirm Booking" onPress={handleBooking} />
+                <View>
+                    <Text style={styles.label}>Choose a Payment Method:</Text>
+                    <Button title="Next" onPress={handleNextStep} />
                 </View>
             )}
 
@@ -186,6 +188,7 @@ const styles = StyleSheet.create({
     stepButtonContainer: {
         flexDirection: 'row',
         marginVertical: 20,
+        justifyContent: 'flex-end'
     },
     backButtonContainer: {
         width: '40vw',

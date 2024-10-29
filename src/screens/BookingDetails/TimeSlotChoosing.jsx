@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, ActivityIndicator, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { Text, View, ActivityIndicator, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import { useAvailableTimeSlotsMutation } from '../../services/hairsalon.service';
 import { generateNext7Days } from '../../utils/util';
-import DropDownPicker from 'react-native-dropdown-picker';
+import { PickerView } from '@ant-design/react-native';
 
 const TimeSlotChoosing = ({ formBooking, setFormBooking }) => {
   const { selectedStylist, selectedSlot, selectedDay } = formBooking;
   const next7Days = generateNext7Days();
-  const [dayDropDown, setDayDropDown] = useState(false);
-  
+  const [selectedDayIndex, setSelectedDayIndex] = useState(0);
+
   const payload = {
     stylistId: selectedStylist?._id,
     startDate: next7Days[0],
@@ -17,20 +17,20 @@ const TimeSlotChoosing = ({ formBooking, setFormBooking }) => {
 
   const [loadDataSchedule, { data: scheduleData, isLoading, error }] = useAvailableTimeSlotsMutation();
 
-  // Trigger the mutation hook immediately to get time slots
   useEffect(() => {
     if (selectedStylist) {
       loadDataSchedule(payload);
     }
   }, [selectedStylist]);
 
-  const handleDaySelect = (day) => {
-    // Update formBooking with the selected day and reset selected slot
+  const handleDaySelect = (index) => {
+    const selectedDay = next7Days[index];
     setFormBooking((prev) => ({
       ...prev,
-      selectedDay: day,
-      selectedSlot: null, // Reset selected slot when day changes
+      selectedDay: selectedDay,
+      selectedSlot: null,
     }));
+    setSelectedDayIndex(index);
   };
 
   const handleSlotSelect = (time) => {
@@ -45,37 +45,39 @@ const TimeSlotChoosing = ({ formBooking, setFormBooking }) => {
 
   const timeSlots = scheduleData?.data?.find((slot) => slot.date === selectedDay)?.timeSlots || [];
 
+  const renderTimeSlot = ({ item }) => (
+    <TouchableOpacity
+      style={[styles.slotButton, item.time === selectedSlot ? styles.selectedSlot : styles.availableSlot]}
+      onPress={() => handleSlotSelect(item.time)}
+      disabled={!item.available}
+    >
+      <Text style={item.available ? styles.slotText : styles.unavailableText}>
+        {item.time}
+      </Text>
+    </TouchableOpacity>
+  );
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Choose a Day</Text>
-      <DropDownPicker
-        items={next7Days.map((day) => ({
-          label: new Date(day).toLocaleDateString(), // Format date for display
-          value: day,
-        }))}
-        value={formBooking?.selectedDay}
-        placeholder="Select a Day"
-        containerStyle={{ height: 200 }}
-        setValue={handleDaySelect} // Set the handler here
-        open={dayDropDown} // Control open state
-        setOpen={setDayDropDown}
+      <PickerView
+        data={next7Days.map(day => ({ label: new Date(day).toLocaleDateString(), value: day }))}
+        value={[next7Days[selectedDayIndex]]}
+        onChange={(value) => handleDaySelect(next7Days.findIndex(day => day === value[0]))}
+        cols={1}
       />
 
       <Text style={styles.header}>Choose a Time Slot</Text>
-      <View contentContainerStyle={styles.slotsContainer}>
+      <View style={styles.slotsContainer}>
         {timeSlots.length > 0 ? (
-          timeSlots.map((item, index) => (
-            <TouchableOpacity
-              key={index}
-              style={[styles.slotButton, item.time === selectedSlot ? styles.selectedSlot : styles.availableSlot]}
-              onPress={() => handleSlotSelect(item.time)}
-              disabled={!item.available}
-            >
-              <Text style={item.available ? styles.slotText : styles.unavailableText}>
-                {item.time}
-              </Text>
-            </TouchableOpacity>
-          ))
+          console.log(timeSlots),
+          <FlatList
+            data={timeSlots}
+            renderItem={renderTimeSlot}
+            keyExtractor={(item) => item.time}
+            numColumns={3} // Adjust number of columns as needed
+            contentContainerStyle={styles.flatListContainer}
+          />
         ) : (
           <Text style={styles.noSlots}>No available time slots for this day.</Text>
         )}
@@ -97,9 +99,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   slotsContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    flex: 1,
     justifyContent: 'center',
+    alignItems: 'center',
+  },
+  flatListContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   slotButton: {
     padding: 10,
