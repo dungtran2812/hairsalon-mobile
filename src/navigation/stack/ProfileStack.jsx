@@ -6,7 +6,7 @@ import FavoriteServicesScreen from "../../screens/Profile/FavoriteServicesScreen
 import FavoriteStylistScreen from "../../screens/Profile/FavoriteStylistScreen";
 import ServiceHistoryScreen from "../../screens/Profile/ServiceHistoryScreen";
 import CustomerSupportScreen from "../../screens/Profile/CustomerSupportScreen";
-import VoucherScreen from "../../screens/Profile/VoucherScreen";
+import MyVoucherScreen from "../../screens/Profile/MyVoucherScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -27,7 +27,7 @@ const ProfileStack = () => {
 				name="FavoriteStylist"
 				component={FavoriteStylistScreen}
 			/>
-			<Stack.Screen name="Voucher" component={VoucherScreen} />
+			<Stack.Screen name="Voucher" component={MyVoucherScreen} />
 			<Stack.Screen
 				name="ServiceHistory"
 				component={ServiceHistoryScreen}

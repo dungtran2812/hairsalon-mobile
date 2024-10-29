@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 
-const VoucherScreen = ({ navigation }) => {
+const MyVoucherScreen = ({ navigation }) => {
 	const vouchers = [
 		{
 			id: 1,
@@ -217,4 +217,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default VoucherScreen;
+export default MyVoucherScreen;
