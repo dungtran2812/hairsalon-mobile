@@ -11,7 +11,6 @@ import {
 import Icon from "react-native-vector-icons/Ionicons";
 import { useDispatch } from "react-redux";
 import { signout } from "../feature/authentication";
-import { ScrollView } from "react-native";
 
 const ProfileScreen = ({ navigation }) => {
 	const dispatch = useDispatch();
