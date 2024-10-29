@@ -1,12 +1,5 @@
 import React, { useState } from "react";
-import {
-	View,
-	Text,
-	FlatList,
-	StyleSheet,
-	Pressable,
-	ScrollView,
-} from "react-native";
+import { View, Text, FlatList, StyleSheet, Pressable } from "react-native";
 
 const vouchers = [
 	{
@@ -133,28 +126,30 @@ const VoucherScreen = ({ navigation }) => {
 	};
 
 	return (
-		<View style={styles.container}>
-			{Object.entries(groupedVouchers).map(([type, vouchers]) => (
-				<View key={type} style={styles.voucherSection}>
+		<FlatList
+			data={Object.entries(groupedVouchers)}
+			keyExtractor={(item) => item[0]}
+			renderItem={({ item }) => (
+				<View style={styles.voucherSection}>
 					<Text style={styles.sectionHeader}>
-						{type === "main service"
+						{item[0] === "main service"
 							? "Dịch Vụ Chính"
-							: type === "holiday"
+							: item[0] === "holiday"
 							? "Sự Kiện Lễ"
-							: type === "event"
+							: item[0] === "event"
 							? "Khuyến Mãi Sự Kiện"
 							: "Sinh Nhật"}
 					</Text>
 					<FlatList
-						data={vouchers}
+						data={item[1]}
 						renderItem={({ item }) => renderVoucher(item)}
 						keyExtractor={(item) => item.id.toString()}
 						numColumns={2}
 						columnWrapperStyle={styles.row}
 					/>
 				</View>
-			))}
-		</View>
+			)}
+		/>
 	);
 };
 
