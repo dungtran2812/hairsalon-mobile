@@ -1,6 +1,13 @@
 import React from "react";
-import { Image } from "react-native";
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import {
+	View,
+	Text,
+	StyleSheet,
+	TouchableOpacity,
+	Image,
+	ScrollView,
+  Pressable
+} from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useDispatch } from "react-redux";
 import { signout } from "../feature/authentication";
@@ -66,6 +73,13 @@ const ProfileScreen = ({ navigation }) => {
 					<Text style={styles.menuText}>Nhà tạo mẫu yêu thích</Text>
 				</Pressable>
 				<Pressable
+					style={styles.menuItem}
+					onPress={() => navigation.navigate("Voucher")}
+				>
+					<Icon name="gift-outline" size={24} color="#4A4A4A" />
+					<Text style={styles.menuText}>Voucher của bạn</Text>
+				</TouchableOpacity>
+				<TouchableOpacity
 					style={styles.menuItem}
 					onPress={() => navigation.navigate("ServiceHistory")}
 				>
