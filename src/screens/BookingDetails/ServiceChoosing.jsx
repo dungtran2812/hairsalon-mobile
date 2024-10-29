@@ -76,15 +76,6 @@ const ServiceChoosing = ({ navigation, formBooking, setFormBooking }) => {
       <View style={styles.servicesContainer}>
         {renderServices()}
       </View>
-      <Pressable
-        style={styles.voucherButton}
-        onPress={() => navigation.navigate("VoucherChoosing", {
-          formBooking,
-          setFormBooking,
-        })}
-      >
-        <Text style={styles.voucherButtonText}>Choose a Voucher</Text>
-      </Pressable>
     </View>
   );
 };

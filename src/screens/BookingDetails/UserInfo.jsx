@@ -29,7 +29,7 @@ const UserInfo = ({ formBooking, setFormBooking }) => {
           style={styles.input}
           value={customerPhone}
           onChangeText={(value) => handleChangeUser('customerPhone', value)}
-          placeholder="Enter your phone number"
+          placeholder="Enter phone number"
           keyboardType="phone-pad"
         />
       </View>
@@ -39,7 +39,7 @@ const UserInfo = ({ formBooking, setFormBooking }) => {
 
 const styles = StyleSheet.create({
   container: {
-    width:'90vw',
+    width:'100%',
     marginVertical: 20,
     padding: 20,
     backgroundColor: '#f9f9f9',
