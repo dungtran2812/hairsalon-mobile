@@ -31,6 +31,7 @@ export default function BottomTabNavigator() {
               iconName = focused ? "person-circle" : "person-circle-outline";
             }
 
+
 						return (
 							<Icon name={iconName} size={size} color={color} />
 						);
@@ -51,4 +52,5 @@ export default function BottomTabNavigator() {
 			</Tab.Navigator>
 		</SafeAreaProvider>
 	);
+
 }
