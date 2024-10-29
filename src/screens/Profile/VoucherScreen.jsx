@@ -5,6 +5,7 @@ import {
 	StyleSheet,
 	FlatList,
 	TouchableOpacity,
+	ScrollView,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 
@@ -39,6 +40,10 @@ const VoucherScreen = ({ navigation }) => {
 		},
 	];
 
+	// Tách voucher thành hai nhóm
+	const activeVouchers = vouchers.filter((v) => v.isActive);
+	const expiredVouchers = vouchers.filter((v) => !v.isActive);
+
 	const getBackgroundColor = (type) => {
 		switch (type) {
 			case "discount":
@@ -50,70 +55,72 @@ const VoucherScreen = ({ navigation }) => {
 		}
 	};
 
-	return (
-		<View style={styles.container}>
-			<FlatList
-				data={vouchers}
-				keyExtractor={(item) => item.id.toString()}
-				renderItem={({ item }) => (
-					<View
-						style={[
-							styles.card,
-							{ backgroundColor: getBackgroundColor(item.type) },
-						]}
-					>
-						<View style={styles.cardContent}>
-							<View style={styles.leftSection}>
-								<Icon
-									name="card-outline"
-									size={40}
-									color="#FF6B6B"
-									style={styles.icon}
-								/>
-								<View style={styles.info}>
-									<Text style={styles.code}>{item.code}</Text>
-									<Text style={styles.description}>
-										{item.description}
-									</Text>
-								</View>
-							</View>
-							<View style={styles.divider} />
-							<View style={styles.rightSection}>
-								<Text style={styles.discount}>
-									{item.discount}
-								</Text>
-								<Text style={styles.expiryDate}>
-									{item.expiryDate}
-								</Text>
-								{!item.isActive && (
-									<Text style={styles.expiredLabel}>
-										Hết hạn
-									</Text>
-								)}
-								<TouchableOpacity
-									style={[
-										styles.applyButton,
-										!item.isActive && styles.disabledButton,
-									]}
-									onPress={() => {
-										if (item.isActive) {
-											navigation.navigate("Booking", {
-												voucher: item,
-											});
-										}
-									}}
-									disabled={!item.isActive}
-								>
-									<Text style={styles.applyButtonText}>
-										Áp dụng
-									</Text>
-								</TouchableOpacity>
-							</View>
-						</View>
+	const renderVoucher = (item) => (
+		<View
+			style={[
+				styles.card,
+				{ backgroundColor: getBackgroundColor(item.type) },
+				!item.isActive && styles.disabledCard,
+			]}
+		>
+			<View style={styles.cardContent}>
+				<View style={styles.leftSection}>
+					<Icon
+						name="card-outline"
+						size={40}
+						color="#FF6B6B"
+						style={styles.icon}
+					/>
+					<View style={styles.info}>
+						<Text style={styles.code}>{item.code}</Text>
+						<Text style={styles.description}>
+							{item.description}
+						</Text>
 					</View>
-				)}
-			/>
+				</View>
+				<View style={styles.divider} />
+				<View style={styles.rightSection}>
+					<Text style={styles.discount}>{item.discount}</Text>
+					<Text style={styles.expiryDate}>{item.expiryDate}</Text>
+					{!item.isActive && (
+						<Text style={styles.expiredLabel}>Hết hạn</Text>
+					)}
+					<TouchableOpacity
+						style={[
+							styles.applyButton,
+							!item.isActive && styles.disabledButton,
+						]}
+						onPress={() => {
+							if (item.isActive) {
+								navigation.navigate("Booking", {
+									voucher: item,
+								});
+							}
+						}}
+						disabled={!item.isActive}
+					>
+						<Text style={styles.applyButtonText}>Áp dụng</Text>
+					</TouchableOpacity>
+				</View>
+			</View>
 		</View>
+	);
+
+	return (
+		<ScrollView style={styles.container}>
+			<FlatList
+				data={activeVouchers}
+				keyExtractor={(item) => item.id.toString()}
+				renderItem={({ item }) => renderVoucher(item)}
+			/>
+			{/* Đường kẻ phân cách */}
+			<View style={styles.separator} />
+			<FlatList
+				data={expiredVouchers}
+				keyExtractor={(item) => item.id.toString()}
+				renderItem={({ item }) => renderVoucher(item)}
+			/>
+		</ScrollView>
 	);
 };
 
@@ -130,6 +137,9 @@ const styles = StyleSheet.create({
 		shadowColor: "#000",
 		shadowOffset: { width: 0, height: 1 },
 		shadowOpacity: 0.1,
+	},
+	disabledCard: {
+		opacity: 0.5, // Làm mờ card khi hết hạn
 	},
 	cardContent: {
 		flexDirection: "row",
@@ -191,6 +201,11 @@ const styles = StyleSheet.create({
 	applyButtonText: {
 		color: "#FFF",
 		fontWeight: "bold",
+	},
+	separator: {
+		height: 1,
+		backgroundColor: "gray",
+		marginVertical: 15,
 	},
 });
 
