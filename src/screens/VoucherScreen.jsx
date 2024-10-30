@@ -79,12 +79,6 @@ const vouchers = [
 const VoucherScreen = ({ navigation }) => {
 	const [claimedVouchers, setClaimedVouchers] = useState([]);
 
-	const groupedVouchers = vouchers.reduce((acc, voucher) => {
-		if (!acc[voucher.type]) acc[voucher.type] = [];
-		acc[voucher.type].push(voucher);
-		return acc;
-	}, {});
-
 	const handleClaimVoucher = (voucherId) => {
 		setClaimedVouchers([...claimedVouchers, voucherId]);
 		navigation.navigate("MyVoucherScreen", { voucherId });
@@ -126,30 +120,15 @@ const VoucherScreen = ({ navigation }) => {
 	};
 
 	return (
-		<FlatList
-			data={Object.entries(groupedVouchers)}
-			keyExtractor={(item) => item[0]}
-			renderItem={({ item }) => (
-				<View style={styles.voucherSection}>
-					<Text style={styles.sectionHeader}>
-						{item[0] === "main service"
-							? "Dịch Vụ Chính"
-							: item[0] === "holiday"
-							? "Sự Kiện Lễ"
-							: item[0] === "event"
-							? "Khuyến Mãi Sự Kiện"
-							: "Sinh Nhật"}
-					</Text>
-					<FlatList
-						data={item[1]}
-						renderItem={({ item }) => renderVoucher(item)}
-						keyExtractor={(item) => item.id.toString()}
-						numColumns={2}
-						columnWrapperStyle={styles.row}
-					/>
-				</View>
-			)}
-		/>
+		<View style={styles.container}>
+			<Text style={styles.sectionHeader}>Voucher ưu đãi</Text>
+			<FlatList
+				data={vouchers}
+				renderItem={({ item }) => renderVoucher(item)}
+				keyExtractor={(item) => item.id.toString()}
+				numColumns={1} // Hiển thị một cột
+			/>
+		</View>
 	);
 };
 
@@ -158,10 +137,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: "#FFF",
 		paddingTop: 20,
-		paddingHorizontal: 15,
-	},
-	voucherSection: {
-		marginBottom: 20,
+		paddingHorizontal: 10, // Tạo khoảng cách cho phần tử sát mép
 	},
 	sectionHeader: {
 		fontSize: 18,
@@ -169,22 +145,20 @@ const styles = StyleSheet.create({
 		color: "#000",
 		marginBottom: 10,
 	},
-	row: {
-		justifyContent: "space-between",
-	},
 	card: {
-		flex: 1,
-		backgroundColor: "#F9F9F9",
+		backgroundColor: "#FFF",
 		borderRadius: 10,
 		padding: 15,
 		marginBottom: 15,
-		marginHorizontal: 5,
-		shadowColor: "#000",
-		shadowOffset: { width: 0, height: 2 },
-		shadowOpacity: 0.1,
-		shadowRadius: 5,
+		marginHorizontal: 10, // Khoảng cách giữa các thẻ và mép màn hình
 		flexDirection: "row",
 		alignItems: "center",
+		// Đổ bóng cho từng thẻ
+		shadowColor: "#000",
+		shadowOffset: { width: 0, height: 4 },
+		shadowOpacity: 0.2,
+		shadowRadius: 6,
+		elevation: 10,
 	},
 	claimedCard: {
 		backgroundColor: "#E0E0E0",
