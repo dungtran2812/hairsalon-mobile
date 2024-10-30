@@ -165,7 +165,7 @@ const hairsalonApi = createApi({
     }),
     availableTimeSlots: builder.mutation({
       query: (date) => ({
-        url: endpoints.AVAILABLE_TIME_SLOTS,
+        url: endpoints.SCHEDULE_STYLISTS_APPOINTMENTS,
         method: "POST",
         data: date,
       }),
@@ -207,7 +207,6 @@ export const {
   useViewVoucherQuery,
   useUpdateVoucherMutation,
   useDeleteVoucherMutation,
-
   useGetAllStylistQuery,
   useGetStylistVerifyQuery,
   useAvailableTimeSlotsMutation,

@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 
 const ConfirmationChoosing = ({ formBooking }) => {
-  const { selectedStylist, selectedSlot, selectedDay, customerName, customerPhone, customerEmail, selectedServices } = formBooking;
+  const { selectedStylist, selectedSlot, selectedDay, customerName, customerPhone, selectedServices } = formBooking;
 
   return (
     <View style={styles.container}>
@@ -10,14 +10,11 @@ const ConfirmationChoosing = ({ formBooking }) => {
       
       <Text style={styles.label}>User Information:</Text>
       <Text style={styles.infoText}>Name: {customerName || 'N/A'}</Text>
-      <Text style={styles.infoText}>Email: {customerEmail || 'N/A'}</Text>
       <Text style={styles.infoText}>Phone: {customerPhone || 'N/A'}</Text>
-
       <Text style={styles.label}>Booking Details:</Text>
       <Text style={styles.infoText}>Stylist: {selectedStylist?.name || 'N/A'}</Text>
       <Text style={styles.infoText}>Date: {selectedDay || 'N/A'}</Text>
       <Text style={styles.infoText}>Time Slot: {selectedSlot || 'N/A'}</Text>
-
       <Text style={styles.label}>Selected Services:</Text>
       {selectedServices && selectedServices.length > 0 ? (
         selectedServices.map((service, index) => (

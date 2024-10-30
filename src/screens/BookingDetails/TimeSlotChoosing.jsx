@@ -22,7 +22,7 @@ const TimeSlotChoosing = ({ formBooking, setFormBooking }) => {
       loadDataSchedule(payload);
     }
   }, [selectedStylist]);
-
+  console.log(scheduleData)
   const handleDaySelect = (index) => {
     const selectedDay = next7Days[index];
     setFormBooking((prev) => ({
