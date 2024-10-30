@@ -150,6 +150,37 @@ const hairsalonApi = createApi({
         method: "GET",
       }),
     }),
+    getAllStylist: builder.query({
+      query: () => ({
+        url: endpoints.GET_ALL_STYLIST,
+        method: 'GET',
+      }),
+    }),
+    getStylistVerify: builder.query({
+      query: () => ({
+        url: endpoints.GET_STYLIST_VERIFY,
+        method: 'GET',
+      }),
+    }),
+    availableTimeSlots: builder.mutation({
+      query: (date) => ({
+        url: endpoints.AVAILABLE_TIME_SLOTS,
+        method: 'POST',
+        data: date,
+      }),
+    }),
+    scheduleStylistsAppointments: builder.mutation({
+      query: () => ({
+        url: endpoints.SCHEDULE_STYLISTS_APPOINTMENTS,
+        method: 'GET',
+      }),
+    }),
+    scheduleStylistsVerify: builder.mutation({
+      query: () => ({
+        url: endpoints.SCHEDULE_STYLIST,
+        method: 'GET',
+      }),
+    }),
   }),
 });
 
@@ -174,7 +205,14 @@ export const {
   useViewVoucherQuery,
   useUpdateVoucherMutation,
   useDeleteVoucherMutation,
-  useGetAllStylistsQuery,
+
+
+  useGetAllStylistQuery,
+  useGetStylistVerifyQuery,
+  useAvailableTimeSlotsMutation,
+  useScheduleStylistsAppointmentsMutation,
+  useScheduleStylistsVerifyMutation
+
 } = hairsalonApi;
 
 export default hairsalonApi;

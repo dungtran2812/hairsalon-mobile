@@ -1,4 +1,5 @@
 const endpoints = {
+
   LOGIN: "/login",
   REGISTER: "/register",
   SEND_OTP: "/send-otp",
@@ -21,5 +22,6 @@ const endpoints = {
   DELETE_VOUCHER: "/delete-voucher",
   VIEW_STYLISTS: "/get-all-stylists",
 };
+
 
 export default endpoints;

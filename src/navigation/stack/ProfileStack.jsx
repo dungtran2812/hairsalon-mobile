@@ -3,8 +3,10 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ProfileScreen from "../../screens/ProfileScreen";
 import EditInfoScreen from "../../screens/Profile/EditInfoScreen";
 import FavoriteServicesScreen from "../../screens/Profile/FavoriteServicesScreen";
+import FavoriteStylistScreen from "../../screens/Profile/FavoriteStylistScreen";
 import ServiceHistoryScreen from "../../screens/Profile/ServiceHistoryScreen";
 import CustomerSupportScreen from "../../screens/Profile/CustomerSupportScreen";
+import MyVoucherScreen from "../../screens/Profile/MyVoucherScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -21,6 +23,11 @@ const ProfileStack = () => {
 				name="FavoriteServices"
 				component={FavoriteServicesScreen}
 			/>
+			<Stack.Screen
+				name="FavoriteStylist"
+				component={FavoriteStylistScreen}
+			/>
+			<Stack.Screen name="Voucher" component={MyVoucherScreen} />
 			<Stack.Screen
 				name="ServiceHistory"
 				component={ServiceHistoryScreen}
