@@ -20,15 +20,14 @@ const StylistScreen = () => {
   const navigation = useNavigation();
   const { data, isLoading, error } = useGetAllStylistQuery();
   const [addFavoriteStylist] = useAddFavoriteStylistMutation();
-  const stylists = data ? data.data : [];
+  const stylists = data && data.data ? data.data : [];
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredStylists, setFilteredStylists] = useState(stylists);
 
   const filterStylists = () => {
     const filtered = stylists.filter((stylist) =>
-      stylist.name.toLowerCase().includes(searchTerm.toLowerCase())
+      stylist.name?.toLowerCase().includes(searchTerm.toLowerCase())
     );
-
     setFilteredStylists(filtered);
   };
 
@@ -39,9 +38,8 @@ const StylistScreen = () => {
 
   useEffect(() => {
     const filtered = stylists.filter((stylist) =>
-      stylist.name.toLowerCase().includes(searchTerm.toLowerCase())
+      stylist.name?.toLowerCase().includes(searchTerm.toLowerCase())
     );
-
     if (JSON.stringify(filtered) !== JSON.stringify(filteredStylists)) {
       setFilteredStylists(filtered);
     }
@@ -81,30 +79,30 @@ const StylistScreen = () => {
             {error.message || "Something went wrong"}
           </Text>
         ) : ( */}
-          <FlatList
-            data={filteredStylists}
-            keyExtractor={(item) => item.email}
-            renderItem={({ item }) => (
+        <FlatList
+          data={filteredStylists}
+          keyExtractor={(item) => item.email}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              style={styles.stylistCard}
+              onPress={() =>
+                navigation.navigate("StylistDetail", { stylist: item })
+              }
+            >
+              <Image source={{ uri: item.avatar }} style={styles.avatar} />
+              <Text style={styles.stylistName}>{item.name}</Text>
               <TouchableOpacity
-                style={styles.stylistCard}
-                onPress={() =>
-                  navigation.navigate("StylistDetail", { stylist: item })
-                }
+                style={styles.favoriteButton}
+                onPress={() => toggleFavorite(item)}
               >
-                <Image source={{ uri: item.avatar }} style={styles.avatar} />
-                <Text style={styles.stylistName}>{item.name}</Text>
-                <TouchableOpacity
-                  style={styles.favoriteButton}
-                  onPress={() => toggleFavorite(item)}
-                >
-                  <Icon name="heart" size={20} color="red" />
-                </TouchableOpacity>
+                <Icon name="heart" size={20} color="red" />
               </TouchableOpacity>
-            )}
-            numColumns={2}
-            columnWrapperStyle={styles.row}
-            showsVerticalScrollIndicator={false}
-          />
+            </TouchableOpacity>
+          )}
+          numColumns={2}
+          columnWrapperStyle={styles.row}
+          showsVerticalScrollIndicator={false}
+        />
         {/* )} */}
       </View>
     </View>
