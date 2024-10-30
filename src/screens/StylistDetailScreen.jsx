@@ -1,45 +1,31 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome"; // Sử dụng FontAwesome
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import Icon from "react-native-vector-icons/FontAwesome";
 import { useNavigation } from "@react-navigation/native";
+import { useAddFavoriteStylistMutation } from "../services/hairsalon.service";
 
 const StylistDetailScreen = ({ route }) => {
   const navigation = useNavigation();
   const { stylist } = route.params;
-  const [isFavorite, setIsFavorite] = useState(false);
-
-  // Load favorite status from AsyncStorage
-  useEffect(() => {
-    const loadFavoriteStatus = async () => {
-      const favorites = await AsyncStorage.getItem("favorites");
-      const favoriteList = favorites ? JSON.parse(favorites) : [];
-      setIsFavorite(favoriteList.includes(stylist.email));
-    };
-
-    loadFavoriteStatus();
-  }, [stylist.email]);
-
-  // Toggle favorite status
-  const toggleFavorite = async () => {
-    const favorites = await AsyncStorage.getItem("favorites");
-    const favoriteList = favorites ? JSON.parse(favorites) : [];
-
-    if (isFavorite) {
-      const updatedFavorites = favoriteList.filter(
-        (email) => email !== stylist.email
-      );
-      await AsyncStorage.setItem("favorites", JSON.stringify(updatedFavorites));
-    } else {
-      favoriteList.push(stylist.email);
-      await AsyncStorage.setItem("favorites", JSON.stringify(favoriteList));
-    }
-
-    setIsFavorite(!isFavorite);
-  };
+  const [addFavoriteStylist] = useAddFavoriteStylistMutation();
+  const [isFavorited, setIsFavorited] = useState(false);
 
   const handleBooking = () => {
     navigation.navigate("Booking");
+  };
+
+  const toggleFavorite = async () => {
+    try {
+      if (!isFavorited) {
+        await addFavoriteStylist({ stylistEmail: stylist.email }).unwrap();
+        setIsFavorited(true);
+        console.log(`${stylist.name} added to favorites.`);
+      } else {
+        console.log(`${stylist.name} is already in favorites.`);
+      }
+    } catch (error) {
+      console.error("Failed to add favorite stylist:", error);
+    }
   };
 
   return (
@@ -52,21 +38,20 @@ const StylistDetailScreen = ({ route }) => {
           <Icon name="arrow-left" size={24} color="#fff" />
         </TouchableOpacity>
         <Image source={{ uri: stylist.avatar }} style={styles.avatar} />
-        <TouchableOpacity
-          style={styles.favoriteButton}
-          onPress={toggleFavorite}
-        >
-          <Icon
-            name={isFavorite ? "heart" : "heart-o"}
-            size={30} // Tăng kích thước biểu tượng
-            color={isFavorite ? "red" : "#fff"}
-          />
-        </TouchableOpacity>
       </View>
       <Text style={styles.name}>{stylist.name}</Text>
       <Text style={styles.email}>Email: {stylist.email}</Text>
+
+      {/* Add to favorites button */}
+      <TouchableOpacity style={styles.favoriteButton} onPress={toggleFavorite}>
+        <Icon name="heart" size={20} color={isFavorited ? "red" : "#ccc"} />
+        <Text style={styles.favoriteButtonText}>
+          {isFavorited ? "Hủy yêu thích" : "Thêm vào yêu thích"}
+        </Text>
+      </TouchableOpacity>
+
       <TouchableOpacity style={styles.bookingButton} onPress={handleBooking}>
-        <Text style={styles.bookingButtonText}>Booking Now</Text>
+        <Text style={styles.bookingButtonText}>Đặt Ngay</Text>
       </TouchableOpacity>
     </View>
   );
@@ -96,14 +81,6 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
     borderRadius: 25,
   },
-  favoriteButton: {
-    position: "absolute",
-    bottom: 10,
-    right: 10,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    borderRadius: 25,
-    padding: 8,
-  },
   name: {
     fontSize: 24,
     fontWeight: "bold",
@@ -114,10 +91,15 @@ const styles = StyleSheet.create({
     color: "#666",
     marginBottom: 10,
   },
-  phone: {
+  favoriteButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 10,
+  },
+  favoriteButtonText: {
+    marginLeft: 8,
     fontSize: 16,
     color: "#444",
-    marginBottom: 20,
   },
   bookingButton: {
     backgroundColor: "rgb(97, 70, 59)",

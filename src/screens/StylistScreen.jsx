@@ -9,40 +9,21 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import { useGetAllStylistQuery } from "../services/hairsalon.service";
+import {
+  useGetAllStylistQuery,
+  useAddFavoriteStylistMutation,
+} from "../services/hairsalon.service";
 import Icon from "react-native-vector-icons/FontAwesome";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 
 const StylistScreen = () => {
   const navigation = useNavigation();
   const { data, isLoading, error } = useGetAllStylistQuery();
+  const [addFavoriteStylist] = useAddFavoriteStylistMutation();
   const stylists = data ? data.data : [];
   const [searchTerm, setSearchTerm] = useState("");
-  const [favoriteStylists, setFavoriteStylists] = useState([]);
   const [filteredStylists, setFilteredStylists] = useState(stylists);
 
-  // Load favorite stylists from AsyncStorage
-  useEffect(() => {
-    const loadFavorites = async () => {
-      const favorites = await AsyncStorage.getItem("favorites");
-      setFavoriteStylists(favorites ? JSON.parse(favorites) : []);
-    };
-    loadFavorites();
-  }, []);
-
-  // Handle favorite toggle
-  const toggleFavorite = async (email) => {
-    const updatedFavorites = favoriteStylists.includes(email)
-      ? favoriteStylists.filter((fav) => fav !== email)
-      : [...favoriteStylists, email];
-
-    setFavoriteStylists(updatedFavorites);
-    await AsyncStorage.setItem("favorites", JSON.stringify(updatedFavorites));
-    filterStylists(); // Reapply filter when favorites change
-  };
-
-  // Filter stylists based on search term
   const filterStylists = () => {
     const filtered = stylists.filter((stylist) =>
       stylist.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -51,16 +32,29 @@ const StylistScreen = () => {
     setFilteredStylists(filtered);
   };
 
-  // Clear search term
   const clearSearch = () => {
     setSearchTerm("");
-    setFilteredStylists(stylists); // Reset to all stylists
+    setFilteredStylists(stylists);
   };
 
-  // Effect to filter stylists on search term change
   useEffect(() => {
-    filterStylists();
-  }, [searchTerm]);
+    const filtered = stylists.filter((stylist) =>
+      stylist.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    if (JSON.stringify(filtered) !== JSON.stringify(filteredStylists)) {
+      setFilteredStylists(filtered);
+    }
+  }, [searchTerm, stylists]);
+
+  const toggleFavorite = async (stylist) => {
+    try {
+      await addFavoriteStylist({ stylistEmail: stylist.email }).unwrap();
+      console.log(`${stylist.name} added to favorites.`);
+    } catch (error) {
+      console.error("Failed to add favorite stylist:", error);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -74,11 +68,10 @@ const StylistScreen = () => {
         <TouchableOpacity style={styles.searchButton} onPress={filterStylists}>
           <Icon name="search" size={20} color="#444" />
         </TouchableOpacity>
-        {searchTerm.length > 0 && (
-          <TouchableOpacity style={styles.clearButton} onPress={clearSearch}>
-            <Icon name="remove" size={20} color="#444" />
-          </TouchableOpacity>
-        )}
+
+        <TouchableOpacity style={styles.clearButton} onPress={clearSearch}>
+          <Icon name="remove" size={20} color="#444" />
+        </TouchableOpacity>
       </View>
       <View style={styles.listContainer}>
         {/* {isLoading ? (
@@ -94,27 +87,17 @@ const StylistScreen = () => {
             renderItem={({ item }) => (
               <TouchableOpacity
                 style={styles.stylistCard}
-                onPress={
-                  () => navigation.navigate("StylistDetail", { stylist: item }) // Chuyển hướng tới StylistDetail
+                onPress={() =>
+                  navigation.navigate("StylistDetail", { stylist: item })
                 }
               >
                 <Image source={{ uri: item.avatar }} style={styles.avatar} />
                 <Text style={styles.stylistName}>{item.name}</Text>
                 <TouchableOpacity
                   style={styles.favoriteButton}
-                  onPress={() => toggleFavorite(item.email)}
+                  onPress={() => toggleFavorite(item)}
                 >
-                  <Icon
-                    name={
-                      favoriteStylists.includes(item.email)
-                        ? "heart"
-                        : "heart-o"
-                    }
-                    size={20}
-                    color={
-                      favoriteStylists.includes(item.email) ? "red" : "#444"
-                    }
-                  />
+                  <Icon name="heart" size={20} color="red" />
                 </TouchableOpacity>
               </TouchableOpacity>
             )}

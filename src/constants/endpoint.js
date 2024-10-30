@@ -21,7 +21,7 @@ const endpoints = {
   UPDATE_VOUCHER: "/update-voucher",
   DELETE_VOUCHER: "/delete-voucher",
   VIEW_STYLISTS: "/get-all-stylists",
-};
+  };
 
 
 export default endpoints;
