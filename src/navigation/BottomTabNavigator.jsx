@@ -37,10 +37,26 @@ export default function BottomTabNavigator() {
           tabBarInactiveTintColor: "gray",
         })}
       >
-        <Tab.Screen name="Service" component={ServiceScreen} />
-        <Tab.Screen name="Stylist" component={StylistScreen} />
-        <Tab.Screen name="Booking" component={BookingScreen} />
-        <Tab.Screen name="Voucher" component={VoucherScreen} />
+        <Tab.Screen
+          name="Service"
+          component={ServiceScreen}
+          options={{ headerShown: false }}
+        />
+        <Tab.Screen
+          name="Stylist"
+          component={StylistScreen}
+          options={{ headerShown: false }}
+        />
+        <Tab.Screen
+          name="Booking"
+          component={BookingScreen}
+          options={{ headerShown: false }}
+        />
+        <Tab.Screen
+          name="Voucher"
+          component={VoucherScreen}
+          options={{ headerShown: false }}
+        />
         <Tab.Screen
           name="Profile"
           component={ProfileStack}
