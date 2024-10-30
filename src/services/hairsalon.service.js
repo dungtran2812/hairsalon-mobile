@@ -1,141 +1,153 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
-import { axiosBaseQuery } from './api.service';
-import endpoints from '../constants/endpoint';
+import { createApi } from "@reduxjs/toolkit/query/react";
+import { axiosBaseQuery } from "./api.service";
+import endpoints from "../constants/endpoint";
 
 const hairsalonApi = createApi({
-  reducerPath: 'hairsalonApi',
-  baseQuery: axiosBaseQuery(), // Adjust base URL as needed
+  reducerPath: "hairsalonApi",
+  baseQuery: axiosBaseQuery(), 
   endpoints: (builder) => ({
     login: builder.mutation({
       query: (credentials) => ({
         url: endpoints.LOGIN,
-        method: 'POST',
+        method: "POST",
         data: credentials,
       }),
     }),
     register: builder.mutation({
       query: (userData) => ({
         url: endpoints.REGISTER,
-        method: 'POST',
+        method: "POST",
         data: userData,
       }),
     }),
     sendOtp: builder.mutation({
       query: (data) => ({
         url: endpoints.SEND_OTP,
-        method: 'POST',
+        method: "POST",
         data: data,
       }),
     }),
     verifyOtpChangePassword: builder.mutation({
       query: (data) => ({
         url: endpoints.VERIFY_OTP_CHANGE_PASSWORD,
-        method: 'POST',
+        method: "POST",
         data: data,
       }),
     }),
     createAppointment: builder.mutation({
       query: (appointmentData) => ({
         url: endpoints.CREATE_APPOINTMENT,
-        method: 'POST',
+        method: "POST",
         data: appointmentData,
       }),
     }),
     approveAppointment: builder.mutation({
       query: ({ appointmentId }) => ({
-        url: endpoints.APPROVE_APPOINTMENT.replace(':appointmentId', appointmentId),
-        method: 'PUT',
+        url: endpoints.APPROVE_APPOINTMENT.replace(
+          ":appointmentId",
+          appointmentId
+        ),
+        method: "PUT",
       }),
     }),
     rejectAppointment: builder.mutation({
       query: ({ appointmentId }) => ({
-        url: endpoints.REJECT_APPOINTMENT.replace(':appointmentId', appointmentId),
-        method: 'PUT',
+        url: endpoints.REJECT_APPOINTMENT.replace(
+          ":appointmentId",
+          appointmentId
+        ),
+        method: "PUT",
       }),
     }),
     createFeedback: builder.mutation({
       query: (feedbackData) => ({
         url: endpoints.CREATE_FEEDBACK,
-        method: 'POST',
+        method: "POST",
         data: feedbackData,
       }),
     }),
     addFavoriteStylist: builder.mutation({
       query: (stylistData) => ({
         url: endpoints.ADD_FAVORITE_STYLIST,
-        method: 'POST',
+        method: "POST",
         data: stylistData,
       }),
     }),
     recommendedStylist: builder.query({
       query: () => ({
         url: endpoints.RECOMMENDED_STYLIST,
-        method: 'GET',
+        method: "GET",
       }),
     }),
     createService: builder.mutation({
       query: (serviceData) => ({
         url: endpoints.CREATE_SERVICE,
-        method: 'POST',
+        method: "POST",
         data: serviceData,
       }),
     }),
     viewService: builder.query({
       query: () => ({
         url: endpoints.VIEW_SERVICE,
-        method: 'GET',
+        method: "GET",
       }),
     }),
     updateService: builder.mutation({
       query: (serviceData) => ({
         url: endpoints.UPDATE_SERVICE,
-        method: 'PUT',
+        method: "PUT",
         data: serviceData,
       }),
     }),
     deleteService: builder.mutation({
       query: (serviceId) => ({
         url: `${endpoints.DELETE_SERVICE}/${serviceId}`,
-        method: 'DELETE',
+        method: "DELETE",
       }),
     }),
     updateUser: builder.mutation({
       query: (userData) => ({
         url: endpoints.UPDATE_USER,
-        method: 'PUT',
+        method: "PUT",
         data: userData,
       }),
     }),
     getUserRole: builder.query({
       query: () => ({
         url: endpoints.GET_USER_ROLE,
-        method: 'GET',
+        method: "GET",
       }),
     }),
     createVoucher: builder.mutation({
       query: (voucherData) => ({
         url: endpoints.CREATE_VOUCHER,
-        method: 'POST',
+        method: "POST",
         data: voucherData,
       }),
     }),
     viewVoucher: builder.query({
       query: () => ({
         url: endpoints.VIEW_VOUCHER,
-        method: 'GET',
+        method: "GET",
       }),
     }),
     updateVoucher: builder.mutation({
       query: (voucherData) => ({
         url: endpoints.UPDATE_VOUCHER,
-        method: 'PUT',
+        method: "PUT",
         data: voucherData,
       }),
     }),
     deleteVoucher: builder.mutation({
       query: (voucherId) => ({
         url: `${endpoints.DELETE_VOUCHER}/${voucherId}`,
-        method: 'DELETE',
+        method: "DELETE",
+      }),
+    }),
+    getAllStylists: builder.query({
+      query: () => ({
+        url: endpoints.VIEW_STYLISTS,
+        method: "GET",
       }),
     }),
   }),
@@ -162,6 +174,7 @@ export const {
   useViewVoucherQuery,
   useUpdateVoucherMutation,
   useDeleteVoucherMutation,
+  useGetAllStylistsQuery,
 } = hairsalonApi;
 
 export default hairsalonApi;
