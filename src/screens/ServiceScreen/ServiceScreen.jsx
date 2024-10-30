@@ -1,11 +1,28 @@
 import React from "react";
-import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
-import imgHani from "../../../scripts/assets/Hani.jpg";
+import {
+	View,
+	Text,
+	StyleSheet,
+	Image,
+	ScrollView,
+	Pressable,
+} from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
 import CardService from "./CardService";
 import Header from "../../components/header";
+import { useNavigation } from "expo-router";
 
 const ServiceScreen = () => {
+	const navigation = useNavigation(); // Khởi tạo navigation
+
+	const handleNavigateToVoucher = () => {
+		navigation.navigate("Voucher"); // Điều hướng đến VoucherScreen
+	};
+
+	const handleNavigateToCommitment = () => {
+		navigation.navigate("Commitment"); // Điều hướng đến CommitmentScreen
+	};
+
 	return (
 		<View style={styles.container}>
 			<Header />
@@ -13,7 +30,10 @@ const ServiceScreen = () => {
 			<View style={stylesService.container}>
 				<ScrollView contentContainerStyle={{ paddingBottom: 50 }}>
 					<View style={stylesService.boxIcon}>
-						<View style={stylesService.content}>
+						<Pressable
+							style={stylesService.content}
+							onPress={handleNavigateToVoucher}
+						>
 							<View style={stylesService.iconbg}>
 								<Icon
 									style={stylesService.icon}
@@ -23,18 +43,21 @@ const ServiceScreen = () => {
 								/>
 							</View>
 							<Text style={stylesService.text}>Ưu đãi</Text>
-						</View>
-						<View style={stylesService.content}>
+						</Pressable>
+						<Pressable
+							style={stylesService.content}
+							onPress={handleNavigateToCommitment}
+						>
 							<View style={stylesService.iconbg}>
 								<Icon
 									style={stylesService.icon}
-									name="Safety"
+									name="Safety" // Thay đổi icon nếu cần
 									size={30}
 									color="#5D3A29"
 								/>
 							</View>
 							<Text style={stylesService.text}>Cam Kết</Text>
-						</View>
+						</Pressable>
 						<View style={stylesService.content}>
 							<View style={stylesService.iconbg}>
 								<Icon
