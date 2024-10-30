@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   TextInput,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import {
   useGetAllStylistQuery,
@@ -15,6 +16,7 @@ import {
 } from "../services/hairsalon.service";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useNavigation } from "@react-navigation/native";
+import Header from "../components/header";
 
 const StylistScreen = () => {
   const navigation = useNavigation();
@@ -55,61 +57,85 @@ const StylistScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.searchContainer}>
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Tìm kiếm tên..."
-          value={searchTerm}
-          onChangeText={setSearchTerm}
-        />
-        <TouchableOpacity style={styles.searchButton} onPress={filterStylists}>
-          <Icon name="search" size={20} color="#444" />
-        </TouchableOpacity>
+    <View style={styles.box}>
+      <Header />
+      <View style={styles.boxContainer}>
+        <View style={styles.container}>
+          <View style={styles.searchContainer}>
+            <TextInput
+              style={styles.searchInput}
+              placeholder="Tìm kiếm tên..."
+              value={searchTerm}
+              onChangeText={setSearchTerm}
+            />
+            <TouchableOpacity
+              style={styles.searchButton}
+              onPress={filterStylists}
+            >
+              <Icon name="search" size={20} color="#444" />
+            </TouchableOpacity>
 
-        <TouchableOpacity style={styles.clearButton} onPress={clearSearch}>
-          <Icon name="remove" size={20} color="#444" />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.listContainer}>
-        {/* {isLoading ? (
+            <TouchableOpacity style={styles.clearButton} onPress={clearSearch}>
+              <Icon name="remove" size={20} color="#444" />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.listContainer}>
+            {/* {isLoading ? (
           <ActivityIndicator size="large" color="#000" />
         ) : error ? (
           <Text style={styles.errorText}>
             {error.message || "Something went wrong"}
           </Text>
         ) : ( */}
-        <FlatList
-          data={filteredStylists}
-          keyExtractor={(item) => item.email}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              style={styles.stylistCard}
-              onPress={() =>
-                navigation.navigate("StylistDetail", { stylist: item })
-              }
-            >
-              <Image source={{ uri: item.avatar }} style={styles.avatar} />
-              <Text style={styles.stylistName}>{item.name}</Text>
-              <TouchableOpacity
-                style={styles.favoriteButton}
-                onPress={() => toggleFavorite(item)}
-              >
-                <Icon name="heart" size={20} color="red" />
-              </TouchableOpacity>
-            </TouchableOpacity>
-          )}
-          numColumns={2}
-          columnWrapperStyle={styles.row}
-          showsVerticalScrollIndicator={false}
-        />
-        {/* )} */}
+            <ScrollView contentContainerStyle={{ paddingBottom: 50 }}>
+              <FlatList
+                data={filteredStylists}
+                keyExtractor={(item) => item.email}
+                renderItem={({ item }) => (
+                  <TouchableOpacity
+                    style={styles.stylistCard}
+                    onPress={() =>
+                      navigation.navigate("StylistDetail", { stylist: item })
+                    }
+                  >
+                    <Image
+                      source={{ uri: item.avatar }}
+                      style={styles.avatar}
+                    />
+                    <Text style={styles.stylistName}>{item.name}</Text>
+                    <TouchableOpacity
+                      style={styles.favoriteButton}
+                      onPress={() => toggleFavorite(item)}
+                    >
+                      <Icon name="heart" size={20} color="red" />
+                    </TouchableOpacity>
+                  </TouchableOpacity>
+                )}
+                numColumns={2}
+                columnWrapperStyle={styles.row}
+                showsVerticalScrollIndicator={false}
+              />
+              {/* )} */}
+            </ScrollView>
+          </View>
+        </View>
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  box: {
+    flex: 1,
+    backgroundColor: "#5D3A29", // Màu nền kem nhạt
+  },
+  boxContainer: {
+    flex: 7,
+    backgroundColor: "#FAF3E0",
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
+    overflow: "hidden",
+  },
   container: {
     flex: 1,
     backgroundColor: "#f7f9fc",
