@@ -10,6 +10,7 @@ import {
 } from "react-native";
 
 import Icon from "react-native-vector-icons/Ionicons";
+import { useGetUserInforQuery } from "../../services/hairsalon.service";
 
 const EditInfoScreen = ({ navigation }) => {
 	const [name, setName] = useState("Neko");
