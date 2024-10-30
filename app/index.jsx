@@ -4,13 +4,14 @@ import { createStackNavigator } from "@react-navigation/stack";
 import AuthIntroScreen from "../src/auth/AuthIntroScreen";
 import LoginScreen from "../src/auth/LoginScreen";
 import SignupScreen from "../src/auth/SignupScreen";
+import StylistScreen from "../src/screens/StylistScreen";
+import StylistDetailScreen from "../src/screens/StylistDetailScreen";
 import BottomTabNavigator from "../src/navigation/BottomTabNavigator";
 import { PersistGate } from "redux-persist/lib/integration/react";
 import { persistor, store } from "../src/store/store";
 import { Provider } from "react-redux";
 import setUpInterceptor from "../src/services/api.service";
 import { LogBox } from "react-native";
-import StylistScreen from "../src/screens/StylistScreen";
 import VoucherChoosing from "../src/screens/BookingDetails/VoucherChoosing";
 
 LogBox.ignoreLogs([
@@ -49,7 +50,12 @@ export default function App() {
             <Stack.Screen
               name="StylistScreen"
               component={StylistScreen}
-              options={{ headerShown: true, title: "Stylists" }} // Hiển thị tiêu đề
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="StylistDetail"
+              component={StylistDetailScreen}
+              options={{ headerShown: false }}
             />
             <Stack.Screen
               name="VoucherChoosing"
