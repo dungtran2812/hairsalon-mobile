@@ -133,7 +133,7 @@ const VoucherScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#1D397A",
+    backgroundColor: "#5D3A29",
   },
   flat: {
     flex: 7,
