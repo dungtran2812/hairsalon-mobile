@@ -15,34 +15,47 @@ const SignupScreen = ({ navigation }) => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
-	const [secureTextEntry, setSecureTextEntry] = useState(true); // Để kiểm soát việc hiển thị mật khẩu
-	const [agreeToPolicy, setAgreeToPolicy] = useState(false); // Kiểm soát trạng thái checkbox
+	const [secureTextEntry, setSecureTextEntry] = useState(true);
+	const [agreeToPolicy, setAgreeToPolicy] = useState(false);
+
+	const isEmailValid = (email) => {
+		const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		return regex.test(email);
+	};
+
 	const isSignupDisabled =
 		!fullName ||
 		!username ||
 		!email ||
 		!password ||
 		!confirmPassword ||
-		!agreeToPolicy; // Kiểm tra xem nút đăng ký có bị vô hiệu hóa không
+		!agreeToPolicy ||
+		!isEmailValid(email);
 
 	const handleSignup = () => {
 		if (!fullName || !username || !email || !password || !confirmPassword) {
-			alert("Please fill in all fields.");
+			alert("Vui lòng điền đầy đủ thông tin.");
+			return;
+		}
+
+		if (password.length < 6) {
+			alert("Mật khẩu phải có ít nhất 6 ký tự.");
 			return;
 		}
 
 		if (password !== confirmPassword) {
-			alert("Passwords do not match.");
+			alert("Mật khẩu không khớp.");
 			return;
 		}
 
 		if (!agreeToPolicy) {
-			alert("Please agree to the Privacy Policy and Terms of Use.");
+			alert(
+				"Vui lòng đồng ý với Chính sách bảo mật và Điều khoản sử dụng."
+			);
 			return;
 		}
 
 		// Xử lý logic tạo tài khoản ở đây (gọi API, v.v.)
-
 		navigation.navigate("ServiceScreen");
 	};
 
@@ -60,32 +73,20 @@ const SignupScreen = ({ navigation }) => {
 				<Image
 					source={{
 						uri: "https://img.icons8.com/ios-filled/50/000000/hair-care.png",
-					}} // Logo tạm thời
+					}}
 					style={styles.logo}
 				/>
 			</View>
-			<Text style={styles.welcomeText}>Create Account</Text>
+			<Text style={styles.welcomeText}>Hãy tạo tài khoản mới</Text>
+			<Text style={styles.subtitleText}>
+				Hãy cùng chúng tôi chăm sóc cho mái tóc của bạn!
+			</Text>
 
 			<View style={styles.inputContainer}>
 				<Image
 					source={{
 						uri: "https://img.icons8.com/material-outlined/24/000000/user.png",
-					}} // Biểu tượng tên
-					style={styles.icon}
-				/>
-				<TextInput
-					placeholder="Full Name"
-					value={fullName}
-					onChangeText={setFullName}
-					style={styles.input}
-				/>
-			</View>
-
-			<View style={styles.inputContainer}>
-				<Image
-					source={{
-						uri: "https://img.icons8.com/material-outlined/24/000000/user.png",
-					}} // Biểu tượng tên người dùng
+					}}
 					style={styles.icon}
 				/>
 				<TextInput
@@ -100,7 +101,7 @@ const SignupScreen = ({ navigation }) => {
 				<Image
 					source={{
 						uri: "https://img.icons8.com/material-outlined/24/000000/email.png",
-					}} // Biểu tượng email
+					}}
 					style={styles.icon}
 				/>
 				<TextInput
@@ -115,11 +116,11 @@ const SignupScreen = ({ navigation }) => {
 				<Image
 					source={{
 						uri: "https://img.icons8.com/material-outlined/24/000000/lock-2.png",
-					}} // Biểu tượng mật khẩu
+					}}
 					style={styles.icon}
 				/>
 				<TextInput
-					placeholder="Password"
+					placeholder="Mật khẩu"
 					secureTextEntry={secureTextEntry}
 					value={password}
 					onChangeText={setPassword}
@@ -129,8 +130,8 @@ const SignupScreen = ({ navigation }) => {
 					<Image
 						source={{
 							uri: secureTextEntry
-								? "https://img.icons8.com/material-outlined/24/000000/invisible.png" // Biểu tượng mắt đóng
-								: "https://img.icons8.com/material-outlined/24/000000/visible.png", // Biểu tượng mắt mở
+								? "https://img.icons8.com/material-outlined/24/000000/invisible.png"
+								: "https://img.icons8.com/material-outlined/24/000000/visible.png",
 						}}
 						style={styles.eyeIcon}
 					/>
@@ -141,11 +142,11 @@ const SignupScreen = ({ navigation }) => {
 				<Image
 					source={{
 						uri: "https://img.icons8.com/material-outlined/24/000000/lock-2.png",
-					}} // Biểu tượng mật khẩu
+					}}
 					style={styles.icon}
 				/>
 				<TextInput
-					placeholder="Confirm Password"
+					placeholder="Nhập lại mật khẩu"
 					secureTextEntry={secureTextEntry}
 					value={confirmPassword}
 					onChangeText={setConfirmPassword}
@@ -155,8 +156,8 @@ const SignupScreen = ({ navigation }) => {
 					<Image
 						source={{
 							uri: secureTextEntry
-								? "https://img.icons8.com/material-outlined/24/000000/invisible.png" // Biểu tượng mắt đóng
-								: "https://img.icons8.com/material-outlined/24/000000/visible.png", // Biểu tượng mắt mở
+								? "https://img.icons8.com/material-outlined/24/000000/invisible.png"
+								: "https://img.icons8.com/material-outlined/24/000000/visible.png",
 						}}
 						style={styles.eyeIcon}
 					/>
@@ -167,11 +168,12 @@ const SignupScreen = ({ navigation }) => {
 				<TouchableOpacity
 					onPress={toggleAgreeToPolicy}
 					style={styles.checkbox}
+					disabled={isSignupDisabled} // Disable checkbox if not all fields are filled
 				>
 					{agreeToPolicy && <View style={styles.checkedCheckbox} />}
 				</TouchableOpacity>
 				<Text style={styles.checkboxText}>
-					I agree to Privacy Policy and Terms of Use
+					Tôi đồng ý với Chính sách bảo mật và Điều khoản sử dụng
 				</Text>
 			</View>
 
@@ -179,26 +181,22 @@ const SignupScreen = ({ navigation }) => {
 				style={({ pressed }) => [
 					styles.button,
 					{
-						backgroundColor: pressed
-							? "rgb(97, 70, 59)" // Background color when pressed
-							: isSignupDisabled
-							? "#ccc" // Background color when disabled
-							: "rgb(245, 243, 227)", // Normal background color
+						backgroundColor: isSignupDisabled ? "#ccc" : "#5D3A29",
 					},
 				]}
 				onPress={handleSignup}
-				disabled={isSignupDisabled} // Disable the button when the form is incomplete
+				disabled={isSignupDisabled}
 			>
 				{({ pressed }) => (
 					<Text
 						style={[
 							styles.buttonText,
 							{
-								color: pressed ? "white" : "black", // Text color when pressed
+								color: pressed ? "white" : "black",
 							},
 						]}
 					>
-						Create Account
+						Tạo tài khoản
 					</Text>
 				)}
 			</Pressable>
@@ -217,7 +215,7 @@ const SignupScreen = ({ navigation }) => {
 					<Image
 						source={{
 							uri: "https://img.icons8.com/color/48/000000/google-logo.png",
-						}} // Biểu tượng Google
+						}}
 						style={styles.socialIcon}
 					/>
 				</TouchableOpacity>
@@ -225,7 +223,7 @@ const SignupScreen = ({ navigation }) => {
 					<Image
 						source={{
 							uri: "https://img.icons8.com/color/48/000000/facebook.png",
-						}} // Biểu tượng Facebook
+						}}
 						style={styles.socialIcon}
 					/>
 				</TouchableOpacity>
@@ -238,9 +236,9 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		justifyContent: "center",
-		alignItems: "center", // Căn trái
+		alignItems: "center",
 		padding: 20,
-		backgroundColor: "#fff",
+		backgroundColor: "#FFF3E0",
 	},
 	logoContainer: {
 		marginBottom: 20,
@@ -255,78 +253,93 @@ const styles = StyleSheet.create({
 		marginBottom: 5,
 		color: "rgb(97, 70, 59)",
 	},
+	subtitleText: {
+		textAlign: "center",
+		fontSize: 14,
+		color: "#333",
+		marginBottom: 30,
+	},
 	inputContainer: {
 		flexDirection: "row",
 		alignItems: "center",
 		borderWidth: 1,
-		borderColor: "#ccc",
-		borderRadius: 29,
+		borderColor: "#D1C6B6", // Màu viền sáng hơn
+		borderRadius: 25,
 		width: "100%",
-		marginBottom: 10,
-		padding: 5,
+		marginBottom: 15,
+		paddingVertical: 3, // Tăng chiều cao để các input nhìn thoải mái hơn
+		paddingHorizontal: 15, // Thêm khoảng cách bên trong
+		backgroundColor: "#FFFFFF", // Màu nền input
+		shadowColor: "#000", // Thêm bóng đổ
+		shadowOffset: {
+			width: 0,
+			height: 2,
+		},
+		shadowOpacity: 0.1,
+		shadowRadius: 4,
+		elevation: 2, // Để hỗ trợ Android
 	},
 	icon: {
 		width: 20,
 		height: 20,
 		marginRight: 10,
-		marginLeft: 10,
 	},
 	input: {
 		flex: 1,
+		fontSize: 16,
 		padding: 10,
 	},
 	eyeIcon: {
 		width: 20,
 		height: 20,
-		marginRight: 10,
+		marginLeft: 10,
 	},
 	checkboxContainer: {
 		flexDirection: "row",
 		alignItems: "center",
-		marginVertical: 10,
+		marginBottom: 20,
 	},
 	checkbox: {
 		width: 20,
 		height: 20,
 		borderWidth: 1,
-		borderColor: "#ccc",
-		borderRadius: 5,
+		borderColor: "#D1C6B6",
+		borderRadius: 4,
 		marginRight: 10,
 		justifyContent: "center",
 		alignItems: "center",
 	},
 	checkedCheckbox: {
-		width: 16,
-		height: 16,
-		backgroundColor: "rgb(97, 70, 59)",
+		width: 14,
+		height: 14,
+		backgroundColor: "#5D3A29",
 	},
 	checkboxText: {
 		fontSize: 14,
 		color: "#333",
+		flex: 1,
 	},
 	button: {
 		width: "100%",
 		padding: 15,
 		borderRadius: 25,
-		justifyContent: "center",
 		alignItems: "center",
-		marginVertical: 10,
 	},
 	buttonText: {
 		fontSize: 18,
 		fontWeight: "bold",
 	},
 	loginPrompt: {
+		marginTop: 15,
 		fontSize: 14,
-		color: "#333",
-		marginVertical: 10,
 	},
 	loginText: {
-		color: "rgb(97, 70, 59)",
+		color: "#5D3A29",
 		fontWeight: "bold",
 	},
 	orText: {
-		marginVertical: 10,
+		marginVertical: 20,
+		fontSize: 14,
 		color: "#333",
 	},
 	socialContainer: {
