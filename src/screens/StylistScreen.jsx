@@ -47,7 +47,7 @@ const StylistScreen = () => {
     <View style={styles.container}>
       <TextInput
         style={styles.searchInput}
-        placeholder="Search by name..."
+        placeholder="Tìm kiếm tên..."
         value={searchTerm}
         onChangeText={setSearchTerm}
       />
