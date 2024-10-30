@@ -83,7 +83,6 @@ const ServiceChoosing = ({ navigation, formBooking, setFormBooking }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 14,
     backgroundColor: "#fff",
   },
   loadingContainer: {

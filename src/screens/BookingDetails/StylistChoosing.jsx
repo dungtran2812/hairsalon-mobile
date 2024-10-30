@@ -41,7 +41,6 @@ const styles = StyleSheet.create({
   container: {
     width: 300,
     flex: 1,
-    paddingVertical: 16,
   },
   header: {
     fontSize: 24,

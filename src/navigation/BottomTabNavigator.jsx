@@ -54,10 +54,6 @@ export default function BottomTabNavigator() {
 						elevation: 5,
 						height: 60,
 						borderRadius: 15,
-						position: "absolute",
-						left: 0,
-						right: 0,
-						bottom: 0,
 					},
 				})}
 			>
