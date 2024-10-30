@@ -144,12 +144,7 @@ const hairsalonApi = createApi({
         method: "DELETE",
       }),
     }),
-    getAllStylists: builder.query({
-      query: () => ({
-        url: endpoints.VIEW_STYLISTS,
-        method: "GET",
-      }),
-    }),
+
     getAllStylist: builder.query({
       query: () => ({
         url: endpoints.VIEW_STYLISTS,
