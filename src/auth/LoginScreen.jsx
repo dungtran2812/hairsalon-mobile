@@ -9,7 +9,7 @@ import {
   Pressable,
   ActivityIndicator, // Import ActivityIndicator for loading UI
 } from "react-native";
-import { setAccessToken, setRole, setUsername } from "../feature/authentication";
+import { setAccessToken, setPhoneNumber, setRole, setUsername } from "../feature/authentication";
 import { useDispatch } from "react-redux";
 import { useLoginMutation } from "../services/hairsalon.service";
 
@@ -34,6 +34,7 @@ const LoginScreen = ({ navigation }) => {
       dispatch(setAccessToken(userData?.access_token));
       dispatch(setRole(userData?.user?.role[0]));
       dispatch(setUsername(userData?.user?.username));
+      dispatch(setPhoneNumber(userData?.user?.phone));
 
       if (userData.user.role.includes("stylist")) {
         navigation.navigate("StylistDashboard");

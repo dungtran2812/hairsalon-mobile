@@ -3,21 +3,27 @@ import { Text, StyleSheet, Button, ScrollView, View, Alert } from "react-native"
 import StepIndicator from 'react-native-step-indicator';
 import UserInfo from "./BookingDetails/UserInfo";
 import ServiceChoosing from "./BookingDetails/ServiceChoosing";
+import { useSelector } from "react-redux";
+import StylistChoosing from "./BookingDetails/StylistChoosing";
+import TimeSlotChoosing from "./BookingDetails/TimeSlotChoosing";
+import ConfirmationChoosing from "./BookingDetails/ConfirmationChoosing";
 
 const steps = [
     { title: 'Your info' },
     { title: 'Service' },
     { title: 'Stylist' },
     { title: 'Time Slot' },
-    { title: 'Payment' },
     { title: 'Confirm' },
+    { title: 'Payment' },
 ];
 
 const BookingScreen = ({ navigation }) => {
+    const customerName = useSelector((state) => state?.rootReducer?.user?.username)
+    const customerPhone = useSelector((state) => state?.rootReducer?.user?.phoneNumber)
     const [currentStep, setCurrentStep] = useState(0);
     const [formBooking, setFormBooking] = useState({
-        customerName: "",
-        customerPhone: "",
+        customerName: customerName,
+        customerPhone: customerPhone,
         selectedServices: [],
         selectedStylist: {},
         selectedDay: "",
@@ -43,13 +49,13 @@ const BookingScreen = ({ navigation }) => {
         } else if (currentStep === 2) {
             // Step 3: Stylist
             if (!formBooking.selectedStylist.name) {
-                alert("Error", "Please select a stylist.");
+                alert("Please select a stylist.");
                 return;
             }
         } else if (currentStep === 3) {
             // Step 4: Time Slot
             if (!formBooking.selectedDay || !formBooking.selectedSlot) {
-                alert("Error", "Please select a day and time slot.");
+                alert("Please select a day and time slot.");
                 return;
             }
         } else if (currentStep === 4) {
@@ -103,29 +109,27 @@ const BookingScreen = ({ navigation }) => {
 
             {currentStep === 2 && (
                 <View style={styles.stepContainer}>
-                    <Text style={styles.label}>Step 3: Choose a Stylist</Text>
-                    <Button title="Choose a Stylist" onPress={() => {
-                        handleNextStep();
-                    }} />
+                    <StylistChoosing formBooking={formBooking} setFormBooking={setFormBooking} />
                 </View>
             )}
 
             {currentStep === 3 && (
                 <View>
-                    <Text style={styles.label}>Choose a Time Slot:</Text>
+                    <TimeSlotChoosing formBooking={formBooking} setFormBooking={setFormBooking} />
                 </View>
             )}
 
             {currentStep === 4 && (
-                <View>
-                    <Text style={styles.label}>Choose a Payment Method:</Text>
-                    <Button title="Next" onPress={handleNextStep} />
+                <View style={styles.stepContainer}>
+                    <ConfirmationChoosing formBooking={formBooking} setFormBooking={setFormBooking} />
                 </View>
+
             )}
 
             {currentStep === 5 && (
-                <View style={styles.stepContainer}>
-                    <Button title="Confirm Booking" onPress={handleBooking} />
+                <View>
+                    <Text style={styles.label}>Choose a Payment Method:</Text>
+                    <Button title="Next" onPress={handleNextStep} />
                 </View>
             )}
 
@@ -184,6 +188,7 @@ const styles = StyleSheet.create({
     stepButtonContainer: {
         flexDirection: 'row',
         marginVertical: 20,
+        justifyContent: 'flex-end'
     },
     backButtonContainer: {
         width: '40vw',
