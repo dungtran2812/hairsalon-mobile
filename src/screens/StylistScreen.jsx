@@ -81,13 +81,13 @@ const StylistScreen = () => {
         )}
       </View>
       <View style={styles.listContainer}>
-        {isLoading ? (
+        {/* {isLoading ? (
           <ActivityIndicator size="large" color="#000" />
         ) : error ? (
           <Text style={styles.errorText}>
             {error.message || "Something went wrong"}
           </Text>
-        ) : (
+        ) : ( */}
           <FlatList
             data={filteredStylists}
             keyExtractor={(item) => item.email}
@@ -122,7 +122,7 @@ const StylistScreen = () => {
             columnWrapperStyle={styles.row}
             showsVerticalScrollIndicator={false}
           />
-        )}
+        {/* )} */}
       </View>
     </View>
   );

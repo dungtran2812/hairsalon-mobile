@@ -1,22 +1,47 @@
 import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
-import imgHani from "../../../scripts/assets/Hani.jpg";
+import { useViewServiceQuery } from "../../services/hairsalon.service";
+import { TouchableOpacity } from "react-native";
 
 const CardService = () => {
+  const { data: serviceInfo, error, isLoading } = useViewServiceQuery();
+
+  // Handle loading and error states
+  if (isLoading) {
+    return <Text>Loading...</Text>;
+  }
+
+  if (error) {
+    return <Text>Error: {error.message}</Text>;
+  }
+
   return (
-    <View style={styles.container}>
-      <View style={styles.card}>
-        <Text style={styles.title}>Cắt Tóc Thương Gia</Text>
-        <Text style={styles.titlesub}>Combo cắt kỹ</Text>
-        <Text style={styles.titlesub}>Combo gội đầu masage</Text>
-        <View style={styles.imgBox}>
-          <Image style={styles.img} source={imgHani} />
+    <View style={styles.grid}>
+      {serviceInfo?.services?.map((data, index) => (
+        <View style={styles.container}>
+          <View key={index} style={styles.card}>
+            <Text style={styles.title}>{data.name}</Text>
+            <View style={styles.imgBox}>
+              <Image style={styles.img} source={{ uri: data.image }} />
+            </View>
+            <View style={styles.lineTime}>
+              <Text style={styles.text}>
+                {data.price}
+                {" VNĐ"}
+              </Text>
+            </View>
+            <View style={styles.lineTime}>
+              <Text style={styles.text}>
+                {data.loyaltyPoints}
+                {" Điểm"}
+              </Text>
+            </View>
+            <TouchableOpacity style={styles.button}>
+              <Text style={styles.buttonText}>Đặt lịch ngay !</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-        <View style={styles.lineTime}>
-          <Text style={styles.text}>50 phút</Text>
-        </View>
-        <View></View>
-      </View>
+      ))}
     </View>
   );
 };
@@ -24,7 +49,12 @@ const CardService = () => {
 const styles = StyleSheet.create({
   container: {
     width: "50%",
-    height: 250,
+    height: 300,
+  },
+  grid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
   },
   card: {
     padding: 10,
@@ -54,7 +84,7 @@ const styles = StyleSheet.create({
   imgBox: {
     marginTop: 10,
     width: "100%",
-    height: "40%",
+    height: "50%",
     backgroundColor: "aqua",
     borderRadius: 15,
   },
@@ -65,7 +95,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   lineTime: {
-    width: "50%",
+    width: "100%",
     height: 19,
     marginTop: 10,
     borderRadius: 20,
@@ -79,8 +109,24 @@ const styles = StyleSheet.create({
     fontSize: 10,
     textAlign: "center",
     height: 16,
-    width: "96%",
+    width: "98%",
     borderRadius: 20,
+  },
+  button: {
+    width: "100%",
+    height: 30,
+    marginTop: 10,
+    borderRadius: 10,
+    backgroundColor: "#1D397A",
+    alignItems: "center",
+    justifyContent: "center",
+    marginHorizontal: "auto",
+    backgroundColor: "aqua",
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 13,
+    fontWeight: 'bold',
   },
 });
 

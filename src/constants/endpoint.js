@@ -1,9 +1,9 @@
 const endpoints = {
-
   LOGIN: "/login",
   REGISTER: "/register",
   SEND_OTP: "/send-otp",
   VERIFY_OTP_CHANGE_PASSWORD: "/verify-otp-and-change-password",
+  GET_INFOR_USER: "/get-infor",
   CREATE_APPOINTMENT: "/create-appointment",
   APPROVE_APPOINTMENT: "/approve/:appointmentId",
   REJECT_APPOINTMENT: "/reject/:appointmentId",

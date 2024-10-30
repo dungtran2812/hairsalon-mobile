@@ -5,13 +5,14 @@ import Icon from "react-native-vector-icons/AntDesign";
 import CardService from './CardService'
 import Header from '../../components/header'
 
+
 const ServiceScreen = () => {
   return (
     <View style={styles.container}>
       <Header />
 
       <View style={stylesService.container}>
-        <ScrollView contentContainerStyle={{ paddingBottom: 1000 }}>
+        <ScrollView contentContainerStyle={{ paddingBottom: 100 }}>
           <View style={stylesService.boxIcon}>
             <View style={stylesService.content}>
               <View style={stylesService.iconbg}>
@@ -54,7 +55,7 @@ const ServiceScreen = () => {
             </View>
             <View style={stylesIntroCard.content}>
               <Text style={stylesIntroCard.title}>
-                Mời bạn đánh giá chất lượng phục vụ
+                Bạn nhớ để lại đánh giá sau khi sử dụng dịch vụ nhé!
               </Text>
               <Text style={stylesIntroCard.subScript}>
                 Phản hồi của bạn sẽ giúp chúng tôi cải thiện chất lượng hơn
