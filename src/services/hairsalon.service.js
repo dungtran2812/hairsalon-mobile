@@ -4,7 +4,7 @@ import endpoints from "../constants/endpoint";
 
 const hairsalonApi = createApi({
   reducerPath: "hairsalonApi",
-  baseQuery: axiosBaseQuery(), 
+  baseQuery: axiosBaseQuery(),
   endpoints: (builder) => ({
     login: builder.mutation({
       query: (credentials) => ({
@@ -152,33 +152,33 @@ const hairsalonApi = createApi({
     }),
     getAllStylist: builder.query({
       query: () => ({
-        url: endpoints.GET_ALL_STYLIST,
-        method: 'GET',
+        url: endpoints.VIEW_STYLISTS,
+        method: "GET",
       }),
     }),
     getStylistVerify: builder.query({
       query: () => ({
         url: endpoints.GET_STYLIST_VERIFY,
-        method: 'GET',
+        method: "GET",
       }),
     }),
     availableTimeSlots: builder.mutation({
       query: (date) => ({
         url: endpoints.AVAILABLE_TIME_SLOTS,
-        method: 'POST',
+        method: "POST",
         data: date,
       }),
     }),
     scheduleStylistsAppointments: builder.mutation({
       query: () => ({
         url: endpoints.SCHEDULE_STYLISTS_APPOINTMENTS,
-        method: 'GET',
+        method: "GET",
       }),
     }),
     scheduleStylistsVerify: builder.mutation({
       query: () => ({
         url: endpoints.SCHEDULE_STYLIST,
-        method: 'GET',
+        method: "GET",
       }),
     }),
   }),
@@ -206,13 +206,11 @@ export const {
   useUpdateVoucherMutation,
   useDeleteVoucherMutation,
 
-
   useGetAllStylistQuery,
   useGetStylistVerifyQuery,
   useAvailableTimeSlotsMutation,
   useScheduleStylistsAppointmentsMutation,
-  useScheduleStylistsVerifyMutation
-
+  useScheduleStylistsVerifyMutation,
 } = hairsalonApi;
 
 export default hairsalonApi;

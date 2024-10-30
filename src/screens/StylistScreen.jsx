@@ -5,30 +5,36 @@ import {
   StyleSheet,
   FlatList,
   Image,
-  ActivityIndicator,
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import { useGetAllStylistsQuery } from "../services/hairsalon.service";
+import { useGetAllStylistQuery } from "../services/hairsalon.service";
 import Icon from "react-native-vector-icons/FontAwesome";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const StylistScreen = () => {
-  const { data, isLoading, error } = useGetAllStylistsQuery();
+  // Truy vấn tất cả stylist từ API
+  const { data, error } = useGetAllStylistQuery();
+
+  // Lưu dữ liệu stylist vào biến stylists
   const stylists = data ? data.data : [];
   const [searchTerm, setSearchTerm] = useState("");
   const [favoriteStylists, setFavoriteStylists] = useState([]);
 
-  // Load favorite stylists from AsyncStorage
+  // Tải danh sách stylist yêu thích từ AsyncStorage
   useEffect(() => {
     const loadFavorites = async () => {
-      const favorites = await AsyncStorage.getItem("favorites");
-      setFavoriteStylists(favorites ? JSON.parse(favorites) : []);
+      try {
+        const favorites = await AsyncStorage.getItem("favorites");
+        setFavoriteStylists(favorites ? JSON.parse(favorites) : []);
+      } catch (e) {
+        console.error("Failed to load favorites", e);
+      }
     };
     loadFavorites();
   }, []);
 
-  // Handle favorite toggle
+  // Xử lý việc thêm/xóa stylist vào danh sách yêu thích
   const toggleFavorite = async (email) => {
     const updatedFavorites = favoriteStylists.includes(email)
       ? favoriteStylists.filter((fav) => fav !== email)
@@ -38,7 +44,7 @@ const StylistScreen = () => {
     await AsyncStorage.setItem("favorites", JSON.stringify(updatedFavorites));
   };
 
-  // Filter stylists based on search term
+  // Lọc stylist dựa trên từ khóa tìm kiếm
   const filteredStylists = stylists.filter((stylist) =>
     stylist.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -52,9 +58,7 @@ const StylistScreen = () => {
         onChangeText={setSearchTerm}
       />
       <View style={styles.listContainer}>
-        {isLoading ? (
-          <ActivityIndicator size="large" color="#000" />
-        ) : error ? (
+        {error ? (
           <Text style={styles.errorText}>
             {error.message || "Something went wrong"}
           </Text>
