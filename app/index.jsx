@@ -18,35 +18,51 @@ LogBox.ignoreLogs([
 const Stack = createStackNavigator();
 
 export default function App() {
-	setUpInterceptor(store)
-	return (
-		<Provider store={store}>
-			<PersistGate loading={null} persistor={persistor}>
-				<NavigationContainer independent={true}>
-					<Stack.Navigator initialRouteName="AuthIntroScreen">
-						<Stack.Screen
-							name="AuthIntroScreen"
-							component={AuthIntroScreen}
-							options={{ headerShown: false }}
-						/>
-						<Stack.Screen
-							name="Login"
-							component={LoginScreen}
-							options={{ headerShown: false }}
-						/>
-						<Stack.Screen
-							name="Signup"
-							component={SignupScreen}
-							options={{ headerShown: false }}
-						/>
-						<Stack.Screen
-							name="ServiceScreen"
-							component={BottomTabNavigator} // Điều hướng tới BottomTabNavigator
-							options={{ headerShown: false }}
-						/>
-					</Stack.Navigator>
-				</NavigationContainer>
-			</PersistGate>
-		</Provider>
-	);
+
+  setUpInterceptor(store);
+  return (
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <NavigationContainer independent={true}>
+          <Stack.Navigator initialRouteName="AuthIntroScreen">
+            <Stack.Screen
+              name="AuthIntroScreen"
+              component={AuthIntroScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Login"
+              component={LoginScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Signup"
+              component={SignupScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="ServiceScreen"
+              component={BottomTabNavigator} // Điều hướng tới BottomTabNavigator
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="StylistScreen"
+              component={StylistScreen}
+              options={{ headerShown: true, title: "Stylists" }} // Hiển thị tiêu đề
+            />
+            <Stack.Screen
+              name="VoucherChoosing"
+              component={VoucherChoosing}
+              options={{
+                headerShown: true, // Ensure the header is displayed
+                headerBackTitle: "Custom Back",
+                headerBackTitleStyle: { fontSize: 30 },
+              }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </PersistGate>
+    </Provider>
+  );
+
 }
