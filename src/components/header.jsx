@@ -2,8 +2,11 @@ import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import imgProfile from "../../scripts/assets/FunFace.jpg";
 import Icon from "react-native-vector-icons/AntDesign";
+import { useGetUserInforQuery } from "../services/hairsalon.service";
 
 const header = () => {
+  const { data: userInfo} = useGetUserInforQuery();
+  const role = userInfo?.user?.role && Array.isArray(userInfo?.user?.role) ? userInfo?.user?.role[0] : "Unknown role";
   return (
     <View style={stylesProfile.container}>
       <View style={stylesProfile.infor}>
@@ -11,19 +14,18 @@ const header = () => {
           <Image source={imgProfile} style={stylesProfile.avatar} />
         </View>
         <View style={stylesProfile.username}>
-          <Text style={stylesProfile.name}>UserName</Text>
+          <Text style={stylesProfile.name}>{userInfo?.user?.name}</Text>
           <Text style={stylesProfile.linklog}>
-            Login Now <Icon name="right" size={12} color="white" />
+            {role}{" "}<Icon name="right" size={12} color="white" />
           </Text>
         </View>
       </View>
       <View style={stylesProfile.otherIcon}>
         <View style={stylesProfile.otherIconContainer}>
-          <Icon name="shoppingcart" size={25} color="white" />
           <Icon name="bells" size={25} color="white" />
         </View>
         <View style={stylesProfile.loyalPoint}>
-          <Text style={stylesProfile.loyalText}>Point: 100P </Text>
+          <Text style={stylesProfile.loyalText}>Điểm: {userInfo?.user?.loyaltyPoints}</Text>
         </View>
       </View>
     </View>
