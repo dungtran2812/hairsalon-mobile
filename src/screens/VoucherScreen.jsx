@@ -1,18 +1,91 @@
 import React, { useState } from "react";
 import { View, Text, FlatList, StyleSheet, Pressable } from "react-native";
 import Header from "../components/header";
-import { useGetUserRoleQuery } from "../services/hairsalon.service";
+
+const vouchers = [
+  {
+    id: 1,
+    code: "WELCOME50",
+    discount: "50.000",
+    description: "Voucher cho lần đặt dịch vụ đầu tiên",
+    expiryDate: "Hết hạn: 30/12/2024",
+    isActive: true,
+    type: "main service",
+  },
+  {
+    id: 2,
+    code: "TET2024",
+    discount: "100.000",
+    description: "Khuyến mãi Tết đặc biệt",
+    expiryDate: "Hết hạn: 10/02/2024",
+    isActive: true,
+    type: "holiday",
+  },
+  {
+    id: 3,
+    code: "SUMMERFUN",
+    discount: "150.000",
+    description: "Ưu đãi mùa hè",
+    expiryDate: "Hết hạn: 01/07/2024",
+    isActive: true,
+    type: "event",
+  },
+  {
+    id: 4,
+    code: "BIRTHDAYGIFT",
+    discount: "200.000",
+    description: "Voucher sinh nhật đặc biệt",
+    expiryDate: "Hết hạn: 20/10/2024",
+    isActive: true,
+    type: "birthday",
+  },
+  {
+    id: 5,
+    code: "WOMENDAY",
+    discount: "120.000",
+    description: "Khuyến mãi Ngày Phụ Nữ 8/3",
+    expiryDate: "Hết hạn: 08/03/2024",
+    isActive: true,
+    type: "holiday",
+  },
+  {
+    id: 6,
+    code: "BLACKFRIDAY",
+    discount: "180.000",
+    description: "Ưu đãi đặc biệt Black Friday",
+    expiryDate: "Hết hạn: 25/11/2024",
+    isActive: true,
+    type: "event",
+  },
+  {
+    id: 7,
+    code: "LOYALTY20",
+    discount: "20.000",
+    description: "Voucher khách hàng thân thiết",
+    expiryDate: "Hết hạn: 31/12/2024",
+    isActive: true,
+    type: "main service",
+  },
+  {
+    id: 8,
+    code: "NEWYEAR",
+    discount: "250.000",
+    description: "Ưu đãi Tết Dương Lịch",
+    expiryDate: "Hết hạn: 01/01/2025",
+    isActive: true,
+    type: "holiday",
+  },
+];
 
 const VoucherScreen = ({ navigation }) => {
   const [claimedVouchers, setClaimedVouchers] = useState([]);
-  const { data: vouchers } = useGetUserRoleQuery();
 
   const handleClaimVoucher = (voucherId) => {
     setClaimedVouchers([...claimedVouchers, voucherId]);
     navigation.navigate("MyVoucherScreen", { voucherId });
   };
 
-  const renderVoucher = ({ item: voucher }) => {
+  const renderVoucher = (voucher) => {
     const isClaimed = claimedVouchers.includes(voucher.id);
 
     return (
@@ -21,7 +94,7 @@ const VoucherScreen = ({ navigation }) => {
         style={[styles.card, isClaimed && styles.claimedCard]}
       >
         <View style={styles.leftSection}>
-          <Text style={styles.code}>{voucher.data.voucherName}</Text>
+          <Text style={styles.code}>{voucher.code}</Text>
           <Text style={styles.description}>{voucher.description}</Text>
           <Text style={styles.expiryDate}>{voucher.expiryDate}</Text>
         </View>
@@ -48,7 +121,7 @@ const VoucherScreen = ({ navigation }) => {
         <FlatList
           style={styles.flatList}
           data={vouchers}
-          renderItem={renderVoucher}
+          renderItem={({ item }) => renderVoucher(item)}
           keyExtractor={(item) => item.id.toString()}
           numColumns={1} // Hiển thị một cột
         />
@@ -84,7 +157,7 @@ const styles = StyleSheet.create({
     padding: 15,
     marginBottom: 15,
     marginHorizontal: 10, // Khoảng cách giữa các thẻ và mép màn hình
-    marginTop: 15,
+	marginTop: 15,
     flexDirection: "row",
     alignItems: "center",
     // Đổ bóng cho từng thẻ
