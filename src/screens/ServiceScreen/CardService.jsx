@@ -2,8 +2,10 @@ import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { useViewServiceQuery } from "../../services/hairsalon.service";
 import { TouchableOpacity } from "react-native";
+import { useNavigation } from "expo-router";
 
 const CardService = () => {
+  const navigation = useNavigation();
   const { data: serviceInfo, error, isLoading } = useViewServiceQuery();
 
   // Handle loading and error states
@@ -37,7 +39,12 @@ const CardService = () => {
               </Text>
             </View>
             <TouchableOpacity style={styles.button}>
-              <Text style={styles.buttonText}>Đặt lịch ngay !</Text>
+              <Text
+                style={styles.buttonText}
+                onPress={() => navigation.navigate("Booking")}
+              >
+                Đặt lịch ngay !
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -124,9 +131,9 @@ const styles = StyleSheet.create({
     backgroundColor: "aqua",
   },
   buttonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 13,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });
 

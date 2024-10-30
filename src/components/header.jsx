@@ -11,7 +11,7 @@ const header = () => {
     <View style={stylesProfile.container}>
       <View style={stylesProfile.infor}>
         <View style={stylesProfile.image}>
-          <Image source={imgProfile} style={stylesProfile.avatar} />
+          <Image source={{ uri: userInfo?.user?.avatar }} style={stylesProfile.avatar} />
         </View>
         <View style={stylesProfile.username}>
           <Text style={stylesProfile.name}>{userInfo?.user?.name}</Text>
