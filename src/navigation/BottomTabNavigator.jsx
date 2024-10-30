@@ -7,6 +7,7 @@ import VoucherScreen from "../screens/VoucherScreen";
 import Icon from "react-native-vector-icons/Ionicons";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import ProfileStack from "./stack/ProfileStack";
+import ServiceStack from "./stack/ServiceStack";
 
 const Tab = createBottomTabNavigator();
 
@@ -62,7 +63,7 @@ export default function BottomTabNavigator() {
 			>
 				<Tab.Screen
 					name="Service"
-					component={ServiceScreen}
+					component={ServiceStack}
 					options={{ headerShown: false }}
 				/>
 				<Tab.Screen
