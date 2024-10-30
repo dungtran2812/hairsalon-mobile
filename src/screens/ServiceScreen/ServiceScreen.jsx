@@ -28,7 +28,7 @@ const ServiceScreen = () => {
 			<Header />
 
 			<View style={stylesService.container}>
-				<ScrollView contentContainerStyle={{ paddingBottom: 50 }}>
+				<ScrollView contentContainerStyle={{ paddingBottom: 100 }}>
 					<View style={stylesService.boxIcon}>
 						<Pressable
 							style={stylesService.content}
