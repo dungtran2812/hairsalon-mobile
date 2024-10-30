@@ -2,9 +2,8 @@ import React from "react";
 import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
 import imgHani from "../../../scripts/assets/Hani.jpg";
 import Icon from "react-native-vector-icons/AntDesign";
-import CardService from './CardService'
-import Header from '../../components/header'
-
+import CardService from "./CardService";
+import Header from "../../components/header";
 
 const ServiceScreen = () => {
   return (
@@ -12,7 +11,7 @@ const ServiceScreen = () => {
       <Header />
 
       <View style={stylesService.container}>
-        <ScrollView contentContainerStyle={{ paddingBottom: 100 }}>
+        <ScrollView contentContainerStyle={{ paddingBottom: 50 }}>
           <View style={stylesService.boxIcon}>
             <View style={stylesService.content}>
               <View style={stylesService.iconbg}>
@@ -188,9 +187,9 @@ const styleTitle = StyleSheet.create({
 });
 
 const styleCardField = StyleSheet.create({
- container: {
-  marginHorizontal: 20,
- }
+  container: {
+    marginHorizontal: 20,
+  },
 });
 
 const styles = StyleSheet.create({
