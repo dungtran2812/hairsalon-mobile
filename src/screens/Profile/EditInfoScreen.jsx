@@ -19,6 +19,7 @@ const EditInfoScreen = ({ navigation }) => {
 	const [showPassword, setShowPassword] = useState(false);
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 	const [loyaltyPoints] = useState(150);
+	const { data: userInfo } = useGetUserInforQuery();
 
 	const handleUpdate = () => {
 		if (password !== confirmPassword) {
@@ -70,7 +71,7 @@ const EditInfoScreen = ({ navigation }) => {
 					</TouchableOpacity>
 					<View style={styles.loyaltyTag}>
 						<Text style={styles.loyaltyText}>
-							{loyaltyPoints} Loyalty Points
+							{userInfo?.user?.loyaltyPoints} Loyalty Points
 						</Text>
 					</View>
 				</View>

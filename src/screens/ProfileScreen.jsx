@@ -44,9 +44,9 @@ const ProfileScreen = ({ navigation }) => {
           />
         </Pressable>
         <View style={styles.userInfo}>
-          <Text style={styles.userName}>{userInfo.user.name}</Text>
+          <Text style={styles.userName}>{userInfo?.user?.name}</Text>
           <View style={styles.loyaltyTag}>
-            <Text style={styles.loyaltyText}>150 Loyalty Points</Text>
+            <Text style={styles.loyaltyText}>{userInfo?.user?.loyaltyPoints} Loyalty Points</Text>
           </View>
         </View>
         <Text style={styles.userEmail}>{userInfo?.user?.email}</Text>
