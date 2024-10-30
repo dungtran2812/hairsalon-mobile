@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import StylistChoosing from "./BookingDetails/StylistChoosing";
 import TimeSlotChoosing from "./BookingDetails/TimeSlotChoosing";
 import ConfirmationChoosing from "./BookingDetails/ConfirmationChoosing";
+import PaymentChoosing from "./BookingDetails/PaymentChoosing";
 
 const steps = [
     { title: 'Your info' },
@@ -128,8 +129,7 @@ const BookingScreen = ({ navigation }) => {
 
             {currentStep === 5 && (
                 <View>
-                    <Text style={styles.label}>Choose a Payment Method:</Text>
-                    <Button title="Next" onPress={handleNextStep} />
+                    <PaymentChoosing formBooking={formBooking} setFormBooking={setFormBooking}/>
                 </View>
             )}
 
