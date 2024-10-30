@@ -12,7 +12,6 @@ import { persistor, store } from "../src/store/store";
 import { Provider } from "react-redux";
 import setUpInterceptor from "../src/services/api.service";
 import { LogBox } from "react-native";
-import StylistScreen from "../src/screens/StylistScreen";
 import VoucherChoosing from "../src/screens/BookingDetails/VoucherChoosing";
 
 LogBox.ignoreLogs([

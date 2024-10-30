@@ -5,36 +5,33 @@ import {
   StyleSheet,
   FlatList,
   Image,
+  ActivityIndicator,
   TextInput,
   TouchableOpacity,
 } from "react-native";
 import { useGetAllStylistQuery } from "../services/hairsalon.service";
 import Icon from "react-native-vector-icons/FontAwesome";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
 
 const StylistScreen = () => {
-  // Truy vấn tất cả stylist từ API
-  const { data, error } = useGetAllStylistQuery();
-
-  // Lưu dữ liệu stylist vào biến stylists
+  const navigation = useNavigation();
+  const { data, isLoading, error } = useGetAllStylistQuery();
   const stylists = data ? data.data : [];
   const [searchTerm, setSearchTerm] = useState("");
   const [favoriteStylists, setFavoriteStylists] = useState([]);
+  const [filteredStylists, setFilteredStylists] = useState(stylists);
 
-  // Tải danh sách stylist yêu thích từ AsyncStorage
+  // Load favorite stylists from AsyncStorage
   useEffect(() => {
     const loadFavorites = async () => {
-      try {
-        const favorites = await AsyncStorage.getItem("favorites");
-        setFavoriteStylists(favorites ? JSON.parse(favorites) : []);
-      } catch (e) {
-        console.error("Failed to load favorites", e);
-      }
+      const favorites = await AsyncStorage.getItem("favorites");
+      setFavoriteStylists(favorites ? JSON.parse(favorites) : []);
     };
     loadFavorites();
   }, []);
 
-  // Xử lý việc thêm/xóa stylist vào danh sách yêu thích
+  // Handle favorite toggle
   const toggleFavorite = async (email) => {
     const updatedFavorites = favoriteStylists.includes(email)
       ? favoriteStylists.filter((fav) => fav !== email)
@@ -42,23 +39,51 @@ const StylistScreen = () => {
 
     setFavoriteStylists(updatedFavorites);
     await AsyncStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+    filterStylists(); // Reapply filter when favorites change
   };
 
-  // Lọc stylist dựa trên từ khóa tìm kiếm
-  const filteredStylists = stylists.filter((stylist) =>
-    stylist.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Filter stylists based on search term
+  const filterStylists = () => {
+    const filtered = stylists.filter((stylist) =>
+      stylist.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    setFilteredStylists(filtered);
+  };
+
+  // Clear search term
+  const clearSearch = () => {
+    setSearchTerm("");
+    setFilteredStylists(stylists); // Reset to all stylists
+  };
+
+  // Effect to filter stylists on search term change
+  useEffect(() => {
+    filterStylists();
+  }, [searchTerm]);
 
   return (
     <View style={styles.container}>
-      <TextInput
-        style={styles.searchInput}
-        placeholder="Tìm kiếm tên..."
-        value={searchTerm}
-        onChangeText={setSearchTerm}
-      />
+      <View style={styles.searchContainer}>
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Tìm kiếm tên..."
+          value={searchTerm}
+          onChangeText={setSearchTerm}
+        />
+        <TouchableOpacity style={styles.searchButton} onPress={filterStylists}>
+          <Icon name="search" size={20} color="#444" />
+        </TouchableOpacity>
+        {searchTerm.length > 0 && (
+          <TouchableOpacity style={styles.clearButton} onPress={clearSearch}>
+            <Icon name="remove" size={20} color="#444" />
+          </TouchableOpacity>
+        )}
+      </View>
       <View style={styles.listContainer}>
-        {error ? (
+        {isLoading ? (
+          <ActivityIndicator size="large" color="#000" />
+        ) : error ? (
           <Text style={styles.errorText}>
             {error.message || "Something went wrong"}
           </Text>
@@ -67,7 +92,12 @@ const StylistScreen = () => {
             data={filteredStylists}
             keyExtractor={(item) => item.email}
             renderItem={({ item }) => (
-              <View style={styles.stylistCard}>
+              <TouchableOpacity
+                style={styles.stylistCard}
+                onPress={
+                  () => navigation.navigate("StylistDetail", { stylist: item }) // Chuyển hướng tới StylistDetail
+                }
+              >
                 <Image source={{ uri: item.avatar }} style={styles.avatar} />
                 <Text style={styles.stylistName}>{item.name}</Text>
                 <TouchableOpacity
@@ -86,7 +116,7 @@ const StylistScreen = () => {
                     }
                   />
                 </TouchableOpacity>
-              </View>
+              </TouchableOpacity>
             )}
             numColumns={2}
             columnWrapperStyle={styles.row}
@@ -104,14 +134,25 @@ const styles = StyleSheet.create({
     backgroundColor: "#f7f9fc",
     padding: 16,
   },
+  searchContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 20,
+  },
   searchInput: {
+    flex: 1,
     height: 50,
     borderColor: "#ddd",
     borderWidth: 1,
     borderRadius: 25,
     paddingHorizontal: 20,
-    marginBottom: 20,
     backgroundColor: "#fff",
+  },
+  searchButton: {
+    marginLeft: 10,
+  },
+  clearButton: {
+    marginLeft: 10,
   },
   listContainer: {
     flex: 1,
