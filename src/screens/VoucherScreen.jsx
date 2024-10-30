@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, FlatList, StyleSheet, Pressable } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  Pressable,
+  ScrollView,
+} from "react-native";
 import Header from "../components/header";
 
 const vouchers = [
@@ -118,13 +125,18 @@ const VoucherScreen = ({ navigation }) => {
       <Header />
       <View style={styles.flat}>
         <Text style={styles.sectionHeader}>Voucher ưu đãi</Text>
-        <FlatList
-          style={styles.flatList}
-          data={vouchers}
-          renderItem={({ item }) => renderVoucher(item)}
-          keyExtractor={(item) => item.id.toString()}
-          numColumns={1} // Hiển thị một cột
-        />
+        <ScrollView
+          style={styles.scrollView}
+          contentContainerStyle={{ paddingBottom: 60 }}
+        >
+          <FlatList
+            style={styles.flatList}
+            data={vouchers}
+            renderItem={({ item }) => renderVoucher(item)}
+            keyExtractor={(item) => item.id.toString()}
+            numColumns={1} // Hiển thị một cột
+          />
+        </ScrollView>
       </View>
     </View>
   );
@@ -151,13 +163,16 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 20,
   },
+  scrollView:{
+    backgroundColor: "#F9F9F9",
+  },
   card: {
     backgroundColor: "#FFF",
     borderRadius: 10,
     padding: 15,
     marginBottom: 15,
     marginHorizontal: 10, // Khoảng cách giữa các thẻ và mép màn hình
-	marginTop: 15,
+    marginTop: 15,
     flexDirection: "row",
     alignItems: "center",
     // Đổ bóng cho từng thẻ
