@@ -170,15 +170,9 @@ const hairsalonApi = createApi({
         data: date,
       }),
     }),
-    scheduleStylistsAppointments: builder.mutation({
+    getAppointmentUser: builder.query({
       query: () => ({
-        url: endpoints.SCHEDULE_STYLISTS_APPOINTMENTS,
-        method: "GET",
-      }),
-    }),
-    scheduleStylistsVerify: builder.mutation({
-      query: () => ({
-        url: endpoints.SCHEDULE_STYLIST,
+        url: endpoints.GET_APPOINTMENT_USER,
         method: "GET",
       }),
     }),
@@ -210,8 +204,7 @@ export const {
   useGetAllStylistQuery,
   useGetStylistVerifyQuery,
   useAvailableTimeSlotsMutation,
-  useScheduleStylistsAppointmentsMutation,
-  useScheduleStylistsVerifyMutation,
+  useGetAppointmentUserQuery
 } = hairsalonApi;
 
 export default hairsalonApi;

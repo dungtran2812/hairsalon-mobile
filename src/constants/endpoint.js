@@ -22,6 +22,7 @@ const endpoints = {
   DELETE_VOUCHER: "/delete-voucher",
   VIEW_STYLISTS: "/get-all-stylists",
   SCHEDULE_STYLISTS_APPOINTMENTS: "/available-time-slots",
+  GET_APPOINTMENT_USER: "/get-appointment-user",
   };
 
 
