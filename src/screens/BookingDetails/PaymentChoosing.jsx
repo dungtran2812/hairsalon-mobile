@@ -26,9 +26,9 @@ const PaymentChoosing = ({handleResetBooking, pinCode}) => {
       <Text style={styles.bookingCode}>{bookingCode}</Text>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.paymentButton} onPress={handlePayment}>
+        {/* <TouchableOpacity style={styles.paymentButton} onPress={handlePayment}>
           <Text style={styles.buttonText}>Thanh toán</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <Pressable style={styles.newBookingButton} onPress={handleNewBooking}>
           <Text style={styles.buttonText}>Đặt lịch mới</Text>
         </Pressable>

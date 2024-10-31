@@ -1,14 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
 import { useGetUserInforQuery } from "../services/hairsalon.service";
 
 const header = () => {
-  const { data: userInfo } = useGetUserInforQuery();
+  const { data: userInfo, refetch } = useGetUserInforQuery();
   const role =
     userInfo?.user?.role && Array.isArray(userInfo?.user?.role)
       ? userInfo?.user?.role[0]
       : "Unknown role";
+      useEffect(() => {
+        refetch()
+      }, [])
   return (
     <View style={stylesProfile.container}>
       <View style={stylesProfile.infor}>
