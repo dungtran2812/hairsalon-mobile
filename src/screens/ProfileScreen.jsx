@@ -69,10 +69,14 @@ const ProfileScreen = ({ navigation }) => {
 				</Pressable>
 				<Pressable
 					style={styles.menuItem}
-					onPress={() => navigation.navigate("FavoriteServices")}
+					onPress={() => navigation.navigate("ChangePassword")}
 				>
-					<Icon name="heart-outline" size={24} color="#4A4A4A" />
-					<Text style={styles.menuText}>Dịch vụ yêu thích</Text>
+					<Icon
+						name="lock-closed-outline"
+						size={24}
+						color="#4A4A4A"
+					/>
+					<Text style={styles.menuText}>Chỉnh sửa mật khẩu</Text>
 				</Pressable>
 				<Pressable
 					style={styles.menuItem}
