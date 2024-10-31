@@ -13,6 +13,7 @@ import {
 import { useRegisterMutation } from "../services/hairsalon.service";
 
 const SignupScreen = ({ navigation }) => {
+  const [avatar, setAvatar] = useState("https://i.pinimg.com/236x/fb/6c/1f/fb6c1fd4a4f1f239bd6ec960b7b81783.jpg");
   const [username, setUsername] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -84,10 +85,17 @@ const SignupScreen = ({ navigation }) => {
 
     // Call the register API with the provided data
     try {
-      const userData = { username, name, phone, email, password };
+      const userData = {
+        username,
+        name,
+        phone,
+        email,
+        password,
+        avatar,
+      };
       const response = await register(userData).unwrap();
       Alert.alert("Success", "Account created successfully!");
-      navigation.navigate("ServiceScreen");
+      navigation.navigate("Login");
     } catch (error) {
       Alert.alert(
         "Registration Error",

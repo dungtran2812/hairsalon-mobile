@@ -69,16 +69,18 @@ const EditInfoScreen = ({ navigation }) => {
           >
             <Image
               source={{
-                uri: userInfo?.user?.avatar,
+                uri:
+                  userInfo?.user?.avatar ||
+                  "https://i.pinimg.com/236x/fb/6c/1f/fb6c1fd4a4f1f239bd6ec960b7b81783.jpg", // Default image URL
               }}
               style={styles.avatar}
             />
-            <Icon
+            {/* <Icon
               name="pencil"
               size={20}
               color="#FFF"
               style={styles.editIcon}
-            />
+            /> */}
           </TouchableOpacity>
           <View style={styles.userInfo}>
             <Text style={styles.userName}>{name}</Text>
