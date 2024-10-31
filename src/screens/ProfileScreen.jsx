@@ -67,13 +67,13 @@ const ProfileScreen = ({ navigation }) => {
           <Icon name="person-circle-outline" size={24} color="#fff" />
           <Text style={styles.menuText}>Chỉnh sửa thông tin</Text>
         </Pressable>
-        <Pressable
+        {/* <Pressable
           style={styles.menuItem}
           onPress={() => navigation.navigate("ChangePassword")}
         >
           <Icon name="lock-closed-outline" size={24} color="#fff" />
           <Text style={styles.menuText}>Chỉnh sửa mật khẩu</Text>
-        </Pressable>
+        </Pressable> */}
         <Pressable
           style={styles.menuItem}
           onPress={() => navigation.navigate("FavoriteStylist")}
