@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import {
 	setAccessToken,
+	setName,
 	setPhoneNumber,
 	setRole,
 	setUsername,
@@ -38,6 +39,7 @@ const LoginScreen = ({ navigation }) => {
 			dispatch(setAccessToken(userData?.access_token));
 			dispatch(setRole(userData?.user?.role[0]));
 			dispatch(setUsername(userData?.user?.username));
+			dispatch(setName(userData?.user?.username));
 			dispatch(setPhoneNumber(userData?.user?.phone));
 
 			if (userData.user.role.includes("stylist")) {
