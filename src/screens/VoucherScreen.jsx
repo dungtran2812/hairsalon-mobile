@@ -12,15 +12,15 @@ import { useViewVoucherQuery } from "../services/hairsalon.service";
 
 const VoucherScreen = ({ navigation }) => {
   const { data: VoucherData, error, isLoading } = useViewVoucherQuery();
-  const [claimedVouchers, setClaimedVouchers] = useState([]);
+  const [claimedVoucherId, setClaimedVoucherId] = useState(null); // Track only one claimed voucher
 
   const handleClaimVoucher = (voucherId) => {
-    setClaimedVouchers([...claimedVouchers, voucherId]);
+    setClaimedVoucherId(voucherId); // Set the selected voucher ID
     navigation.navigate("MyVoucherScreen", { voucherId });
   };
 
   const renderVoucher = (voucher) => {
-    const isClaimed = claimedVouchers.includes(voucher.id);
+    const isClaimed = claimedVoucherId === voucher.id; // Check if the current voucher is claimed
 
     return (
       <View
@@ -43,6 +43,7 @@ const VoucherScreen = ({ navigation }) => {
           <Pressable
             style={[styles.button, isClaimed && styles.claimedButton]}
             onPress={() => !isClaimed && handleClaimVoucher(voucher.id)}
+            disabled={isClaimed} // Disable button if claimed
           >
             <Text style={styles.buttonText}>
               {isClaimed ? "Claimed" : "Get Voucher"}
@@ -112,11 +113,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 15,
     marginBottom: 15,
-    marginHorizontal: 10, // Khoảng cách giữa các thẻ và mép màn hình
+    marginHorizontal: 10, // Spacing between cards and screen edges
     marginTop: 15,
     flexDirection: "row",
     alignItems: "center",
-    // Đổ bóng cho từng thẻ
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.2,
@@ -133,11 +133,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "bold",
     color: "#FF6B6B",
-    marginBottom: 5,
-  },
-  description: {
-    fontSize: 13,
-    color: "#555",
     marginBottom: 5,
   },
   expiryDate: {
@@ -159,9 +154,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 5,
-  },
-  disabledButton: {
-    backgroundColor: "#A0A0A0",
   },
   buttonText: {
     color: "#FFF",
