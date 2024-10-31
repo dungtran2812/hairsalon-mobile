@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		paddingVertical: 40,
 		marginBottom: 30,
-		backgroundColor: "#F5F5F5", // Màu nền của header
+		backgroundColor: "#5D3A29", // Màu nền của header
 		borderRadius: 15,
 		shadowColor: "#000",
 		shadowOffset: { width: 0, height: 4 },
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
 	userName: {
 		fontSize: 22,
 		fontWeight: "bold",
-		color: "#333",
+		color: "#fff",
 		marginRight: 10,
 	},
 	loyaltyTag: {
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
 	},
 	userEmail: {
 		fontSize: 16,
-		color: "#666",
+		color: "#fff",
 		marginTop: 8,
 	},
 	menuContainer: {

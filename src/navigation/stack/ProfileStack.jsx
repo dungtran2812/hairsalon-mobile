@@ -12,7 +12,20 @@ const Stack = createNativeStackNavigator();
 
 const ProfileStack = () => {
 	return (
-		<Stack.Navigator>
+		<Stack.Navigator
+			screenOptions={{
+				headerStyle: {
+					backgroundColor: "#5D3A29", // màu nâu cho header
+				},
+				headerTintColor: "#FAF3E0", // màu kem nhạt cho chữ header
+				headerTitleStyle: {
+					fontWeight: "bold",
+				},
+				contentStyle: {
+					backgroundColor: "#FAF3E0", // màu nền kem nhạt cho các trang
+				},
+			}}
+		>
 			<Stack.Screen
 				name="Profile"
 				component={ProfileScreen}
