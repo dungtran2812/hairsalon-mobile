@@ -2,7 +2,7 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ProfileScreen from "../../screens/ProfileScreen";
 import EditInfoScreen from "../../screens/Profile/EditInfoScreen";
-import FavoriteServicesScreen from "../../screens/Profile/FavoriteServicesScreen";
+import ChangePasswordScreen from "../../screens/Profile/ChangePasswordScreen";
 import FavoriteStylistScreen from "../../screens/Profile/FavoriteStylistScreen";
 import ServiceHistoryScreen from "../../screens/Profile/ServiceHistoryScreen";
 import CustomerSupportScreen from "../../screens/Profile/CustomerSupportScreen";
@@ -12,7 +12,20 @@ const Stack = createNativeStackNavigator();
 
 const ProfileStack = () => {
 	return (
-		<Stack.Navigator>
+		<Stack.Navigator
+			screenOptions={{
+				headerStyle: {
+					backgroundColor: "#5D3A29", // màu nâu cho header
+				},
+				headerTintColor: "#FAF3E0", // màu kem nhạt cho chữ header
+				headerTitleStyle: {
+					fontWeight: "bold",
+				},
+				contentStyle: {
+					backgroundColor: "#FAF3E0", // màu nền kem nhạt cho các trang
+				},
+			}}
+		>
 			<Stack.Screen
 				name="Profile"
 				component={ProfileScreen}
@@ -20,8 +33,8 @@ const ProfileStack = () => {
 			/>
 			<Stack.Screen name="EditInfo" component={EditInfoScreen} />
 			<Stack.Screen
-				name="FavoriteServices"
-				component={FavoriteServicesScreen}
+				name="ChangePassword"
+				component={ChangePasswordScreen}
 			/>
 			<Stack.Screen
 				name="FavoriteStylist"

@@ -60,50 +60,42 @@ const ProfileScreen = ({ navigation }) => {
 					style={styles.menuItem}
 					onPress={() => navigation.navigate("EditInfo")}
 				>
-					<Icon
-						name="person-circle-outline"
-						size={24}
-						color="#4A4A4A"
-					/>
+					<Icon name="person-circle-outline" size={24} color="#fff" />
 					<Text style={styles.menuText}>Chỉnh sửa thông tin</Text>
 				</Pressable>
 				<Pressable
 					style={styles.menuItem}
-					onPress={() => navigation.navigate("FavoriteServices")}
+					onPress={() => navigation.navigate("ChangePassword")}
 				>
-					<Icon name="heart-outline" size={24} color="#4A4A4A" />
-					<Text style={styles.menuText}>Dịch vụ yêu thích</Text>
+					<Icon name="lock-closed-outline" size={24} color="#fff" />
+					<Text style={styles.menuText}>Chỉnh sửa mật khẩu</Text>
 				</Pressable>
 				<Pressable
 					style={styles.menuItem}
 					onPress={() => navigation.navigate("FavoriteStylist")}
 				>
-					<Icon name="cut-outline" size={24} color="#4A4A4A" />
+					<Icon name="cut-outline" size={24} color="#fff" />
 					<Text style={styles.menuText}>Nhà tạo mẫu yêu thích</Text>
 				</Pressable>
 				<Pressable
 					style={styles.menuItem}
 					onPress={() => navigation.navigate("Voucher")}
 				>
-					<Icon name="gift-outline" size={24} color="#4A4A4A" />
+					<Icon name="gift-outline" size={24} color="#fff" />
 					<Text style={styles.menuText}>Voucher của bạn</Text>
 				</Pressable>
 				<Pressable
 					style={styles.menuItem}
 					onPress={() => navigation.navigate("ServiceHistory")}
 				>
-					<Icon name="time-outline" size={24} color="#4A4A4A" />
+					<Icon name="time-outline" size={24} color="#fff" />
 					<Text style={styles.menuText}>Lịch sử sử dụng dịch vụ</Text>
 				</Pressable>
 				<Pressable
 					style={styles.menuItem}
 					onPress={() => navigation.navigate("CustomerSupport")}
 				>
-					<Icon
-						name="help-circle-outline"
-						size={24}
-						color="#4A4A4A"
-					/>
+					<Icon name="help-circle-outline" size={24} color="#fff" />
 					<Text style={styles.menuText}>
 						Thông tin hỗ trợ khách hàng
 					</Text>
@@ -133,7 +125,7 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		paddingVertical: 40,
 		marginBottom: 30,
-		backgroundColor: "#F5F5F5", // Màu nền của header
+		backgroundColor: "#5D3A29", // Màu nền của header
 		borderRadius: 15,
 		shadowColor: "#000",
 		shadowOffset: { width: 0, height: 4 },
@@ -177,7 +169,7 @@ const styles = StyleSheet.create({
 	userName: {
 		fontSize: 22,
 		fontWeight: "bold",
-		color: "#333",
+		color: "#fff",
 		marginRight: 10,
 	},
 	loyaltyTag: {
@@ -193,7 +185,7 @@ const styles = StyleSheet.create({
 	},
 	userEmail: {
 		fontSize: 16,
-		color: "#666",
+		color: "#fff",
 		marginTop: 8,
 	},
 	menuContainer: {
@@ -204,7 +196,7 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		paddingVertical: 15,
 		paddingHorizontal: 15,
-		backgroundColor: "#FFF",
+		backgroundColor: "#5D3A29",
 		borderRadius: 20,
 		marginBottom: 10,
 		shadowColor: "#000",
@@ -215,7 +207,7 @@ const styles = StyleSheet.create({
 	},
 	menuText: {
 		fontSize: 18,
-		color: "#4A4A4A",
+		color: "#fff",
 		marginLeft: 15,
 	},
 	logoutText: {
