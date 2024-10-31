@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
 		borderRadius: 50,
 		overflow: "hidden",
 		borderWidth: 3,
-		borderColor: "#FF6B6B",
+		borderColor: "#5D3A29",
 		marginBottom: 10,
 		position: "relative",
 	},
@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
 		position: "absolute",
 		right: 5,
 		bottom: 5,
-		backgroundColor: "#FF6B6B",
+		backgroundColor: "#5D3A29",
 		borderRadius: 15,
 		padding: 5,
 	},
@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
 		marginRight: 10,
 	},
 	loyaltyTag: {
-		backgroundColor: "#FF6B6B",
+		backgroundColor: "#5D3A29",
 		borderRadius: 15,
 		paddingVertical: 3,
 		paddingHorizontal: 10,
@@ -248,7 +248,7 @@ const styles = StyleSheet.create({
 		fontWeight: "bold",
 	},
 	updateButton: {
-		backgroundColor: "#FF6B6B",
+		backgroundColor: "#5D3A29",
 	},
 	updateButtonText: {
 		color: "#FFF",
