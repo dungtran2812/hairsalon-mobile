@@ -9,15 +9,19 @@ const header = () => {
     userInfo?.user?.role && Array.isArray(userInfo?.user?.role)
       ? userInfo?.user?.role[0]
       : "Unknown role";
-      useEffect(() => {
-        refetch()
-      }, [])
+  useEffect(() => {
+    refetch();
+  }, []);
   return (
     <View style={stylesProfile.container}>
       <View style={stylesProfile.infor}>
         <View style={stylesProfile.image}>
           <Image
-            source={{ uri: userInfo?.user?.avatar }}
+            source={{
+              uri:
+                userInfo?.user?.avatar ||
+                "https://i.pinimg.com/236x/fb/6c/1f/fb6c1fd4a4f1f239bd6ec960b7b81783.jpg", // Default image URL
+            }}
             style={stylesProfile.avatar}
           />
         </View>
