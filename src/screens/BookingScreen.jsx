@@ -23,7 +23,6 @@ const steps = [
 	"Stylist",
 	"Time Slot",
 	"Confirm",
-	"Payment",
 ];
 
 const BookingScreen = ({ navigation }) => {
@@ -175,7 +174,7 @@ const BookingScreen = ({ navigation }) => {
 								/>
 							</View>
 						)}
-						{currentStep < 5 && (
+						{currentStep < 4 && (
 							<View style={styles.button}>
 								<Button title="Next" onPress={handleNextStep} />
 							</View>
