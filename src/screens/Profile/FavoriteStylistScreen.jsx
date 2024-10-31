@@ -71,7 +71,7 @@ const FavoriteStylistScreen = () => {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: "#FFF",
+		backgroundColor: "#FAF3E0",
 		padding: 20,
 	},
 	card: {
