@@ -7,7 +7,7 @@ import { PickerView } from '@ant-design/react-native';
 const TimeSlotChoosing = ({ formBooking, setFormBooking }) => {
   const { selectedStylist, selectedSlot, selectedDay } = formBooking;
   const next7Days = generateNext7Days();
-  const [selectedDayIndex, setSelectedDayIndex] = useState(0);
+  const [selectedDayIndex, setSelectedDayIndex] = useState(next7Days[0]);
 
   const payload = {
     stylistId: selectedStylist?._id,
@@ -18,10 +18,8 @@ const TimeSlotChoosing = ({ formBooking, setFormBooking }) => {
   const [loadDataSchedule, { data: scheduleData, isLoading, error }] = useAvailableTimeSlotsMutation();
 
   useEffect(() => {
-    if (selectedStylist) {
       loadDataSchedule(payload);
-    }
-  }, [selectedStylist]);
+  }, [selectedStylist, selectedDay]);
   console.log(scheduleData)
   const handleDaySelect = (index) => {
     const selectedDay = next7Days[index];
