@@ -7,7 +7,10 @@ import {
   Image,
   StyleSheet,
   Pressable,
+  Alert,
+  ScrollView,
 } from "react-native";
+import { useRegisterMutation } from "../services/hairsalon.service";
 
 const SignupScreen = ({ navigation }) => {
   const [username, setUsername] = useState("");
@@ -19,6 +22,8 @@ const SignupScreen = ({ navigation }) => {
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [agreeToPolicy, setAgreeToPolicy] = useState(false);
 
+  const [register, { isLoading }] = useRegisterMutation();
+
   const isEmailValid = (email) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
@@ -27,7 +32,6 @@ const SignupScreen = ({ navigation }) => {
   const isSignupDisabled =
     !name ||
     !phone ||
-    !fullName ||
     !username ||
     !email ||
     !password ||
@@ -35,17 +39,31 @@ const SignupScreen = ({ navigation }) => {
     !agreeToPolicy ||
     !isEmailValid(email);
 
-  const handleSignup = () => {
+  const isPhoneValid = (phone) => {
+    const phoneRegex = /^[0-9]{10,11}$/;
+    return phoneRegex.test(phone);
+  };
+
+  const handleSignup = async () => {
     if (
       !name ||
       !phone ||
-      !fullName ||
       !username ||
       !email ||
       !password ||
       !confirmPassword
     ) {
       alert("Vui lòng điền đầy đủ thông tin.");
+      return;
+    }
+
+    if (!isPhoneValid(phone)) {
+      alert("Số điện thoại phải có từ 10 đến 11 chữ số.");
+      return;
+    }
+
+    if (!isEmailValid(email)) {
+      alert("Email không hợp lệ.");
       return;
     }
 
@@ -64,206 +82,208 @@ const SignupScreen = ({ navigation }) => {
       return;
     }
 
-    // Xử lý logic tạo tài khoản ở đây (gọi API, v.v.)
-    navigation.navigate("ServiceScreen");
+    // Call the register API with the provided data
+    try {
+      const userData = { username, name, phone, email, password };
+      const response = await register(userData).unwrap();
+      Alert.alert("Success", "Account created successfully!");
+      navigation.navigate("ServiceScreen");
+    } catch (error) {
+      Alert.alert(
+        "Registration Error",
+        error.data?.message || "Có lỗi xảy ra khi đăng ký."
+      );
+    }
   };
 
-  const toggleSecureTextEntry = () => {
-    setSecureTextEntry((prev) => !prev);
-  };
-
-  const toggleAgreeToPolicy = () => {
-    setAgreeToPolicy((prev) => !prev);
-  };
-
+  const toggleSecureTextEntry = () => setSecureTextEntry((prev) => !prev);
+  const toggleAgreeToPolicy = () => setAgreeToPolicy((prev) => !prev);
   return (
-    <View style={styles.container}>
-      <View style={styles.logoContainer}>
-        <Image
-          source={{
-            uri: "https://img.icons8.com/ios-filled/50/000000/hair-care.png",
-          }}
-          style={styles.logo}
-        />
-      </View>
-      <Text style={styles.welcomeText}>Hãy tạo tài khoản mới</Text>
-      <Text style={styles.subtitleText}>
-        Hãy cùng chúng tôi chăm sóc cho mái tóc của bạn!
-      </Text>
-      <View style={styles.inputContainer}>
-        <Image
-          source={{
-            uri: "https://img.icons8.com/material-outlined/24/000000/user.png",
-          }}
-          style={styles.icon}
-        />
-        <TextInput
-          placeholder="Name"
-          value={name}
-          onChangeText={setName}
-          style={styles.input}
-        />
-      </View>
-      <View style={styles.inputContainer}>
-        <Image
-          source={{
-            uri: "https://img.icons8.com/material-outlined/24/000000/phone.png",
-          }}
-          style={styles.icon}
-        />
-        <TextInput
-          placeholder="phone"
-          value={phone}
-          onChangeText={setPhone}
-          style={styles.input}
-        />
-      </View>
-      <View style={styles.inputContainer}>
-        <Image
-          source={{
-            uri: "https://img.icons8.com/material-outlined/24/000000/email.png",
-          }}
-          style={styles.icon}
-        />
-        <TextInput
-          placeholder="Email"
-          value={email}
-          onChangeText={setEmail}
-          style={styles.input}
-        />
-      </View>
-      <View style={styles.inputContainer}>
-        <Image
-          source={{
-            uri: "https://img.icons8.com/material-outlined/24/000000/name.png",
-          }}
-          style={styles.icon}
-        />
-        <TextInput
-          placeholder="Username"
-          value={username}
-          onChangeText={setUsername}
-          style={styles.input}
-        />
-      </View>
-
-      <View style={styles.inputContainer}>
-        <Image
-          source={{
-            uri: "https://img.icons8.com/material-outlined/24/000000/lock-2.png",
-          }}
-          style={styles.icon}
-        />
-        <TextInput
-          placeholder="Mật khẩu"
-          secureTextEntry={secureTextEntry}
-          value={password}
-          onChangeText={setPassword}
-          style={styles.input}
-        />
-        <TouchableOpacity onPress={toggleSecureTextEntry}>
+    <ScrollView
+      contentContainerStyle={{ paddingBottom: 50, backgroundColor: "#FFF3E0" }}
+    >
+      <View style={styles.container}>
+        <View style={styles.logoContainer}>
           <Image
             source={{
-              uri: secureTextEntry
-                ? "https://img.icons8.com/material-outlined/24/000000/invisible.png"
-                : "https://img.icons8.com/material-outlined/24/000000/visible.png",
+              uri: "https://img.icons8.com/ios-filled/50/000000/hair-care.png",
             }}
-            style={styles.eyeIcon}
+            style={styles.logo}
           />
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.inputContainer}>
-        <Image
-          source={{
-            uri: "https://img.icons8.com/material-outlined/24/000000/lock-2.png",
-          }}
-          style={styles.icon}
-        />
-        <TextInput
-          placeholder="Nhập lại mật khẩu"
-          secureTextEntry={secureTextEntry}
-          value={confirmPassword}
-          onChangeText={setConfirmPassword}
-          style={styles.input}
-        />
-        <TouchableOpacity onPress={toggleSecureTextEntry}>
-          <Image
-            source={{
-              uri: secureTextEntry
-                ? "https://img.icons8.com/material-outlined/24/000000/invisible.png"
-                : "https://img.icons8.com/material-outlined/24/000000/visible.png",
-            }}
-            style={styles.eyeIcon}
-          />
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.checkboxContainer}>
-        <TouchableOpacity
-          onPress={toggleAgreeToPolicy}
-          style={styles.checkbox}
-          disabled={isSignupDisabled} // Disable checkbox if not all fields are filled
-        >
-          {agreeToPolicy && <View style={styles.checkedCheckbox} />}
-        </TouchableOpacity>
-        <Text style={styles.checkboxText}>
-          Tôi đồng ý với Chính sách bảo mật và Điều khoản sử dụng
+        </View>
+        <Text style={styles.welcomeText}>Hãy tạo tài khoản mới</Text>
+        <Text style={styles.subtitleText}>
+          Hãy cùng chúng tôi chăm sóc cho mái tóc của bạn!
         </Text>
-      </View>
+        <View style={styles.inputContainer}>
+          <Image
+            source={{
+              uri: "https://img.icons8.com/material-outlined/24/000000/user.png",
+            }}
+            style={styles.icon}
+          />
+          <TextInput
+            placeholder="Name"
+            value={name}
+            onChangeText={setName}
+            style={styles.input}
+          />
+        </View>
+        <View style={styles.inputContainer}>
+          <Image
+            source={{
+              uri: "https://img.icons8.com/material-outlined/24/000000/phone.png",
+            }}
+            style={styles.icon}
+          />
+          <TextInput
+            placeholder="phone"
+            value={phone}
+            onChangeText={setPhone}
+            style={styles.input}
+          />
+        </View>
+        <View style={styles.inputContainer}>
+          <Image
+            source={{
+              uri: "https://img.icons8.com/material-outlined/24/000000/email.png",
+            }}
+            style={styles.icon}
+          />
+          <TextInput
+            placeholder="Email"
+            value={email}
+            onChangeText={setEmail}
+            style={styles.input}
+          />
+        </View>
+        <View style={styles.inputContainer}>
+          <Image
+            source={{
+              uri: "https://img.icons8.com/material-outlined/24/000000/name.png",
+            }}
+            style={styles.icon}
+          />
+          <TextInput
+            placeholder="Username"
+            value={username}
+            onChangeText={setUsername}
+            style={styles.input}
+          />
+        </View>
 
-      <Pressable
-        style={({ pressed }) => [
-          styles.button,
-          {
-            backgroundColor: isSignupDisabled ? "#ccc" : "#5D3A29",
-          },
-        ]}
-        onPress={handleSignup}
-        disabled={isSignupDisabled}
-      >
-        {({ pressed }) => (
-          <Text
-            style={[
-              styles.buttonText,
-              {
-                color: pressed ? "white" : "black",
-              },
-            ]}
+        <View style={styles.inputContainer}>
+          <Image
+            source={{
+              uri: "https://img.icons8.com/material-outlined/24/000000/lock-2.png",
+            }}
+            style={styles.icon}
+          />
+          <TextInput
+            placeholder="Mật khẩu"
+            secureTextEntry={secureTextEntry}
+            value={password}
+            onChangeText={setPassword}
+            style={styles.input}
+          />
+          <TouchableOpacity onPress={toggleSecureTextEntry}>
+            <Image
+              source={{
+                uri: secureTextEntry
+                  ? "https://img.icons8.com/material-outlined/24/000000/invisible.png"
+                  : "https://img.icons8.com/material-outlined/24/000000/visible.png",
+              }}
+              style={styles.eyeIcon}
+            />
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.inputContainer}>
+          <Image
+            source={{
+              uri: "https://img.icons8.com/material-outlined/24/000000/lock-2.png",
+            }}
+            style={styles.icon}
+          />
+          <TextInput
+            placeholder="Nhập lại mật khẩu"
+            secureTextEntry={secureTextEntry}
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+            style={styles.input}
+          />
+          <TouchableOpacity onPress={toggleSecureTextEntry}>
+            <Image
+              source={{
+                uri: secureTextEntry
+                  ? "https://img.icons8.com/material-outlined/24/000000/invisible.png"
+                  : "https://img.icons8.com/material-outlined/24/000000/visible.png",
+              }}
+              style={styles.eyeIcon}
+            />
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.checkboxContainer}>
+          <TouchableOpacity
+            onPress={toggleAgreeToPolicy}
+            style={styles.checkbox}
           >
-            Tạo tài khoản
+            {agreeToPolicy && <View style={styles.checkedCheckbox} />}
+          </TouchableOpacity>
+          <Text style={styles.checkboxText}>
+            Tôi đồng ý với Chính sách bảo mật và Điều khoản sử dụng
           </Text>
-        )}
-      </Pressable>
+        </View>
 
-      <Text style={styles.loginPrompt}>
-        Đã có tài khoản?{" "}
-        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-          <Text style={styles.loginText}>Đăng nhập</Text>
-        </TouchableOpacity>
-      </Text>
+        <Pressable
+          style={({ pressed }) => [
+            styles.button,
+            { backgroundColor: pressed ? "#5D3A29" : "#5D3A29" },
+          ]}
+          onPress={handleSignup}
+        >
+          {({ pressed }) => (
+            <Text
+              style={[
+                styles.buttonText,
+                { color: pressed ? "white" : "black" },
+              ]}
+            >
+              {isLoading ? "Loading..." : "Tạo tài khoản"}
+            </Text>
+          )}
+        </Pressable>
 
-      <Text style={styles.orText}>Hoặc đăng ký qua</Text>
+        <Text style={styles.loginPrompt}>
+          Đã có tài khoản?{" "}
+          <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+            <Text style={styles.loginText}>Đăng nhập</Text>
+          </TouchableOpacity>
+        </Text>
 
-      <View style={styles.socialContainer}>
-        <TouchableOpacity>
-          <Image
-            source={{
-              uri: "https://img.icons8.com/color/48/000000/google-logo.png",
-            }}
-            style={styles.socialIcon}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Image
-            source={{
-              uri: "https://img.icons8.com/color/48/000000/facebook.png",
-            }}
-            style={styles.socialIcon}
-          />
-        </TouchableOpacity>
+        <Text style={styles.orText}>Hoặc đăng ký qua</Text>
+
+        <View style={styles.socialContainer}>
+          <TouchableOpacity>
+            <Image
+              source={{
+                uri: "https://img.icons8.com/color/48/000000/google-logo.png",
+              }}
+              style={styles.socialIcon}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Image
+              source={{
+                uri: "https://img.icons8.com/color/48/000000/facebook.png",
+              }}
+              style={styles.socialIcon}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
