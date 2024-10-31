@@ -76,7 +76,13 @@ const hairsalonApi = createApi({
       query: (stylistData) => ({
         url: endpoints.ADD_FAVORITE_STYLIST,
         method: "POST",
-        data: stylistData,
+        body: stylistData,
+      }),
+    }),
+    removeFavoriteStylist: builder.mutation({
+      query: (stylistId) => ({
+        url: `${endpoints.REMOVE_FAVORITE_STYLIST}/${stylistId}`,
+        method: "POST",
       }),
     }),
     recommendedStylist: builder.query({
@@ -196,6 +202,7 @@ export const {
   useRejectAppointmentMutation,
   useCreateFeedbackMutation,
   useAddFavoriteStylistMutation,
+  useRemoveFavoriteStylistMutation,
   useRecommendedStylistQuery,
   useCreateServiceMutation,
   useViewServiceQuery,
@@ -207,7 +214,6 @@ export const {
   useViewVoucherQuery,
   useUpdateVoucherMutation,
   useDeleteVoucherMutation,
-
   useGetAllStylistQuery,
   useGetStylistVerifyQuery,
   useAvailableTimeSlotsMutation,

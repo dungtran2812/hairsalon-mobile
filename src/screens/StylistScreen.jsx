@@ -5,15 +5,11 @@ import {
   StyleSheet,
   FlatList,
   Image,
-  ActivityIndicator,
   TextInput,
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import {
-  useGetAllStylistQuery,
-  useAddFavoriteStylistMutation,
-} from "../services/hairsalon.service";
+import { useGetAllStylistQuery } from "../services/hairsalon.service"; // Removed favorite hooks
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useNavigation } from "@react-navigation/native";
 import Header from "../components/header";
@@ -21,7 +17,6 @@ import Header from "../components/header";
 const StylistScreen = () => {
   const navigation = useNavigation();
   const { data, isLoading, error } = useGetAllStylistQuery();
-  const [addFavoriteStylist] = useAddFavoriteStylistMutation();
   const stylists = data && data.data ? data.data : [];
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredStylists, setFilteredStylists] = useState(stylists);
@@ -47,15 +42,6 @@ const StylistScreen = () => {
     }
   }, [searchTerm, stylists]);
 
-  const toggleFavorite = async (stylist) => {
-    try {
-      await addFavoriteStylist({ stylistEmail: stylist.email }).unwrap();
-      console.log(`${stylist.name} added to favorites.`);
-    } catch (error) {
-      console.error("Failed to add favorite stylist:", error);
-    }
-  };
-
   return (
     <View style={styles.box}>
       <Header />
@@ -80,17 +66,12 @@ const StylistScreen = () => {
             </TouchableOpacity>
           </View>
           <View style={styles.listContainer}>
-            {/* {isLoading ? (
-          <ActivityIndicator size="large" color="#000" />
-        ) : error ? (
-          <Text style={styles.errorText}>
-            {error.message || "Something went wrong"}
-          </Text>
-        ) : ( */}
             <ScrollView contentContainerStyle={{ paddingBottom: 50 }}>
               <FlatList
                 data={filteredStylists}
-                keyExtractor={(item) => item.email}
+                keyExtractor={(item) =>
+                  item.id ? item.id.toString() : Math.random().toString()
+                }
                 renderItem={({ item }) => (
                   <TouchableOpacity
                     style={styles.stylistCard}
@@ -103,19 +84,15 @@ const StylistScreen = () => {
                       style={styles.avatar}
                     />
                     <Text style={styles.stylistName}>{item.name}</Text>
-                    <TouchableOpacity
-                      style={styles.favoriteButton}
-                      onPress={() => toggleFavorite(item)}
-                    >
-                      <Icon name="heart" size={20} color="red" />
-                    </TouchableOpacity>
+                    <Text style={styles.expertiseText}>Chuyên môn:</Text>
+                    <Text style={styles.expertiseValue}>{item.expertise}</Text>
+                    {/* Remove favorite button */}
                   </TouchableOpacity>
                 )}
                 numColumns={2}
                 columnWrapperStyle={styles.row}
                 showsVerticalScrollIndicator={false}
               />
-              {/* )} */}
             </ScrollView>
           </View>
         </View>
@@ -127,7 +104,7 @@ const StylistScreen = () => {
 const styles = StyleSheet.create({
   box: {
     flex: 1,
-    backgroundColor: "#5D3A29", // Màu nền kem nhạt
+    backgroundColor: "#5D3A29",
   },
   boxContainer: {
     flex: 7,
@@ -164,6 +141,8 @@ const styles = StyleSheet.create({
   listContainer: {
     flex: 1,
     paddingBottom: 10,
+    marginBottom: 55,
+    backgroundColor: "#FAF3E0",
   },
   stylistCard: {
     width: "45%",
@@ -189,16 +168,25 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   stylistName: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "600",
     color: "#444",
     textAlign: "center",
     marginVertical: 5,
   },
-  favoriteButton: {
-    position: "absolute",
-    top: 10,
-    right: 10,
+  expertiseText: {
+    fontSize: 14,
+    fontWeight: "400",
+    color: "#666",
+    textAlign: "center",
+    marginVertical: 5,
+  },
+  expertiseValue: {
+    fontSize: 14,
+    fontWeight: "400",
+    color: "#666",
+    textAlign: "center",
+    marginVertical: 5,
   },
   row: {
     justifyContent: "space-between",

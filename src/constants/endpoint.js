@@ -9,6 +9,7 @@ const endpoints = {
   REJECT_APPOINTMENT: "/reject/:appointmentId",
   CREATE_FEEDBACK: "/create-feedback",
   ADD_FAVORITE_STYLIST: "/add-favorite-stylist",
+  REMOVE_FAVORITE_STYLIST: "/remove-favorite-stylist",
   RECOMMENDED_STYLIST: "/recommended-stylists",
   CREATE_SERVICE: "/create-service",
   VIEW_SERVICE: "/view-service",
@@ -21,7 +22,6 @@ const endpoints = {
   UPDATE_VOUCHER: "/update-voucher",
   DELETE_VOUCHER: "/delete-voucher",
   VIEW_STYLISTS: "/get-all-stylists",
-  };
-
+};
 
 export default endpoints;

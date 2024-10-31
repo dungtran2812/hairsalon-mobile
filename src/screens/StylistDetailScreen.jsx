@@ -1,32 +1,76 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useNavigation } from "@react-navigation/native";
-import { useAddFavoriteStylistMutation } from "../services/hairsalon.service";
+import {
+  useAddFavoriteStylistMutation,
+  useRemoveFavoriteStylistMutation,
+} from "../services/hairsalon.service";
 
 const StylistDetailScreen = ({ route }) => {
   const navigation = useNavigation();
   const { stylist } = route.params;
   const [addFavoriteStylist] = useAddFavoriteStylistMutation();
-  const [isFavorited, setIsFavorited] = useState(false);
+  const [removeFavoriteStylist] = useRemoveFavoriteStylistMutation();
+  const [isFavorited, setIsFavorited] = useState(false); // Track if stylist is favorited
+
+  useEffect(() => {
+    // Example: Initialize favorited state based on your favorite stylist logic
+    if (stylist) {
+      // Replace this with actual logic to check if stylist is in favorites
+      // setIsFavorited(favoriteStylists.has(stylist.id));
+    }
+  }, [stylist]);
 
   const handleBooking = () => {
     navigation.navigate("Booking");
   };
 
   const toggleFavorite = async () => {
+    if (!stylist) return; // Check stylist data exists
     try {
-      if (!isFavorited) {
-        await addFavoriteStylist({ stylistEmail: stylist.email }).unwrap();
-        setIsFavorited(true);
-        console.log(`${stylist.name} added to favorites.`);
+      if (isFavorited) {
+        // If already favorited, remove from favorites
+        const response = await removeFavoriteStylist({
+          stylistId: stylist.id, // Use id here
+        }).unwrap();
+        if (response.status === 200) {
+          // Check response structure
+          setIsFavorited(false); // Update local state
+          Alert.alert("Thông báo", `${stylist.name} đã được hủy yêu thích.`);
+          console.log(`${stylist.name} removed from favorites.`);
+        }
       } else {
-        console.log(`${stylist.name} is already in favorites.`);
+        // If not favorited, add to favorites
+        const response = await addFavoriteStylist({
+          stylistId: stylist.id, // Use id here
+        }).unwrap();
+        if (response.status === 200) {
+          // Check response structure
+          setIsFavorited(true); // Update local state
+          Alert.alert(
+            "Thông báo",
+            `${stylist.name} đã được thêm vào yêu thích.`
+          );
+          console.log(`${stylist.name} added to favorites.`);
+        }
       }
     } catch (error) {
-      console.error("Failed to add favorite stylist:", error);
+      console.error("Failed to toggle favorite stylist:", error);
+      Alert.alert("Lỗi", "Đã xảy ra lỗi khi thực hiện hành động này.");
     }
   };
+
+  if (!stylist) {
+    return <Text>Loading...</Text>; // Loading state if stylist is not available
+  }
 
   return (
     <View style={styles.container}>
@@ -40,18 +84,27 @@ const StylistDetailScreen = ({ route }) => {
         <Image source={{ uri: stylist.avatar }} style={styles.avatar} />
       </View>
       <Text style={styles.name}>{stylist.name}</Text>
-      <Text style={styles.email}>Email: {stylist.email}</Text>
+      <Text style={styles.infoLabel}>Email:</Text>
+      <Text style={styles.infoValue}>{stylist.email}</Text>
+      <Text style={styles.infoLabel}>Chuyên môn:</Text>
+      <Text style={styles.infoValue}>{stylist.expertise}</Text>
+      <Text style={styles.infoLabel}>Kinh nghiệm:</Text>
+      <Text style={styles.infoValue}>{stylist.numberExperiences}</Text>
 
-      {/* Add to favorites button */}
+      {/* Favorite button */}
       <TouchableOpacity style={styles.favoriteButton} onPress={toggleFavorite}>
-        <Icon name="heart" size={20} color={isFavorited ? "red" : "#ccc"} />
+        <Icon
+          name="heart"
+          size={20}
+          color={isFavorited ? "#E74C3C" : "#ccc"} // Change color based on isFavorited state
+        />
         <Text style={styles.favoriteButtonText}>
           {isFavorited ? "Hủy yêu thích" : "Thêm vào yêu thích"}
         </Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.bookingButton} onPress={handleBooking}>
-        <Text style={styles.bookingButtonText}>Đặt Ngay</Text>
+        <Text style={styles.bookingButtonText}>Đặt Lịch Ngay</Text>
       </TouchableOpacity>
     </View>
   );
@@ -82,14 +135,21 @@ const styles = StyleSheet.create({
     borderRadius: 25,
   },
   name: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: "bold",
     marginBottom: 10,
+    color: "#2C3E50",
   },
-  email: {
+  infoLabel: {
+    fontSize: 18,
+    fontWeight: "600",
+    color: "#34495E",
+    marginBottom: 5,
+  },
+  infoValue: {
     fontSize: 16,
-    color: "#666",
-    marginBottom: 10,
+    color: "#7F8C8D",
+    marginBottom: 15,
   },
   favoriteButton: {
     flexDirection: "row",
@@ -99,7 +159,7 @@ const styles = StyleSheet.create({
   favoriteButtonText: {
     marginLeft: 8,
     fontSize: 16,
-    color: "#444",
+    color: "#2980B9",
   },
   bookingButton: {
     backgroundColor: "rgb(97, 70, 59)",
