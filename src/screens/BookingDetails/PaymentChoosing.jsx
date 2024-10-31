@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, Button, StyleSheet, Image, TouchableOpacity, Pressable } from 'react-native';
 
-const BookingConfirmation = ({ navigation }) => {
-  const bookingCode = "20243110aot8gn"; // replace with actual booking code
+const PaymentChoosing = ({handleResetBooking, pinCode}) => {
+  const bookingCode = pinCode; // replace with actual booking code
 
   const handlePayment = () => {
     // Navigate to PaymentChoosing screen or perform payment action
@@ -10,8 +10,7 @@ const BookingConfirmation = ({ navigation }) => {
   };
 
   const handleNewBooking = () => {
-    // Navigate to the new booking screen or perform new booking action
-    // navigation.navigate('BookingScreen');
+    handleResetBooking()
   };
 
   return (
@@ -30,9 +29,9 @@ const BookingConfirmation = ({ navigation }) => {
         <TouchableOpacity style={styles.paymentButton} onPress={handlePayment}>
           <Text style={styles.buttonText}>Thanh toán</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.newBookingButton} onPress={handleNewBooking}>
+        <Pressable style={styles.newBookingButton} onPress={handleNewBooking}>
           <Text style={styles.buttonText}>Đặt lịch mới</Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
     </View>
   );
@@ -87,7 +86,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   newBookingButton: {
-    backgroundColor: '#e0e0e0',
+    backgroundColor: '#007bff',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
@@ -98,4 +97,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BookingConfirmation;
+export default PaymentChoosing;

@@ -1,178 +1,129 @@
 import React, { useState } from "react";
-import {
-	Text,
-	StyleSheet,
-	Button,
-	ScrollView,
-	View,
-	Alert,
-} from "react-native";
-import StepIndicator from "react-native-step-indicator";
+import { Text, StyleSheet, Button, ScrollView, View, Alert } from "react-native";
+import StepIndicator from 'react-native-step-indicator';
+import { useSelector } from "react-redux";
 import UserInfo from "./BookingDetails/UserInfo";
 import ServiceChoosing from "./BookingDetails/ServiceChoosing";
-import { useSelector } from "react-redux";
 import StylistChoosing from "./BookingDetails/StylistChoosing";
 import TimeSlotChoosing from "./BookingDetails/TimeSlotChoosing";
 import ConfirmationChoosing from "./BookingDetails/ConfirmationChoosing";
 import PaymentChoosing from "./BookingDetails/PaymentChoosing";
+import { useCreateAppointmentMutation } from "../services/hairsalon.service";
 
 const steps = [
-	{ title: "Your info" },
-	{ title: "Service" },
-	{ title: "Stylist" },
-	{ title: "Time Slot" },
-	{ title: "Confirm" },
-	{ title: "Payment" },
+  'Your info', 'Service', 'Stylist', 'Time Slot', 'Confirm', 'Payment'
 ];
 
 const BookingScreen = ({ navigation }) => {
-	const customerName = useSelector(
-		(state) => state?.rootReducer?.user?.username
-	);
-	const customerPhone = useSelector(
-		(state) => state?.rootReducer?.user?.phoneNumber
-	);
-	const [currentStep, setCurrentStep] = useState(0);
-	const [formBooking, setFormBooking] = useState({
-		customerName: customerName,
-		customerPhone: customerPhone,
-		selectedServices: [],
-		selectedStylist: {},
-		selectedDay: "",
-		selectedSlot: "",
-	});
-	console.log(formBooking);
+  const customerName = useSelector((state) => state?.rootReducer?.user?.username);
+  const customerPhone = useSelector((state) => state?.rootReducer?.user?.phoneNumber);
+  const [ pinCode, setPinCode] = useState()
+  const [isPayment, setIsPayment] = useState(false);
+  const [currentStep, setCurrentStep] = useState(0);
+  const [formBooking, setFormBooking] = useState({
+    customerName, customerPhone, selectedServices: [], selectedStylist: {}, selectedDay: "", selectedSlot: "",
+  });
+  const {
+    selectedServices,
+    selectedStylist,
+    selectedDay,
+    selectedSlot,
+  } = formBooking;
+  const payload = {
+    customerName: customerName,
+    customerPhone: customerPhone,
+    stylistId: selectedStylist?.stylistId,
+    services: selectedServices?.map((service) => ({
+      name: service.name,
+      price: service.price,
+    })),
+    appointmentDate: selectedDay,
+    appointmentTime: selectedSlot,
+  };
 
-	const handleNextStep = () => {
-		// Validate formBooking fields based on the current step
-		if (currentStep === 0) {
-			// Step 1: User Info
-			const { customerName, customerPhone } = formBooking;
-			if (!customerName || !customerPhone) {
-				alert("Please fill in your name and phone number.");
-				return;
-			}
-		} else if (currentStep === 1) {
-			// Step 2: Service
-			if (formBooking.selectedServices.length === 0) {
-				alert("Please choose at least one service.");
-				return;
-			}
-		} else if (currentStep === 2) {
-			// Step 3: Stylist
-			if (!formBooking.selectedStylist.name) {
-				alert("Please select a stylist.");
-				return;
-			}
-		} else if (currentStep === 3) {
-			// Step 4: Time Slot
-			if (!formBooking.selectedDay || !formBooking.selectedSlot) {
-				alert("Please select a day and time slot.");
-				return;
-			}
-		} else if (currentStep === 4) {
-			// Step 5: Payment
-			// Implement payment validation if needed
-		}
+  const [createAppointment] = useCreateAppointmentMutation();
 
-		// If all validations pass, proceed to the next step
-		if (currentStep < steps.length - 1) {
-			setCurrentStep(currentStep + 1);
-		}
-	};
+  const validateStep = () => {
+    switch (currentStep) {
+      case 0:
+        return formBooking.customerName && formBooking.customerPhone;
+      case 1:
+        return formBooking.selectedServices.length > 0;
+      case 2:
+        return formBooking.selectedStylist?.name;
+      case 3:
+        return formBooking.selectedDay && formBooking.selectedSlot;
+      default:
+        return true;
+    }
+  };
+  console.log(formBooking)
+  const handleNextStep = () => {
+    if (validateStep()) {
+      setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1));
+    } else {
+      Alert.alert("Validation Error", "Please complete the required fields.");
+    }
+  };
 
-	const handlePreviousStep = () => {
-		if (currentStep > 0) {
-			setCurrentStep(currentStep - 1);
-		}
-	};
+  const handlePreviousStep = () => {
+    setCurrentStep((prev) => Math.max(prev - 1, 0));
+  };
 
-	const handleBooking = () => {
-		// Implement booking confirmation logic
-		alert("Booking Confirmed", "Your booking has been confirmed.");
-	};
+  const handleBooking = () => {
+    setIsPayment(true);
+    createAppointment(payload).unwrap()
+    .then((res) => {
+    setPinCode(res.data.pinCode)
+    });
+  };
 
-	return (
-		<ScrollView style={styles.container}>
-			<StepIndicator
-				direction="horizontal"
-				customStyles={stepIndicatorStyles}
-				currentPosition={currentStep}
-				stepCount={steps.length}
-				labels={steps.map((step) => step.title)}
-			/>
+  const handleResetBooking = () => {
+    setFormBooking({
+      customerName, customerPhone, selectedServices: [], selectedStylist: {}, selectedDay: "", selectedSlot: ""
+    });
+    setCurrentStep(0);
+    setIsPayment(false);
+  };
 
-			{currentStep === 0 && (
-				<View style={styles.stepContainer}>
-					<UserInfo
-						formBooking={formBooking}
-						setFormBooking={setFormBooking}
-					/>
-				</View>
-			)}
+  return (
+    <ScrollView style={styles.container}>
+      {isPayment ? (
+        <PaymentChoosing formBooking={formBooking} setIsPayment={setIsPayment} handleResetBooking={handleResetBooking} pinCode={pinCode}/>
+      ) : (
+        <>
+          <StepIndicator
+            direction="horizontal"
+            customStyles={stepIndicatorStyles}
+            currentPosition={currentStep}
+            stepCount={steps.length}
+            labels={steps}
+          />
 
-			{currentStep === 1 && (
-				<View style={styles.stepContainer}>
-					<ServiceChoosing
-						navigation={navigation}
-						formBooking={formBooking}
-						setFormBooking={setFormBooking}
-					/>
-				</View>
-			)}
+          <View style={styles.stepContainer}>
+            {currentStep === 0 && <UserInfo formBooking={formBooking} setFormBooking={setFormBooking} />}
+            {currentStep === 1 && <ServiceChoosing navigation={navigation} formBooking={formBooking} setFormBooking={setFormBooking} />}
+            {currentStep === 2 && <StylistChoosing formBooking={formBooking} setFormBooking={setFormBooking} />}
+            {currentStep === 3 && <TimeSlotChoosing formBooking={formBooking} setFormBooking={setFormBooking} />}
+            {currentStep === 4 && <ConfirmationChoosing formBooking={formBooking} setFormBooking={setFormBooking} handleBooking={handleBooking} />}
+          </View>
 
-			{currentStep === 2 && (
-				<View style={styles.stepContainer}>
-					<StylistChoosing
-						formBooking={formBooking}
-						setFormBooking={setFormBooking}
-					/>
-				</View>
-			)}
-
-			{currentStep === 3 && (
-				<View>
-					<TimeSlotChoosing
-						formBooking={formBooking}
-						setFormBooking={setFormBooking}
-					/>
-				</View>
-			)}
-
-			{currentStep === 4 && (
-				<View style={styles.stepContainer}>
-					<ConfirmationChoosing
-						formBooking={formBooking}
-						setFormBooking={setFormBooking}
-					/>
-				</View>
-			)}
-
-			{currentStep === 5 && (
-				<View>
-					<PaymentChoosing
-						formBooking={formBooking}
-						setFormBooking={setFormBooking}
-					/>
-				</View>
-			)}
-
-			<View style={styles.stepButtonContainer}>
-				{/* Back Button */}
-				{currentStep > 0 && (
-					<View style={styles.backButtonContainer}>
-						<Button title="Back" onPress={handlePreviousStep} />
-					</View>
-				)}
-				{/* Next Button */}
-				{currentStep < 5 && (
-					<View style={styles.nextButtonContainer}>
-						<Button title="Next" onPress={handleNextStep} />
-					</View>
-				)}
-			</View>
-		</ScrollView>
-	);
+          <View style={styles.stepButtonContainer}>
+            {currentStep > 0 && (
+              <View style={styles.button}>
+                <Button title="Back" onPress={handlePreviousStep} />
+              </View>
+            )}
+            {currentStep < 5 && (
+              <View style={styles.button}>
+                <Button title="Next" onPress={handleNextStep} />
+              </View>
+            )}
+          </View>
+        </>
+      )}
+    </ScrollView>
+  );
 };
 
 const stepIndicatorStyles = {
@@ -193,34 +144,22 @@ const stepIndicatorStyles = {
 };
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		padding: 20,
-		backgroundColor: "#FAF3E0",
-	},
-	stepContainer: {
-		flexDirection: "column",
-		alignItems: "center",
-		justifyContent: "space-between",
-		marginVertical: 10,
-	},
-	label: {
-		fontSize: 18,
-		marginVertical: 10,
-		marginBottom: 4,
-	},
-	stepButtonContainer: {
-		flexDirection: "row",
-		marginVertical: 20,
-		justifyContent: "flex-end",
-	},
-	backButtonContainer: {
-		width: "40vw",
-		marginHorizontal: 20,
-	},
-	nextButtonContainer: {
-		width: "40vw",
-	},
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: "#fff",
+  },
+  stepContainer: {
+    marginVertical: 10,
+  },
+  stepButtonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginVertical: 20,
+  },
+  button: {
+    width: '40%',
+  },
 });
 
 export default BookingScreen;

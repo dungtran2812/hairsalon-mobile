@@ -1,7 +1,7 @@
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, Button, TouchableOpacity } from 'react-native';
 
-const ConfirmationChoosing = ({ formBooking }) => {
+const ConfirmationChoosing = ({ formBooking, handleBooking }) => {
   const { selectedStylist, selectedSlot, selectedDay, customerName, customerPhone, selectedServices } = formBooking;
 
   return (
@@ -25,6 +25,11 @@ const ConfirmationChoosing = ({ formBooking }) => {
       ) : (
         <Text style={styles.infoText}>No services selected.</Text>
       )}
+
+      {/* Booking Button */}
+      <TouchableOpacity style={styles.bookingButton} onPress={handleBooking}>
+        <Text style={styles.buttonText}>Confirm Booking</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -40,22 +45,35 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   header: {
-    fontSize: 28, // Increased font size
+    fontSize: 28,
     fontWeight: 'bold',
     marginBottom: 16,
     textAlign: 'center',
-    color: '#FF5722', // Contrasting color for the header
+    color: '#FF5722',
   },
   label: {
     fontWeight: 'bold',
     marginTop: 12,
-    fontSize: 20, // Increased font size for labels
-    color: '#333', // Darker color for labels
+    fontSize: 20,
+    color: '#333',
   },
   infoText: {
-    fontSize: 18, // Increased font size for info text
-    color: '#555', // Slightly darker color for info text
-    marginVertical: 4, // Added vertical margin for spacing
+    fontSize: 18,
+    color: '#555',
+    marginVertical: 4,
+  },
+  bookingButton: {
+    marginTop: 24,
+    backgroundColor: '#FF5722',
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 });
 
