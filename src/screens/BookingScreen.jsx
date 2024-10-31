@@ -127,20 +127,20 @@ const BookingScreen = ({ navigation }) => {
 };
 
 const stepIndicatorStyles = {
-    stepIndicatorSize: 30,
-    currentStepIndicatorSize: 40,
-    separatorStrokeWidth: 3,
-    currentStepIndicatorStrokeWidth: 3,
-    stepStrokeCurrentColor: '#4F8EF7',
-    stepStrokeWidth: 3,
-    stepStrokeFinishedColor: '#4F8EF7',
-    stepStrokeUnFinishedColor: '#aaaaaa',
-    currentStepIndicatorColor: '#4F8EF7',
-    stepIndicatorFinishedColor: '#4F8EF7',
-    stepIndicatorUnFinishedColor: '#ffffff',
-    stepIndicatorLabelFontSize: 13,
-    currentStepIndicatorLabelFontSize: 13,
-    labelSize: 12,
+	stepIndicatorSize: 30,
+	currentStepIndicatorSize: 40,
+	separatorStrokeWidth: 3,
+	currentStepIndicatorStrokeWidth: 3,
+	stepStrokeCurrentColor: "#4F8EF7",
+	stepStrokeWidth: 3,
+	stepStrokeFinishedColor: "#4F8EF7",
+	stepStrokeUnFinishedColor: "#aaaaaa",
+	currentStepIndicatorColor: "#4F8EF7",
+	stepIndicatorFinishedColor: "#4F8EF7",
+	stepIndicatorUnFinishedColor: "#ffffff",
+	stepIndicatorLabelFontSize: 13,
+	currentStepIndicatorLabelFontSize: 13,
+	labelSize: 12,
 };
 
 const styles = StyleSheet.create({
