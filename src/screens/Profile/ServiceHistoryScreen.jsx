@@ -47,7 +47,7 @@ const ServiceHistoryScreen = ({ navigation }) => {
 							<View style={styles.info}>
 								<Text style={styles.serviceName}>{item.services[0].name}</Text>
 								<Text style={styles.stylist}>Stylist: {item.stylistId.name}</Text>
-								<Text style={styles.price}>${item.totalPrice / 100}</Text>
+								<Text style={styles.price}>{item.totalPrice.toLocaleString()} VND</Text>
 							</View>
 						</View>
 						<View style={styles.actions}>
