@@ -37,7 +37,6 @@ const hairsalonApi = createApi({
     getUserInfor: builder.query({
       query: () => ({
         url: endpoints.GET_INFOR_USER,
-        method: "GET",
       }),
     }),
     createAppointment: builder.mutation({

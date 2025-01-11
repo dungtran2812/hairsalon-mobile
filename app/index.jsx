@@ -25,7 +25,6 @@ export default function App() {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <NavigationContainer independent={true}>
           <Stack.Navigator initialRouteName="AuthIntroScreen">
             <Stack.Screen
               name="AuthIntroScreen"
@@ -67,7 +66,6 @@ export default function App() {
               }}
             />
           </Stack.Navigator>
-        </NavigationContainer>
       </PersistGate>
     </Provider>
   );
